@@ -32,6 +32,9 @@ public class AndroidChatScreenPageObject extends ChatScreenPageObject {
             ATTACHMENT_MENU_BAR_TOUCH_OUTSIDE = "xpath://android.view.View[@resource-id=\"com.turkcell.bip:id/touch_outside\"]";
             WIFI_DISABLED_CONNECTION_POP_UP = "id:com.turkcell.bip:id/popup_container";//android.widget.LinearLayout[@resource-id="com.turkcell.bip:id/popup_container"]
             WIFI_POP_UP_OK_BUTTON = "xpath://android.widget.Button[@resource-id=\"com.turkcell.bip:id/btnPrimary\"]";
+            ADD_STAR_TO_MESSAGE = "xpath://android.widget.Button[@content-desc=\"Add to favorite messages\"]";
+            STAR_ON_MESSAGE_BUBBLE = "xpath://android.widget.ImageView[@content-desc=\"Add to favorite messages\"]";
+
 
 
 

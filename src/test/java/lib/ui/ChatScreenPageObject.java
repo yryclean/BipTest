@@ -32,7 +32,10 @@ public abstract class ChatScreenPageObject extends MainPageObject {
             ATTACHMENT_MENU_BAR,
             ATTACHMENT_MENU_BAR_TOUCH_OUTSIDE,
             WIFI_DISABLED_CONNECTION_POP_UP,
-            WIFI_POP_UP_OK_BUTTON;
+            WIFI_POP_UP_OK_BUTTON,
+            ADD_STAR_TO_MESSAGE,
+            STAR_ON_MESSAGE_BUBBLE;
+
 
     public ChatScreenPageObject (AppiumDriver driver)
     {
@@ -97,6 +100,17 @@ public abstract class ChatScreenPageObject extends MainPageObject {
         String received_message_xpath = getReceivedMessageByXpathName(received_message);
         this.longPressAction(received_message_xpath);
         this.deleteMessage();
+    }
+    public void longPressAndAddStarToSentMessage(String sent_message) {
+        this.waitForSentMessageWithName(sent_message);
+        String sent_message_xpath = getReceivedMessageByXpathName(sent_message);
+        this.longPressAction(sent_message_xpath);
+        this.addStarToMessage();
+        Assert.assertTrue(isElementPresent(STAR_ON_MESSAGE_BUBBLE));
+    }
+    public void assertStarIconIsDisplayedOnMessage() {
+        Assert.assertTrue(isElementPresent(STAR_ON_MESSAGE_BUBBLE));
+
     }
 
     public void deleteMessage() {
@@ -325,26 +339,30 @@ public abstract class ChatScreenPageObject extends MainPageObject {
             System.out.println("Pop up is not displayed");
         }
     }
-    public void sendMessageIfNeeded(String sent_message) {
+    public void sendMessageIfNeeded(String send_message, String sent_message) {
         String sent_message_xpath = getSentMessageByXpathName(sent_message);
         if (isElementPresent(sent_message_xpath)) {
-            this.waitForElementAndClick(
-                    INPUT_BAR_FIELD,
-                    "Can't tap on input bar",
-                    15
-            );
-            this.waitForElementAndSendKeys(
-                    INPUT_BAR_FIELD,
-                    sent_message,
-                    15
-            );
-            this.waitForElementAndClick(
-                    SEND_MESSAGE_BUTTON,
-                    "Can't tap on Send button",
-                    15
-            );
-        } else {
             System.out.println("Message already sent and present in chat");
+        } else {
+            this.tapOnInputBarAndSendMessage(send_message);
         }
     }
+     public void addStarToMessage() {
+        this.waitForElementPresent(
+                ACTION_BAR_MENU,
+                "Action menu is not displayed",
+                15
+        );
+        this.waitForElementAndClick(
+                ADD_STAR_TO_MESSAGE,
+                "Can't tap on Delete button",
+                15
+        );
+        this.waitForElementPresent(
+                STAR_ON_MESSAGE_BUBBLE,
+                "Can't find star on message bubble",
+                15
+        );
+    }
+
 }
