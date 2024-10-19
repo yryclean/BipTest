@@ -1,6 +1,7 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import lib.ui.factories.MediaEditScreenPageObjectFactory;
 import org.junit.Assert;
 
 public abstract class ChatScreenPageObject extends MainPageObject {
@@ -11,6 +12,10 @@ public abstract class ChatScreenPageObject extends MainPageObject {
             SEND_MESSAGE_BUTTON,
             SENT_MESSAGE_BUBBLE_TPL,
             RECEIVED_MESSAGE_TPL,
+            SENT_MESSAGE_PHOTO,
+            SENT_MESSAGE_VIDEO,
+            SENT_MESSAGE_AUDIO,
+            SENT_MESSAGE_GIF,
             ACTION_BAR_MENU,
             DELETE_BUTTON,
             CONFIRM_DELETE_POP_UP,
@@ -31,10 +36,21 @@ public abstract class ChatScreenPageObject extends MainPageObject {
             ATTACHMENT_MENU_BUTTON,
             ATTACHMENT_MENU_BAR,
             ATTACHMENT_MENU_BAR_TOUCH_OUTSIDE,
+            ATTACHMENT_MENU_GALLERY,
+            ATTACHMENT_MENU_GALLERY_VIDEOS,
+            ATTACHMENT_MENU_GALLERY_PHOTOS,
+            ATTACHMENT_MENU_GALLERY_SELECT_VIDEO,
+            ATTACHMENT_MENU_GALLERY_SELECT_PHOTO,
+            ATTACHMENT_MENU_GALLERY_NEXT_BUTTON,
             WIFI_DISABLED_CONNECTION_POP_UP,
             WIFI_POP_UP_OK_BUTTON,
             ADD_STAR_TO_MESSAGE,
-            STAR_ON_MESSAGE_BUBBLE;
+            STAR_ON_MESSAGE_BUBBLE,
+            RECORD_AUDIO_BUTTON,
+            THREE_DOTS_BUTTON,
+            CLEAR_CHAT_BUTTON,
+            CLEAR_CHAT_POP_UP_OK_BUTTON,
+            CLEAR_CHAT_POP_UP_CANCEL_BUTTON;
 
 
     public ChatScreenPageObject (AppiumDriver driver)
@@ -292,6 +308,44 @@ public abstract class ChatScreenPageObject extends MainPageObject {
                 15
         );
     }
+
+    public void openAttachMenuAndSelectPhoto() {
+        this.waitForElementAndClick(
+                INPUT_BAR_FIELD,
+                "Can't tap on input bar",
+                15
+        );
+        this.waitForElementAndClick(
+                ATTACHMENT_MENU_BUTTON,
+                "Can't tap on attach button",
+                15
+        );
+        this.waitForElementPresent(
+                ATTACHMENT_MENU_BAR,
+                "Attach menu bar is not displayed",
+                15
+        );
+        this.waitForElementAndClick(
+                ATTACHMENT_MENU_GALLERY,
+                "Can't tap and open Gallery",
+                15
+        );
+        this.waitForElementPresent(
+                ATTACHMENT_MENU_GALLERY_PHOTOS,
+                "Can't find Photos tab in Gallery",
+                15
+        );
+        this.waitForElementAndClick(
+                ATTACHMENT_MENU_GALLERY_SELECT_PHOTO,
+                "Can't find photo to select",
+                15
+        );
+        this.waitForElementAndClick(
+                ATTACHMENT_MENU_GALLERY_NEXT_BUTTON,
+                "Can't find and tap Next button",
+                15
+        );
+    }
     public void closeAttachMenuBar() {
         this.waitForElementAndClick(
                 ATTACHMENT_MENU_BAR_TOUCH_OUTSIDE,
@@ -347,22 +401,59 @@ public abstract class ChatScreenPageObject extends MainPageObject {
             this.tapOnInputBarAndSendMessage(send_message);
         }
     }
-     public void addStarToMessage() {
-        this.waitForElementPresent(
-                ACTION_BAR_MENU,
-                "Action menu is not displayed",
-                15
-        );
-        this.waitForElementAndClick(
-                ADD_STAR_TO_MESSAGE,
-                "Can't tap on Delete button",
-                15
-        );
-        this.waitForElementPresent(
-                STAR_ON_MESSAGE_BUBBLE,
-                "Can't find star on message bubble",
-                15
-        );
-    }
 
+    public void selectPhotoMessageIfNeeded() {
+        if (isElementPresent(SENT_MESSAGE_PHOTO)) {
+            System.out.println("Photo already sent and present in chat");
+        } else {
+            this.openAttachMenuAndSelectPhoto();
+            MediaEditScreenPageObject MediaEditScreenPageObject = MediaEditScreenPageObjectFactory.get((AppiumDriver) driver);
+            MediaEditScreenPageObject.tapSendButtonOnMediaEditScreen();
+        }
+    }
+        public void addStarToMessage () {
+            this.waitForElementPresent(
+                    ACTION_BAR_MENU,
+                    "Action menu is not displayed",
+                    15
+            );
+            this.waitForElementAndClick(
+                    ADD_STAR_TO_MESSAGE,
+                    "Can't tap on Delete button",
+                    15
+            );
+            this.waitForElementPresent(
+                    STAR_ON_MESSAGE_BUBBLE,
+                    "Can't find star on message bubble",
+                    15
+            );
+        }
+        public void waitForSentPhoto() {
+            this.waitForElementPresent(
+                    SENT_MESSAGE_PHOTO,
+                    "Can't find sent photo",
+                    15
+            );
+        }
+        public void waitForSentVideo () {
+            this.waitForElementPresent(
+                    SENT_MESSAGE_VIDEO,
+                    "Can't find sent video",
+                    15
+            );
+        }
+        public void openSentPhotoInFullScreen () {
+            this.waitForElementAndClick(
+                    SENT_MESSAGE_PHOTO,
+                    "Can't open sent photo",
+                    15
+            );
+        }
+        public void openSentVideoInFullScreen () {
+            this.waitForElementAndClick(
+                    SENT_MESSAGE_VIDEO,
+                    "Can't open sent video",
+                    15
+            );
+        }
 }

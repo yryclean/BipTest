@@ -52,7 +52,7 @@ public class Platform
         capabilities.setCapability("appium:deviceName", "SamsungA54");
         capabilities.setCapability("appium:appActivity", "com.turkcell.bip.ui.main.BipActivity");
         capabilities.setCapability("appium:automationName", "UiAutomator2");
-        capabilities.setCapability("app", "/Users/lifetech/Desktop/apks/bip-3.100.5.dev.prp.apk");
+        capabilities.setCapability("app", "/Users/lifetech/Downloads/apks/bip-3.100.5.dev.prp.apk");
         capabilities.setCapability("appium:noReset", "true");
         return capabilities;
     }
