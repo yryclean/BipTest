@@ -6,6 +6,8 @@ import lib.ui.factories.*;
 import org.junit.Test;
 import org.springframework.context.annotation.Description;
 
+//we need to start tests from app installation, though changes needed in capabilities!!!
+//also need to disable auto-accepting alerts in capabilities!!!
 public class NotificationsTests extends CoreTestCase {
     private static final String
             msisdn = "5319830384",

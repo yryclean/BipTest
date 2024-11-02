@@ -3,9 +3,11 @@ package lib;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.AndroidKeyCode;
 import io.appium.java_client.android.connection.ConnectionStateBuilder;
 import junit.framework.TestCase;
 import org.openqa.selenium.ScreenOrientation;
+import org.openqa.selenium.WebDriver;
 
 import java.io.FileOutputStream;
 import java.time.Duration;
@@ -93,5 +95,8 @@ public class CoreTestCase extends TestCase {
         } catch (Exception e) {
             System.out.println("Connection could not be switch OFF");
         }
+    }
+    public void clickBackButton(){
+        ((AndroidDriver)driver).pressKeyCode(AndroidKeyCode.BACK);
     }
 }

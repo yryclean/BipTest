@@ -9,7 +9,6 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Pause;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -28,7 +27,7 @@ import static java.time.Duration.ofMillis;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
 public class MainPageObject {
-    protected RemoteWebDriver driver;
+    protected AppiumDriver driver;
 
     public MainPageObject(AppiumDriver driver) {
         this.driver = driver;
@@ -233,7 +232,7 @@ public class MainPageObject {
         } else if (by_type.equals("name")) {
             return By.name(locator);
         } else if (by_type.equals("css")) {
-                return By.cssSelector(locator);
+            return By.cssSelector(locator);
         } else {
             throw new IllegalArgumentException("Can't get type of locator Locator: " + locator_with_type);
         }
@@ -249,6 +248,7 @@ public class MainPageObject {
             js.executeScript("mobile: swipe", params);
             this.waitForElementPresent(swipe_button,"Can't find Delete button");
     }
+
     public String takeScreenshot(String name) {
         TakesScreenshot ts = (TakesScreenshot)this.driver;
         File source = ts.getScreenshotAs(OutputType.FILE);

@@ -1,8 +1,19 @@
 package lib.ui;
 
+import com.google.common.collect.ImmutableMap;
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.MobileBy;
+import io.appium.java_client.TouchAction;
 import lib.ui.factories.MediaEditScreenPageObjectFactory;
 import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebElement;
+
+import static io.appium.java_client.touch.LongPressOptions.longPressOptions;
+import static io.appium.java_client.touch.offset.ElementOption.element;
+import static java.time.Duration.ofSeconds;
 
 public abstract class ChatScreenPageObject extends MainPageObject {
     protected static String
@@ -13,9 +24,13 @@ public abstract class ChatScreenPageObject extends MainPageObject {
             SENT_MESSAGE_BUBBLE_TPL,
             RECEIVED_MESSAGE_TPL,
             SENT_MESSAGE_PHOTO,
+            SENT_MESSAGE_CLOCK_ICON,
             SENT_MESSAGE_VIDEO,
+            SENT_MESSAGE_VIDEO_PLAY_ICON,
             SENT_MESSAGE_AUDIO,
             SENT_MESSAGE_GIF,
+            SENT_MESSAGE_GIF_PLAY_ICON,
+            SENT_MESSAGE_DELIVERY_INFO,
             ACTION_BAR_MENU,
             DELETE_BUTTON,
             CONFIRM_DELETE_POP_UP,
@@ -68,6 +83,7 @@ public abstract class ChatScreenPageObject extends MainPageObject {
         return RECEIVED_MESSAGE_TPL.replace("{RECEIVED_MESSAGE}", received_message_name);
     }
 
+
         public void waitForChatName(String chat_name) {
             String chat_xpath = getChatNameByXpathName(chat_name);
             this.waitForElementPresent(
@@ -92,8 +108,6 @@ public abstract class ChatScreenPageObject extends MainPageObject {
                 15
         );
     }
-
-
 
 
     public void openChatWithName(String chat_name) {
@@ -335,9 +349,48 @@ public abstract class ChatScreenPageObject extends MainPageObject {
                 "Can't find Photos tab in Gallery",
                 15
         );
+        driver.findElement(MobileBy.AndroidUIAutomator("new UiScrollable(new UiSelector().scrollable(true).index(0)).scrollIntoView(new UiSelector().description(\"Photo\").instance(12))"));
         this.waitForElementAndClick(
                 ATTACHMENT_MENU_GALLERY_SELECT_PHOTO,
                 "Can't find photo to select",
+                15
+        );
+        this.waitForElementAndClick(
+                ATTACHMENT_MENU_GALLERY_NEXT_BUTTON,
+                "Can't find and tap Next button",
+                15
+        );
+    }
+    public void openAttachMenuAndSelectVideo() {
+        this.waitForElementAndClick(
+                INPUT_BAR_FIELD,
+                "Can't tap on input bar",
+                15
+        );
+        this.waitForElementAndClick(
+                ATTACHMENT_MENU_BUTTON,
+                "Can't tap on attach button",
+                15
+        );
+        this.waitForElementPresent(
+                ATTACHMENT_MENU_BAR,
+                "Attach menu bar is not displayed",
+                15
+        );
+        this.waitForElementAndClick(
+                ATTACHMENT_MENU_GALLERY,
+                "Can't tap and open Gallery",
+                15
+        );
+        this.waitForElementAndClick(
+                ATTACHMENT_MENU_GALLERY_VIDEOS,
+                "Can't find Photos tab in Gallery",
+                15
+        );
+        driver.findElement(MobileBy.AndroidUIAutomator("new UiScrollable(new UiSelector().scrollable(true).index(0)).scrollIntoView(new UiSelector().description(\"1000003969\"))"));
+        this.waitForElementAndClick(
+                ATTACHMENT_MENU_GALLERY_SELECT_VIDEO,
+                "Can't find video to select",
                 15
         );
         this.waitForElementAndClick(
@@ -411,6 +464,34 @@ public abstract class ChatScreenPageObject extends MainPageObject {
             MediaEditScreenPageObject.tapSendButtonOnMediaEditScreen();
         }
     }
+    public void selectVideoMessageIfNeeded() {
+        if (isElementPresent(SENT_MESSAGE_VIDEO)) {
+            System.out.println("Video already sent and present in chat");
+        } else {
+            this.openAttachMenuAndSelectVideo();
+            MediaEditScreenPageObject MediaEditScreenPageObject = MediaEditScreenPageObjectFactory.get((AppiumDriver) driver);
+            MediaEditScreenPageObject.tapSendButtonOnMediaEditScreen();
+        }
+    }
+    public void selectGifMessageIfNeeded() {
+        if (isElementPresent(SENT_MESSAGE_GIF)) {
+            System.out.println("Gif already sent and present in chat");
+        } else {
+            this.openAttachMenuAndSelectVideo();
+            MediaEditScreenPageObject MediaEditScreenPageObject = MediaEditScreenPageObjectFactory.get((AppiumDriver) driver);
+            MediaEditScreenPageObject.tapGifButton();
+            MediaEditScreenPageObject.tapSendButtonOnMediaEditScreen();
+        }
+    }
+
+    public void recordAudioIfNeeded() {
+        if(isElementPresent(SENT_MESSAGE_AUDIO)) {
+            System.out.println("Audio message already sent and present in chat");
+        } else {
+            this.recordAudioMessage();
+        }
+    }
+
         public void addStarToMessage () {
             this.waitForElementPresent(
                     ACTION_BAR_MENU,
@@ -443,17 +524,57 @@ public abstract class ChatScreenPageObject extends MainPageObject {
             );
         }
         public void openSentPhotoInFullScreen () {
-            this.waitForElementAndClick(
-                    SENT_MESSAGE_PHOTO,
-                    "Can't open sent photo",
-                    15
-            );
+            if (isElementPresent(SENT_MESSAGE_CLOCK_ICON)) {
+                this.waitForElementNotPresent(
+                        SENT_MESSAGE_CLOCK_ICON,
+                        "Clock icon is still displayed",
+                        30
+                );
+                this.waitForElementAndClick(
+                        SENT_MESSAGE_PHOTO,
+                        "Can't open sent photo",
+                        40
+                );
+            } else {
+                this.waitForElementAndClick(
+                        SENT_MESSAGE_PHOTO,
+                        "Can't open sent photo",
+                        40
+                );
+            }
         }
         public void openSentVideoInFullScreen () {
+            this.waitForElementPresent(
+                    SENT_MESSAGE_VIDEO_PLAY_ICON,
+                    "Sent video is still waiting for upload",
+                    30
+            );
             this.waitForElementAndClick(
                     SENT_MESSAGE_VIDEO,
                     "Can't open sent video",
-                    15
+                    20
             );
         }
+    public void openSentGifInFullScreen () {
+        this.waitForElementPresent(
+                SENT_MESSAGE_GIF_PLAY_ICON,
+                "Sent gif is still waiting for upload",
+                30
+        );
+        this.waitForElementAndClick(
+                SENT_MESSAGE_GIF_PLAY_ICON,
+                "Can't open sent gif",
+                20
+        );
+        this.waitForElementAndClick(
+                SENT_MESSAGE_GIF,
+                "Can't open sent gif",
+                20
+        );
+    }
+    public void recordAudioMessage() {
+        WebElement element = driver.findElement(By.xpath("//android.widget.FrameLayout[@resource-id='com.turkcell.bip:id/iv_chat_panel_mic']"));
+        ((JavascriptExecutor)driver).executeScript("mobile: longClickGesture",
+                ImmutableMap.of("elementId", ((RemoteWebElement)element).getId(), "duration", 3000));
+    }
 }

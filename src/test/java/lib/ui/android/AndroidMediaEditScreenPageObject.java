@@ -12,6 +12,7 @@ public class AndroidMediaEditScreenPageObject extends MediaEditScreenPageObject 
         VIDEO_TRIM = "xpath:com.turkcell.bip:id/trim_view";
         QUALITY_BUTTON = "xpath://android.widget.ImageView[@content-desc=\"Quality Selection\"]";
         GIF_BUTTON = "xpath://android.widget.ImageView[@content-desc=\"GIF\"]";
+        GIF_POP_UP = "xpath://android.widget.LinearLayout[@resource-id=\"com.turkcell.bip:id/popup_container\"]";
         GIF_POP_UP_OK_BUTTON = "id:com.turkcell.bip:id/btnPrimary";
 
 

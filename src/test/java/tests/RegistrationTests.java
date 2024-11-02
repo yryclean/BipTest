@@ -8,7 +8,8 @@ import lib.ui.factories.BackupRestorePageObjectFactory;
 import lib.ui.factories.MessagesTabPageObjectFactory;
 import lib.ui.factories.RegistrationPageObjectFactory;
 import org.junit.Test;
-
+//we need to start tests from app installation, though changes needed in capabilities!!!
+//also need to disable auto-accepting alerts in capabilities!!!
 public class RegistrationTests extends CoreTestCase {
     private static final String
             msisdn = "5319830382",
