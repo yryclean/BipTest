@@ -134,4 +134,11 @@ public abstract class SharedMediaScreenPageObject extends MainPageObject {
                 25
         );
     }
+    public void closeSharedMediaOpenChat() {
+        this.waitForElementAndClick(
+                BACK_TO_CHAT_BUTTON,
+                "Can't open chat",
+                20
+        );
+    }
 }

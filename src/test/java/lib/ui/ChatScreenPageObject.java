@@ -3,17 +3,12 @@ package lib.ui;
 import com.google.common.collect.ImmutableMap;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileBy;
-import io.appium.java_client.TouchAction;
 import lib.ui.factories.MediaEditScreenPageObjectFactory;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebElement;
-
-import static io.appium.java_client.touch.LongPressOptions.longPressOptions;
-import static io.appium.java_client.touch.offset.ElementOption.element;
-import static java.time.Duration.ofSeconds;
 
 public abstract class ChatScreenPageObject extends MainPageObject {
     protected static String
@@ -66,7 +61,6 @@ public abstract class ChatScreenPageObject extends MainPageObject {
             CLEAR_CHAT_BUTTON,
             CLEAR_CHAT_POP_UP_OK_BUTTON,
             CLEAR_CHAT_POP_UP_CANCEL_BUTTON;
-
 
     public ChatScreenPageObject (AppiumDriver driver)
     {
@@ -576,5 +570,22 @@ public abstract class ChatScreenPageObject extends MainPageObject {
         WebElement element = driver.findElement(By.xpath("//android.widget.FrameLayout[@resource-id='com.turkcell.bip:id/iv_chat_panel_mic']"));
         ((JavascriptExecutor)driver).executeScript("mobile: longClickGesture",
                 ImmutableMap.of("elementId", ((RemoteWebElement)element).getId(), "duration", 3000));
+    }
+
+    public void tapBackButtonOpenChatList() {
+        this.waitForElementAndClick(
+        CHAT_SCREEN_BACK_TO_CHAT_LIST_BUTTON,
+                "Can't open chat list",
+                20
+        );
+    }
+    public void longPressAndAddStarSentPhoto() {
+        if(isElementPresent(STAR_ON_MESSAGE_BUBBLE)) {
+            System.out.println("Message is starred already");
+        } else {
+            this.longPressAction(SENT_MESSAGE_PHOTO);
+            this.addStarToMessage();
+            Assert.assertTrue(isElementPresent(STAR_ON_MESSAGE_BUBBLE));
+        }
     }
 }

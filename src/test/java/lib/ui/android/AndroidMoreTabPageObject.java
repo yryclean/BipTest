@@ -5,8 +5,8 @@ import lib.ui.MoreTabPageObject;
 
 public class AndroidMoreTabPageObject extends MoreTabPageObject {
     static {
-        MORE_TAB = "xpath://android.view.ViewGroup[@content-desc='More ']";
         SETTINGS_OPTION_MORE = "xpath://android.widget.TextView[@resource-id='com.turkcell.bip:id/tv_title' and @text='Settings ']";
+        STARRED_MESSAGES_OPTION = "xpath://android.widget.TextView[@resource-id=\"com.turkcell.bip:id/tv_title\" and @text=\"Starred Messages \"]";
 
     }
 

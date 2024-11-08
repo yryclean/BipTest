@@ -1,12 +1,8 @@
 package tests;
 
 import lib.CoreTestCase;
-import lib.ui.ChatScreenPageObject;
-import lib.ui.MediaEditScreenPageObject;
-import lib.ui.SharedMediaScreenPageObject;
-import lib.ui.factories.ChatScreenPageObjectFactory;
-import lib.ui.factories.MediaEditScreenPageObjectFactory;
-import lib.ui.factories.SharedMediaPageObjectFactory;
+import lib.ui.*;
+import lib.ui.factories.*;
 import org.junit.Test;
 import org.springframework.context.annotation.Description;
 
@@ -103,6 +99,27 @@ public class EditPhotoInChatTests extends CoreTestCase {
         SharedMediaScreenPageObject.isEditButtonNotDisplayed();
         SharedMediaScreenPageObject.switchRightOrLeftBetweenMedia();
         SharedMediaScreenPageObject.isEditButtonNotDisplayed();
+        this.closeApp();
+    }
+
+    @Test
+    @Description("Edit button not available for photo opened on full screen preview from Starred Messages screen")
+    public void testEditButtonNotDisplayedFromStarredMessages() {
+        this.openApp();
+        ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
+        ChatScreenPageObject.openChatWithName(chat_name);
+        ChatScreenPageObject.selectPhotoMessageIfNeeded();
+        ChatScreenPageObject.longPressAndAddStarSentPhoto();
+        ChatScreenPageObject.tapBackButtonOpenChatList();
+        MessagesTabPageObject MessagesTabPaObject = MessagesTabPageObjectFactory.get(driver);
+        MessagesTabPaObject.openMoreTab();
+        MoreTabPageObject MoreTabPageobject = MoreTabPageObjectFactory.get(driver);
+        MoreTabPageobject.openStarredMessagesScreen();
+        StarredMessagesScreenPageObject StarredMessagesScreenPageObject = StarredMessagesScreenPageObjectFactory.get(driver);
+        StarredMessagesScreenPageObject.tapOpenStarredPhotoInFullScreen();
+        SharedMediaScreenPageObject SharedMediaScreenPageObject = SharedMediaPageObjectFactory.get(driver);
+        SharedMediaScreenPageObject.isEditButtonNotDisplayed();
+        SharedMediaScreenPageObject.closeSharedMediaOpenChat();
         this.closeApp();
     }
 }

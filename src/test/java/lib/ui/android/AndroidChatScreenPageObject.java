@@ -34,13 +34,13 @@ public class AndroidChatScreenPageObject extends ChatScreenPageObject {
             CONTACT_INFO_PLACE_HOLDER = "id:com.turkcell.bip:id/headerChatTextHolder";
             CONTACT_INFO_SCREEN_ACTIVITY = "id:com.turkcell.bip:id/cl_activity_contact_info_root"; //android.widget.ScrollView[@resource-id="com.turkcell.bip:id/cl_activity_contact_info_root"]
             CONTACT_INFO_SCREEN_BACK_BUTTON = "xpath://android.widget.ImageButton[@content-desc='Back Button']";
-            CHAT_SCREEN_BACK_TO_CHAT_LIST_BUTTON = "id:Navigate up"; //android.widget.ImageButton[@content-desc="Navigate up"]
+            CHAT_SCREEN_BACK_TO_CHAT_LIST_BUTTON = "xpath://android.widget.ImageButton[@content-desc='Navigate up']";
             ATTACHMENT_MENU_BUTTON = "xpath://android.widget.ImageView[@content-desc=\"Share\"]";
             ATTACHMENT_MENU_BAR = "xpath://android.widget.FrameLayout[@resource-id=\"com.turkcell.bip:id/design_bottom_sheet\"]/android.view.ViewGroup";
             ATTACHMENT_MENU_BAR_TOUCH_OUTSIDE = "xpath://android.view.View[@resource-id=\"com.turkcell.bip:id/touch_outside\"]";
             ATTACHMENT_MENU_GALLERY = "xpath://android.widget.GridView[@resource-id=\"com.turkcell.bip:id/rv_chat_menu\"]/android.view.ViewGroup[2]";
-            ATTACHMENT_MENU_GALLERY_VIDEOS = "xpath://android.widget.LinearLayout[@content-desc=\"videos\"]";
-            ATTACHMENT_MENU_GALLERY_PHOTOS = "xpath://android.widget.LinearLayout[@content-desc=\"photos\"]";
+            ATTACHMENT_MENU_GALLERY_VIDEOS = "xpath://android.widget.LinearLayout[contains(@content-desc, ideos)]";
+            ATTACHMENT_MENU_GALLERY_PHOTOS = "xpath://android.widget.LinearLayout[contains(@content-desc, hotos)]";//android.widget.LinearLayout[@content-desc="photos"]
             ATTACHMENT_MENU_GALLERY_SELECT_VIDEO = "xpath://android.widget.ImageView[@content-desc=\"1000003969\"]";
             ATTACHMENT_MENU_GALLERY_SELECT_PHOTO = "xpath://androidx.recyclerview.widget.RecyclerView[@resource-id='com.turkcell.bip:id/rv_gallery']/android.view.ViewGroup[13]";
             ATTACHMENT_MENU_GALLERY_NEXT_BUTTON = "id:com.turkcell.bip:id/fab_send";
