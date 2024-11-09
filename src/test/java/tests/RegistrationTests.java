@@ -13,6 +13,7 @@ import org.junit.Test;
 public class RegistrationTests extends CoreTestCase {
     private static final String
             msisdn = "5319830382",
+            chat_name = "GiRLzzx",
             otp = "12345",
             name = "Turkey82",
             info = "Hey Yo man what's up?";
@@ -36,6 +37,6 @@ public class RegistrationTests extends CoreTestCase {
         BackupRestorePageObject.restoreBackup();
         MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
         MessagesTabPageObject.contactsAccessPermissionAllow();
-        MessagesTabPageObject.openChatWithName();
+        MessagesTabPageObject.openChatWithName(chat_name);
     }
 }

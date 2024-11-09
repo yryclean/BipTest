@@ -2,16 +2,16 @@ package lib.ui.factories;
 
 import io.appium.java_client.AppiumDriver;
 import lib.Platform;
-import lib.ui.SharedMediaScreenPageObject;
-import lib.ui.android.AndroidSharedMediaScreenPageObject;
-import lib.ui.ios.iOSSharedMediaScreenPageObject;
+import lib.ui.AllSharedMediaScreePageObject;
+import lib.ui.android.AndroidAllSharedMediaScreePageObject;
+import lib.ui.ios.iOSAllSharedMediaScreePageObject;
 
 public class AllSharedMediaScreePageObjectFactory {
-    public static SharedMediaScreenPageObject get(AppiumDriver driver) {
+    public static AllSharedMediaScreePageObject get(AppiumDriver driver) {
         if (Platform.getInstance().isAndroid()){
-            return new AndroidSharedMediaScreenPageObject(driver);
+            return new AndroidAllSharedMediaScreePageObject(driver);
         } else {
-            return new iOSSharedMediaScreenPageObject(driver);
+            return new iOSAllSharedMediaScreePageObject(driver);
         }
     }
 }

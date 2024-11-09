@@ -20,7 +20,8 @@ public class EditPhotoInChatTests extends CoreTestCase {
     public void testEditButtonAvailableOnSharedMediaScreen() {
         this.openApp();
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
-        ChatScreenPageObject.openChatWithName(chat_name);
+        MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
+        MessagesTabPageObject.openChatWithName(chat_name);
         ChatScreenPageObject.selectPhotoMessageIfNeeded();
         ChatScreenPageObject.openSentPhotoInFullScreen();
         SharedMediaScreenPageObject SharedMediaScreenPageObject = SharedMediaPageObjectFactory.get(driver);
@@ -33,7 +34,8 @@ public class EditPhotoInChatTests extends CoreTestCase {
     public void testMediaEditScreenOpenedOnEditTap() {
         this.openApp();
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
-        ChatScreenPageObject.openChatWithName(chat_name);
+        MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
+        MessagesTabPageObject.openChatWithName(chat_name);
         ChatScreenPageObject.selectPhotoMessageIfNeeded();
         ChatScreenPageObject.openSentPhotoInFullScreen();
         SharedMediaScreenPageObject SharedMediaScreenPageObject = SharedMediaPageObjectFactory.get(driver);
@@ -49,7 +51,8 @@ public class EditPhotoInChatTests extends CoreTestCase {
     public void testNoEditButtonIfNotAPhotoOpened() throws InterruptedException {
         this.openApp();
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
-        ChatScreenPageObject.openChatWithName(chat_name);
+        MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
+        MessagesTabPageObject.openChatWithName(chat_name);
         ChatScreenPageObject.selectVideoMessageIfNeeded();
         ChatScreenPageObject.openSentVideoInFullScreen();
         SharedMediaScreenPageObject SharedMediaScreenPageObject = SharedMediaPageObjectFactory.get(driver);
@@ -65,7 +68,8 @@ public class EditPhotoInChatTests extends CoreTestCase {
     public void testEditButtonSwipeBetweenPhotosOnSharedScreen() {
         this.openApp();
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
-        ChatScreenPageObject.openChatWithName(chat_name);
+        MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
+        MessagesTabPageObject.openChatWithName(chat_name);
         ChatScreenPageObject.selectPhotoMessageIfNeeded();
         ChatScreenPageObject.waitForSentPhoto();
         ChatScreenPageObject.openSentPhotoInFullScreen();
@@ -87,7 +91,8 @@ public class EditPhotoInChatTests extends CoreTestCase {
     public void testEditButtonSwipeBetweenNonPhotosOnSharedScreen() {
         this.openApp();
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
-        ChatScreenPageObject.openChatWithName(chat_name);
+        MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
+        MessagesTabPageObject.openChatWithName(chat_name);
         ChatScreenPageObject.selectVideoMessageIfNeeded();
         ChatScreenPageObject.selectGifMessageIfNeeded();
         ChatScreenPageObject.recordAudioIfNeeded();
@@ -106,8 +111,9 @@ public class EditPhotoInChatTests extends CoreTestCase {
     @Description("Edit button not available for photo opened on full screen preview from Starred Messages screen")
     public void testEditButtonNotDisplayedFromStarredMessages() {
         this.openApp();
+        MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
+        MessagesTabPageObject.openChatWithName(chat_name);
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
-        ChatScreenPageObject.openChatWithName(chat_name);
         ChatScreenPageObject.selectPhotoMessageIfNeeded();
         ChatScreenPageObject.longPressAndAddStarSentPhoto();
         ChatScreenPageObject.tapBackButtonOpenChatList();
@@ -120,6 +126,41 @@ public class EditPhotoInChatTests extends CoreTestCase {
         SharedMediaScreenPageObject SharedMediaScreenPageObject = SharedMediaPageObjectFactory.get(driver);
         SharedMediaScreenPageObject.isEditButtonNotDisplayed();
         SharedMediaScreenPageObject.closeSharedMediaOpenChat();
+        this.closeApp();
+    }
+
+    @Test
+    @Description("Edit button not available for photo opened on full screen preview from All Shared Media screen(open from chat)")
+    public void testEditButtonNotDisplayedFromAllSharedMediaScreen1() {
+        this.openApp();
+        MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
+        MessagesTabPageObject.openChatWithName(chat_name);
+        ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
+        ChatScreenPageObject.selectPhotoMessageIfNeeded();
+        ChatScreenPageObject.openSentPhotoInFullScreen();
+        SharedMediaScreenPageObject SharedMediaScreenPageObject = SharedMediaPageObjectFactory.get(driver);
+        SharedMediaScreenPageObject.openAllSharedMediaScreen();
+        AllSharedMediaScreePageObject AllSharedMediaScreePageObject = AllSharedMediaScreePageObjectFactory.get(driver);
+        AllSharedMediaScreePageObject.openSharedPhoto();
+        SharedMediaScreenPageObject.isEditButtonNotDisplayed();
+        this.closeApp();
+    }
+
+    @Test
+    @Description("Edit button not available for photo opened on full screen preview from All Shared Media screen(open from chat info)")
+    public void testEditButtonNotDisplayedFromAllSharedMediaScreen2() {
+        this.openApp();
+        MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
+        MessagesTabPageObject.openChatWithName(chat_name);
+        ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
+        ChatScreenPageObject.selectPhotoMessageIfNeeded();
+        ChatScreenPageObject.openInfoScreen();
+        ChatInfoScreenPageObject ChatInfoScreenPageObject = ChatInfoScreenPageObjectFactory.get(driver);
+        ChatInfoScreenPageObject.openAllSharedMedia();
+        AllSharedMediaScreePageObject AllSharedMediaScreePageObject = AllSharedMediaScreePageObjectFactory.get(driver);
+        AllSharedMediaScreePageObject.openSharedPhoto();
+        SharedMediaScreenPageObject SharedMediaScreenPageObject = SharedMediaPageObjectFactory.get(driver);
+        SharedMediaScreenPageObject.isEditButtonNotDisplayed();
         this.closeApp();
     }
 }

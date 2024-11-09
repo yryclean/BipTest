@@ -21,6 +21,7 @@ public class AndroidMessagesTabPageObject extends MessagesTabPageObject {
                 ALLOW_BATTERY_OPTIMIZATION = "id:android:id/button1";
                 DENY_BATTERY_OPTIMIZATION = "id:android:id/button2";
                 CHAT_CELL_WITH_NAME = "xpath://android.widget.TextView[@content-desc='GiRLzzx']";
+                CHAT_WITH_NAME_TPL = "xpath://android.widget.TextView[@content-desc='{CHAT_NAME}']";
     }
     public AndroidMessagesTabPageObject(AppiumDriver driver)
     {

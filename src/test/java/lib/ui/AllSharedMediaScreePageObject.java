@@ -14,7 +14,16 @@ public class AllSharedMediaScreePageObject extends MainPageObject {
             SHARED_PHOTO;
 
     public AllSharedMediaScreePageObject(AppiumDriver driver) {super(driver);}
+
     private static String getChatNameByXpathName(String chat_name) {
         return NAME_OF_CHAT_TPL.replace("{CHAT_NAME}", chat_name);
     }
+    public void openSharedPhoto() {
+        this.waitForElementAndClick(
+                SHARED_PHOTO,
+                "Can't open shared photo",
+                20
+        );
+    }
+
 }

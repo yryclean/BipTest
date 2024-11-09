@@ -141,4 +141,11 @@ public abstract class SharedMediaScreenPageObject extends MainPageObject {
                 20
         );
     }
+    public void openAllSharedMediaScreen() {
+        this.waitForElementAndClick(
+                OPEN_ALL_MEDIA_BUTTON,
+                "Can't open All Shared Media screen",
+                20
+        );
+    }
 }

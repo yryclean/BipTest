@@ -15,7 +15,7 @@ public class AndroidSharedMediaScreenPageObject extends SharedMediaScreenPageObj
         NEXT_MEDIA_RIGHT_BUTTON = "xpath://android.widget.ImageView[@resource-id=\"com.turkcell.bip:id/iv_shared_media_prev\"]";
         NEXT_MEDIA_RIGHT_BUTTON_ENABLED = "xpath://android.widget.ImageView[@resource-id='com.turkcell.bip:id/iv_shared_media_prev'][@enabled='true']";
         DELETE_MEDIA_BUTTON = "id:com.turkcell.bip:id/iv_shared_media_delete";
-        OPEN_ALL_MEDIA_BUTTON = "id:com.turkcell.bip:id/headerNavigationAllMedia";
+        OPEN_ALL_MEDIA_BUTTON = "xpath://android.widget.TextView[@resource-id=\"com.turkcell.bip:id/headerNavigationAllMedia\"]";
         BACK_TO_CHAT_BUTTON = "id:com.turkcell.bip:id/headerNavigationBackButton";
         VIDEO_PLAY_BUTTON = "id:com.turkcell.bip:id/iv_play_btn";
         THREE_DOT_BUTTON = "id:com.turkcell.bip:id/iv_shared_media_more";

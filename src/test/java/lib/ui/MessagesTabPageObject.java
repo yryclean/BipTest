@@ -20,11 +20,16 @@ public class MessagesTabPageObject extends MainPageObject {
     BATTERY_OPTIMIZATION_POP_UP,
     ALLOW_BATTERY_OPTIMIZATION,
     DENY_BATTERY_OPTIMIZATION,
-    CHAT_CELL_WITH_NAME;
+    CHAT_CELL_WITH_NAME,
+    CHAT_WITH_NAME_TPL;
 
     public MessagesTabPageObject(AppiumDriver driver)
     {
         super(driver);
+    }
+
+    private static String getChatNameByXpathName(String chat_name) {
+        return CHAT_WITH_NAME_TPL.replace("{CHAT_NAME}", chat_name);
     }
 
     public void isMessagesTabScreenOpened() {
@@ -42,14 +47,15 @@ public class MessagesTabPageObject extends MainPageObject {
                 10
         );
     }
-    public void openChatWithName()
-    {
+    public void openChatWithName(String chat_name) {
+        String chat_xpath = getChatNameByXpathName(chat_name);
         this.waitForElementAndClick(
-                CHAT_CELL_WITH_NAME,
-                "Can't find selected chat",
-                10
+                (chat_xpath),
+                "Cannot open chat " + chat_name,
+                15
         );
     }
+
     public void waitForNotificationsPopUp() {
         this.waitForElementPresent(
                 TURN_ON_NOTIFICATION_POP_UP,
