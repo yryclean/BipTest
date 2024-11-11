@@ -11,8 +11,8 @@ public class AndroidAllSharedMediaScreePageObject extends AllSharedMediaScreePag
         DOCUMENTS_TAB = "xpath://android.widget.LinearLayout[@content-desc=\"DOCUMENTS\"]";
         LINKS_TAB = "xpath://android.widget.LinearLayout[@content-desc=\"LINKS\"]";
         NAME_OF_CHAT_TPL = "xpath://android.widget.TextView[@text='{CHAT_NAME}']";
-        SHARED_VIDEO = "xpath:(//android.widget.ImageView[@resource-id=\"com.turkcell.bip:id/sharedMediaImage\"])[1]";
-        SHARED_PHOTO = "xpath:(//android.widget.ImageView[@resource-id=\"com.turkcell.bip:id/sharedMediaImage\"])[2]";
+        SHARED_VIDEO = "xpath://android.widget.TextView[@resource-id=\"com.turkcell.bip:id/sharedMediaTime\"][contains(@text, '00:')]";
+        SHARED_PHOTO = "xpath:(//android.widget.ImageView[@resource-id=\"com.turkcell.bip:id/sharedMediaImage\"])";
     }
 
     public AndroidAllSharedMediaScreePageObject(AppiumDriver driver) {super(driver);}

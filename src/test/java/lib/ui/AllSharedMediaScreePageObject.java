@@ -25,5 +25,12 @@ public class AllSharedMediaScreePageObject extends MainPageObject {
                 20
         );
     }
+    public void openShareVideo() {
+        this.waitForElementAndClick(
+                SHARED_VIDEO,
+                "Can't open shared video",
+                20
+        );
+    }
 
 }
