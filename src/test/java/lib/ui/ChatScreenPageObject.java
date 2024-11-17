@@ -17,8 +17,13 @@ public abstract class ChatScreenPageObject extends MainPageObject {
             INPUT_BAR_FIELD,
             SEND_MESSAGE_BUTTON,
             SENT_MESSAGE_BUBBLE_TPL,
+            SENT_MESSAGE_MEDIA_GROUPED,
+            RECEIVED_MESSAGE_MEDIA_GROUPED,
             RECEIVED_MESSAGE_TPL,
+            RECEIVED_MESSAGE_PHOTO,
+            RECEIVED_MESSAGE_DOWNLOAD_BUTTON,
             SENT_MESSAGE_PHOTO,
+            SENT_MESSAGE_PHOTO_CAPTION_TPL,
             SENT_MESSAGE_CLOCK_ICON,
             SENT_MESSAGE_VIDEO,
             SENT_MESSAGE_VIDEO_PLAY_ICON,
@@ -60,7 +65,8 @@ public abstract class ChatScreenPageObject extends MainPageObject {
             THREE_DOTS_BUTTON,
             CLEAR_CHAT_BUTTON,
             CLEAR_CHAT_POP_UP_OK_BUTTON,
-            CLEAR_CHAT_POP_UP_CANCEL_BUTTON;
+            CLEAR_CHAT_POP_UP_CANCEL_BUTTON,
+            EMPTY_CHAT_SCREEN_POINT;
 
     public ChatScreenPageObject (AppiumDriver driver)
     {
@@ -75,6 +81,28 @@ public abstract class ChatScreenPageObject extends MainPageObject {
     }
     private static String getReceivedMessageByXpathName(String received_message_name) {
         return RECEIVED_MESSAGE_TPL.replace("{RECEIVED_MESSAGE}", received_message_name);
+    }
+    private static String getSentPhotoCaptionMessageByXpathName(String sent_photo_caption) {
+        return SENT_MESSAGE_PHOTO_CAPTION_TPL.replace("{CAPTION}", sent_photo_caption);
+    }
+
+    public void clearChat() {
+        this.waitForElementAndClick(
+                THREE_DOTS_BUTTON,
+                "Can't tap and open menu",
+                20
+        );
+        this.waitForElementAndClick(
+                CLEAR_CHAT_BUTTON,
+                "Can't tap on Clear button",
+                20
+        );
+        this.waitForElementAndClick(
+                CLEAR_CHAT_POP_UP_OK_BUTTON,
+                "Can't tap OK button",
+                20
+        );
+        Assert.assertFalse(isElementPresent(EMPTY_CHAT_SCREEN_POINT));
     }
 
 
@@ -94,6 +122,15 @@ public abstract class ChatScreenPageObject extends MainPageObject {
                 15
         );
     }
+    public void waitForSentPhotoWitCaption(String sent_photo_caption) {
+        String sent_photo_xpath = getSentPhotoCaptionMessageByXpathName(sent_photo_caption);
+        this.waitForElementPresent(
+                (sent_photo_xpath),
+                "Cannot find message " + sent_photo_caption,
+                15
+        );
+    }
+
     public void waitForSentMessageWithNameIsNotDisplayed(String sent_message_name) {
         String sent_message_xpath = getSentMessageByXpathName(sent_message_name);
         this.waitForElementNotPresent(
@@ -458,6 +495,19 @@ public abstract class ChatScreenPageObject extends MainPageObject {
             MediaEditScreenPageObject.tapSendButtonOnMediaEditScreen();
         }
     }
+
+    public void selectPhotoWithCaption(String sent_photo_caption, String caption_text) {
+        String sent_photo_xpath = getSentPhotoCaptionMessageByXpathName(sent_photo_caption);
+        if (isElementPresent(sent_photo_xpath)) {
+            System.out.println("Photo with caption already displayed in chat");
+        } else {
+            this.openAttachMenuAndSelectPhoto();
+            MediaEditScreenPageObject MediaEditScreenPageObject = MediaEditScreenPageObjectFactory.get((AppiumDriver) driver);
+            MediaEditScreenPageObject.addCaption(caption_text);
+            MediaEditScreenPageObject.tapSendButtonOnMediaEditScreen();
+        }
+    }
+
     public void selectVideoMessageIfNeeded() {
         if (isElementPresent(SENT_MESSAGE_VIDEO)) {
             System.out.println("Video already sent and present in chat");
@@ -510,6 +560,7 @@ public abstract class ChatScreenPageObject extends MainPageObject {
                     15
             );
         }
+
         public void waitForSentVideo () {
             this.waitForElementPresent(
                     SENT_MESSAGE_VIDEO,
@@ -537,6 +588,54 @@ public abstract class ChatScreenPageObject extends MainPageObject {
                 );
             }
         }
+
+    public void openSentPhotoWithCaptionInFullScreen (String sent_photo_caption) {
+        String sent_photo_xpath = getSentPhotoCaptionMessageByXpathName(sent_photo_caption);
+        if (isElementPresent(SENT_MESSAGE_CLOCK_ICON)) {
+            this.waitForElementNotPresent(
+                    SENT_MESSAGE_CLOCK_ICON,
+                    "Clock icon is still displayed",
+                    30
+            );
+            this.waitForElementAndClick(
+                    sent_photo_xpath,
+                    "Can't open sent photo",
+                    40
+            );
+        } else {
+            this.waitForElementAndClick(
+                    sent_photo_xpath,
+                    "Can't open sent photo",
+                    40
+            );
+        }
+    }
+
+        public void openReceivedPhotoInFullScreen() {
+            if (isElementPresent(RECEIVED_MESSAGE_DOWNLOAD_BUTTON)) {
+            this.waitForElementAndClick(
+                    RECEIVED_MESSAGE_DOWNLOAD_BUTTON,
+                    "Can't open sent photo",
+                    40
+            );
+            this.waitForElementNotPresent(
+                    RECEIVED_MESSAGE_DOWNLOAD_BUTTON,
+                    "Download button is still displayed",
+                    45
+            );
+            this.waitForElementAndClick(
+                    RECEIVED_MESSAGE_PHOTO,
+                    "Can't open received photo",
+                    40
+            );
+        } else {
+            this.waitForElementAndClick(
+                    RECEIVED_MESSAGE_PHOTO,
+                    "Can't open received photo",
+                    40
+            );
+        }
+    }
         public void openSentVideoInFullScreen () {
             this.waitForElementPresent(
                     SENT_MESSAGE_VIDEO_PLAY_ICON,
@@ -549,6 +648,33 @@ public abstract class ChatScreenPageObject extends MainPageObject {
                     20
             );
         }
+    public void openSentGroupOfMedia(String chat_name) {
+        if(isElementPresent(SENT_MESSAGE_MEDIA_GROUPED)) {
+            this.waitForElementAndClick(
+                    SENT_MESSAGE_MEDIA_GROUPED,
+                    "Can't open group of media",
+                    25
+            );
+        } else {
+            openAttachMenuAndSelectPhoto();
+            MediaEditScreenPageObject MediaEditScreenPageObject = MediaEditScreenPageObjectFactory.get((AppiumDriver) driver);
+            MediaEditScreenPageObject.tapSendButtonOnMediaEditScreen();
+            openAttachMenuAndSelectPhoto();
+            MediaEditScreenPageObject.tapSendButtonOnMediaEditScreen();
+            openAttachMenuAndSelectPhoto();
+            MediaEditScreenPageObject.tapSendButtonOnMediaEditScreen();
+            openAttachMenuAndSelectPhoto();
+            MediaEditScreenPageObject.tapSendButtonOnMediaEditScreen();
+            tapBackButtonOpenChatList();
+            openChatWithName(chat_name);
+            this.waitForElementAndClick(
+                    SENT_MESSAGE_MEDIA_GROUPED,
+                    "Can't open group of media",
+                    25
+            );
+        }
+    }
+
     public void openSentGifInFullScreen () {
         this.waitForElementPresent(
                 SENT_MESSAGE_GIF_PLAY_ICON,

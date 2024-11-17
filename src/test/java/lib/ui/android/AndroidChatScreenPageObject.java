@@ -9,8 +9,13 @@ public class AndroidChatScreenPageObject extends ChatScreenPageObject {
             INPUT_BAR_FIELD = "id:com.turkcell.bip:id/chatEditText";
             SEND_MESSAGE_BUTTON = "id:com.turkcell.bip:id/iv_chat_send"; //android.widget.ImageButton[@content-desc="Send"]
             SENT_MESSAGE_BUBBLE_TPL = "xpath://android.widget.TextView[@content-desc='{SENT_MESSAGE}']";
+            SENT_MESSAGE_MEDIA_GROUPED = "xpath://android.widget.LinearLayout[@content-desc=\"Sent message Grouped Media\"]";
+            RECEIVED_MESSAGE_MEDIA_GROUPED = "xpath://android.widget.LinearLayout[@content-desc=\"Received message Grouped Media\"]";
             RECEIVED_MESSAGE_TPL = "xpath://android.widget.TextView[@content-desc='{RECEIVED_MESSAGE}']";
+            RECEIVED_MESSAGE_PHOTO = "xpath://android.widget.LinearLayout[@content-desc=\"Received message Photo\"]";
+            RECEIVED_MESSAGE_DOWNLOAD_BUTTON = "xpath://android.widget.ImageView[@content-desc=\"Download\"]";
             SENT_MESSAGE_PHOTO = "xpath://android.widget.LinearLayout[@content-desc=\"Sent message Photo\"]";
+            SENT_MESSAGE_PHOTO_CAPTION_TPL = "xpath://android.widget.LinearLayout[@content-desc='{CAPTION}']";
             SENT_MESSAGE_CLOCK_ICON = "xpath://android.widget.ImageView[@content-desc=\"Waiting\"]";
             SENT_MESSAGE_VIDEO = "xpath://android.widget.LinearLayout[@content-desc=\"Sent message Video\"]";
             SENT_MESSAGE_VIDEO_PLAY_ICON = "id:com.turkcell.bip:id/chatItemImagePlay";
@@ -53,6 +58,7 @@ public class AndroidChatScreenPageObject extends ChatScreenPageObject {
             CLEAR_CHAT_BUTTON = "xpath://android.widget.TextView[@resource-id=\"com.turkcell.bip:id/title\" and @text=\"Clear chat\"]";
             CLEAR_CHAT_POP_UP_OK_BUTTON = "id:com.turkcell.bip:id/btnPrimary";
             CLEAR_CHAT_POP_UP_CANCEL_BUTTON = "id:com.turkcell.bip:id/btnSecondary";
+            EMPTY_CHAT_SCREEN_POINT = "xpath://android.widget.LinearLayout[@resource-id=\"com.turkcell.bip:id/messageRow\"]";
 
 
 

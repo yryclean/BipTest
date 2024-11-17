@@ -9,6 +9,9 @@ import org.springframework.context.annotation.Description;
 public class EditPhotoInChatTests extends CoreTestCase {
     private static final String
             chat_name = "Yuriy Chistyakov",
+            chat_name_channel_non_admin = "Not_admin_channel",
+            caption_text = "Hello-hello!",
+            sent_photo_caption = "Sent message Photo Hello-hello!",
             sent_message = "Sent message Test1",
             sent_message_new = "Sent message Test2",
             send_message = "Test1",
@@ -204,4 +207,83 @@ public class EditPhotoInChatTests extends CoreTestCase {
         SharedMediaScreenPageObject.isEditButtonNotDisplayed();
         this.closeApp();
     }
+
+    @Test
+    @Description("Edit button not available in the Channel chats for non admin users")
+    //precondition: channel created, user no an admin in chat, photo received in chat
+    public void testEditButtonNotDisplayedForNonAdminInChannel() {
+        this.openApp();
+        MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
+        MessagesTabPageObject.openChatWithName(chat_name_channel_non_admin);
+        ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
+        ChatScreenPageObject.openReceivedPhotoInFullScreen();
+        SharedMediaScreenPageObject SharedMediaScreenPageObject = SharedMediaPageObjectFactory.get(driver);
+        SharedMediaScreenPageObject.isEditButtonNotDisplayed();
+        this.closeApp();
+    }
+
+    @Test
+    @Description("Edit button not available for grouped media")
+    public void testEditButtonNotDisplayedForGroupedMedia(){
+        this.openApp();
+        MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
+        MessagesTabPageObject.openChatWithName(chat_name);
+        ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
+        SharedMediaScreenPageObject SharedMediaScreenPageObject = SharedMediaPageObjectFactory.get(driver);
+        ChatScreenPageObject.openSentGroupOfMedia(chat_name);
+        SharedMediaScreenPageObject.openMediaFromGroup();
+        SharedMediaScreenPageObject.isEditButtonNotDisplayed();
+        this.closeApp();
+    }
+
+    @Test
+    @Description("Edit button Landscape mode compatibility")
+    public void testEditButtonInLandscapeMode(){
+        this.openApp();
+        MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
+        MessagesTabPageObject.openChatWithName(chat_name);
+        ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
+        ChatScreenPageObject.selectPhotoMessageIfNeeded();
+        ChatScreenPageObject.waitForSentPhoto();
+        ChatScreenPageObject.openSentPhotoInFullScreen();
+        SharedMediaScreenPageObject SharedMediaScreenPageObject = SharedMediaPageObjectFactory.get(driver);
+        this.rotateScreenLandscape();
+        SharedMediaScreenPageObject.isEditButtonDisplayed();
+        SharedMediaScreenPageObject.tapOnEditPhotoButton();
+        MediaEditScreenPageObject MediaEditScreenPageObject = MediaEditScreenPageObjectFactory.get(driver);
+        MediaEditScreenPageObject.tapSendButtonOnMediaEditScreen();
+        ChatScreenPageObject.waitForSentPhoto();
+        this.closeApp();
+    }
+
+    @Test
+    @Description("Editing photo with caption")
+    public void testEditPhotoWithCaption() {
+        this.openApp();
+        MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
+        MessagesTabPageObject.openChatWithName(chat_name);
+        ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
+        ChatScreenPageObject.selectPhotoWithCaption(sent_photo_caption, caption_text);
+        ChatScreenPageObject.waitForSentPhotoWitCaption(sent_photo_caption);
+        ChatScreenPageObject.openSentPhotoWithCaptionInFullScreen(sent_photo_caption);
+        SharedMediaScreenPageObject SharedMediaScreenPageObject = SharedMediaPageObjectFactory.get(driver);
+        SharedMediaScreenPageObject.isEditButtonDisplayed();
+        SharedMediaScreenPageObject.tapOnEditPhotoButton();
+        MediaEditScreenPageObject MediaEditScreenPageObject = MediaEditScreenPageObjectFactory.get(driver);
+        MediaEditScreenPageObject.tapSendButtonOnMediaEditScreen();
+        ChatScreenPageObject.waitForSentPhoto();
+        this.closeApp();
+    }
+
+    //out of scope
+    @Test
+    @Description("Test clear chat")
+    public void testClearChat() {
+        this.openApp();
+        MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
+        MessagesTabPageObject.openChatWithName(chat_name);
+        ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
+        ChatScreenPageObject.clearChat();
+    }
+    //out of scope
 }

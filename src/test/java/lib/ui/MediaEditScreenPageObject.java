@@ -6,6 +6,7 @@ public class MediaEditScreenPageObject extends MainPageObject {
     protected static String
             SEND_BUTTON,
             INPUT_BAR,
+            OPENED_INPUT_BAR,
             GALLERY_BUTTON,
             BACK_BUTTON,
             VIDEO_TRIM,
@@ -43,5 +44,17 @@ public class MediaEditScreenPageObject extends MainPageObject {
         } else {
             System.out.println("Gif pop-up not displayed");
         }
+    }
+    public void addCaption(String caption_text) {
+        this.waitForElementAndClick(
+                INPUT_BAR,
+                "Can't open input bar",
+                25
+        );
+        this.waitForElementAndSendKeys(
+                OPENED_INPUT_BAR,
+                caption_text,
+                25
+        );
     }
 }

@@ -21,6 +21,7 @@ public class AndroidSharedMediaScreenPageObject extends SharedMediaScreenPageObj
         THREE_DOT_BUTTON = "id:com.turkcell.bip:id/iv_shared_media_more";
         THREE_DOT_MENU = "id:com.turkcell.bip:id/rvMoreMenu";
         THREE_DOT_MENU_SAVE_GIF = "xpath://android.widget.TextView[@content-desc=\"Save Gif\"]";
+        MEDIA_FROM_GROUP_OPEN_ITEM = "xpath://androidx.recyclerview.widget.RecyclerView[@resource-id=\"com.turkcell.bip:id/rv_grouped_images\"]";
 
 
 

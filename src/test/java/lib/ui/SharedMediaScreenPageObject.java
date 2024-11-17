@@ -19,7 +19,8 @@ public abstract class SharedMediaScreenPageObject extends MainPageObject {
             VIDEO_PLAY_BUTTON,
             THREE_DOT_BUTTON,
             THREE_DOT_MENU,
-            THREE_DOT_MENU_SAVE_GIF;
+            THREE_DOT_MENU_SAVE_GIF,
+            MEDIA_FROM_GROUP_OPEN_ITEM;
 
     public SharedMediaScreenPageObject(AppiumDriver driver) {
         super(driver);
@@ -146,6 +147,13 @@ public abstract class SharedMediaScreenPageObject extends MainPageObject {
                 OPEN_ALL_MEDIA_BUTTON,
                 "Can't open All Shared Media screen",
                 20
+        );
+    }
+    public void openMediaFromGroup() {
+        this.waitForElementAndClick(
+        MEDIA_FROM_GROUP_OPEN_ITEM,
+                "Can't open media from group",
+                25
         );
     }
 }
