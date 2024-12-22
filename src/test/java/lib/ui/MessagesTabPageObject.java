@@ -1,6 +1,7 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.MobileBy;
 import org.junit.Assert;
 
 public class MessagesTabPageObject extends MainPageObject {
@@ -49,6 +50,7 @@ public class MessagesTabPageObject extends MainPageObject {
     }
     public void openChatWithName(String chat_name) {
         String chat_xpath = getChatNameByXpathName(chat_name);
+        driver.findElement(MobileBy.AndroidUIAutomator("new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().text(\"" + chat_name + "\").instance(0))"));
         this.waitForElementAndClick(
                 (chat_xpath),
                 "Cannot open chat " + chat_name,

@@ -24,6 +24,9 @@ public class AndroidChatScreenPageObject extends ChatScreenPageObject {
             SENT_MESSAGE_GIF_PLAY_ICON = "xpath://android.widget.ImageView[@resource-id=\"com.turkcell.bip:id/gifPlayButton\"]";
             SENT_MESSAGE_DELIVERY_INFO = "xpath://android.widget.LinearLayout[@resource-id=\"com.turkcell.bip:id/v_chat_item_delivery_info\"]";
             ACTION_BAR_MENU = "id:com.turkcell.bip:id/action_mode_bar";
+            EDIT_BUTTON = "xpath://android.widget.Button[@content-desc=\"Edit\"]";
+            EDIT_PREVIEW_ABOVE_INPUT_BAR = "xpath://android.view.ViewGroup[@resource-id=\"com.turkcell.bip:id/edit_message_preview\"]";
+            EDIT_MESSAGE_INPUT_BAR = "xpath://android.widget.EditText[@resource-id=\"com.turkcell.bip:id/chatEditText\"]";
             DELETE_BUTTON = "id:com.turkcell.bip:id/item_delete_action"; //android.widget.Button[@content-desc="Delete"]
             CONFIRM_DELETE_POP_UP = "id:com.turkcell.bip:id/popup_container"; //android.widget.LinearLayout[@resource-id="com.turkcell.bip:id/popup_container"]
             DELETE_FROM_ME = "xpath://android.widget.RadioButton[@text=\"Delete from me\"]";
@@ -55,10 +58,31 @@ public class AndroidChatScreenPageObject extends ChatScreenPageObject {
             STAR_ON_MESSAGE_BUBBLE = "xpath://android.widget.ImageView[@content-desc=\"Add to favorite messages\"]";
             RECORD_AUDIO_BUTTON = "xpath://android.widget.FrameLayout[@resource-id=\"com.turkcell.bip:id/iv_chat_panel_mic\"]";
             THREE_DOTS_BUTTON = "xpath://android.widget.ImageView[@content-desc=\"More options\"]";
+            SECRET_MESSAGE_BUTTON = "xpath://android.widget.TextView[contains(@text, 'Secret Message')]";
+            SECRET_TIME_PICKER = "xpath://android.widget.SeekBar[@resource-id=\"com.turkcell.bip:id/seek_bar\"]";
+            SECRET_TIMER_SET_TIME = "xpath:///android.widget.TextView[@text='60 sec']";//need fixes
+            SECRET_MESSAGE_DISABLE = "xpath://android.widget.SeekBar[@resource-id=\"com.turkcell.bip:id/seek_bar\"].android.widget.TextView[contains(@text, 'Off')]";
+            SECRET_MESSAGE_DISABLED_INFO = "xpath://android.widget.TextView[@resource-id=\"com.turkcell.bip:id/chatItemTitleTextForGroup\" and @text=\"You disabled disappearing messages. Tap to change.\"]";
+            SECRET_TIMER_APPLY_BUTTON = "xpath://android.widget.TextView[@resource-id=\"com.turkcell.bip:id/apply_button\"]";
+            SECRET_MESSAGE_COUNTER = "xpath://android.widget.TextView[@resource-id=\"com.turkcell.bip:id/txtSecretChatCounter\"]";
             CLEAR_CHAT_BUTTON = "xpath://android.widget.TextView[@resource-id=\"com.turkcell.bip:id/title\" and @text=\"Clear chat\"]";
+            CLEAR_CHAT_POP_UP_WITH_STARRED_MESSAGE = "xpath://android.widget.CheckBox[@resource-id='com.turkcell.bip:id/checkBoxOption' and @text='Delete starred messages.']";
+            CLEAR_CHAT_POP_UP_WITH_STARRED_MESSAGE_DELETE_BUTTON = "xpath://android.widget.Button[@resource-id='com.turkcell.bip:id/btnPrimary' and @text='Delete']";
             CLEAR_CHAT_POP_UP_OK_BUTTON = "id:com.turkcell.bip:id/btnPrimary";
             CLEAR_CHAT_POP_UP_CANCEL_BUTTON = "id:com.turkcell.bip:id/btnSecondary";
             EMPTY_CHAT_SCREEN_POINT = "xpath://android.widget.LinearLayout[@resource-id=\"com.turkcell.bip:id/messageRow\"]";
+            MESSAGE_BUBBLE_ON_SCREEN = "xpath://android.view.ViewGroup[contains(@resource-id, 'com.turkcell.bip:id/chatItemContentBox')]";
+            PIN_MESSAGE_BUTTON = "xpath://android.widget.Button[@content-desc=\"Pin\"]";
+            UNPIN_MESSAGE_BUTTON = "xpath://android.widget.Button[@content-desc=\"Unpin\"]";
+            UNPIN_MESSAGE_PIN_BAR = "xpath://android.widget.TextView[@resource-id=\"com.turkcell.bip:id/title\" and @text=\"Unpin\"]";
+            UNPIN_ALL_MESSAGES_PIN_BAR = "xpath://android.widget.TextView[@resource-id=\"com.turkcell.bip:id/title\" and @text=\"Unpin All\"]";
+            PIN_ICON_ON_SENT_MESSAGE = "xpath://android.widget.ImageView[@content-desc='Pin']";
+            PINNED_MESSAGE_IN_PIN_BAR = "xpath://android.widget.TextView[@resource-id=\"com.turkcell.bip:id/tv_pinned_message_preview_content\"]";
+            PINNED_MESSAGE_BAR = "xpath://android.widget.FrameLayout[@resource-id=\"com.turkcell.bip:id/pinnedMessagesContainerView\"]";
+            YOU_PINNED_INFO_MESSAGE = "xpath://android.widget.TextView[@resource-id=\"com.turkcell.bip:id/chatItemTitleTextForGroup\" and @text=\"You pinned a message\"]";
+            ENCRYPTED_CHAT_INFO_MESSAGE = "xpath://android.widget.TextView[@resource-id=\"com.turkcell.bip:id/chatItemTitleTextForGroup\" and contains(@text, 'Messages and calls are end-to-end encrypted.')]";
+
+
 
 
 

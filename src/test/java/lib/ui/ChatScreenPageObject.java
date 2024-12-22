@@ -3,12 +3,18 @@ package lib.ui;
 import com.google.common.collect.ImmutableMap;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileBy;
+import io.appium.java_client.MobileElement;
+import io.appium.java_client.TouchAction;
+import io.appium.java_client.touch.WaitOptions;
+import io.appium.java_client.touch.offset.PointOption;
 import lib.ui.factories.MediaEditScreenPageObjectFactory;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebElement;
+
+import java.time.Duration;
 
 public abstract class ChatScreenPageObject extends MainPageObject {
     protected static String
@@ -32,6 +38,9 @@ public abstract class ChatScreenPageObject extends MainPageObject {
             SENT_MESSAGE_GIF_PLAY_ICON,
             SENT_MESSAGE_DELIVERY_INFO,
             ACTION_BAR_MENU,
+            EDIT_BUTTON,
+            EDIT_PREVIEW_ABOVE_INPUT_BAR,
+            EDIT_MESSAGE_INPUT_BAR,
             DELETE_BUTTON,
             CONFIRM_DELETE_POP_UP,
             DELETE_FROM_ME,
@@ -63,10 +72,29 @@ public abstract class ChatScreenPageObject extends MainPageObject {
             STAR_ON_MESSAGE_BUBBLE,
             RECORD_AUDIO_BUTTON,
             THREE_DOTS_BUTTON,
+            SECRET_MESSAGE_BUTTON,
+            SECRET_TIME_PICKER,
+            SECRET_TIMER_SET_TIME,
+            SECRET_MESSAGE_DISABLE,
+            SECRET_MESSAGE_DISABLED_INFO,
+            SECRET_TIMER_APPLY_BUTTON,
+            SECRET_MESSAGE_COUNTER,
             CLEAR_CHAT_BUTTON,
+            CLEAR_CHAT_POP_UP_WITH_STARRED_MESSAGE,
+            CLEAR_CHAT_POP_UP_WITH_STARRED_MESSAGE_DELETE_BUTTON,
             CLEAR_CHAT_POP_UP_OK_BUTTON,
             CLEAR_CHAT_POP_UP_CANCEL_BUTTON,
-            EMPTY_CHAT_SCREEN_POINT;
+            EMPTY_CHAT_SCREEN_POINT,
+            MESSAGE_BUBBLE_ON_SCREEN,
+            PIN_MESSAGE_BUTTON,
+            UNPIN_MESSAGE_BUTTON,
+            UNPIN_MESSAGE_PIN_BAR,
+            UNPIN_ALL_MESSAGES_PIN_BAR,
+            PIN_ICON_ON_SENT_MESSAGE,
+            PINNED_MESSAGE_IN_PIN_BAR,
+            PINNED_MESSAGE_BAR,
+            YOU_PINNED_INFO_MESSAGE,
+            ENCRYPTED_CHAT_INFO_MESSAGE;
 
     public ChatScreenPageObject (AppiumDriver driver)
     {
@@ -90,21 +118,69 @@ public abstract class ChatScreenPageObject extends MainPageObject {
         this.waitForElementAndClick(
                 THREE_DOTS_BUTTON,
                 "Can't tap and open menu",
-                20
-        );
+                20);
         this.waitForElementAndClick(
                 CLEAR_CHAT_BUTTON,
                 "Can't tap on Clear button",
-                20
-        );
-        this.waitForElementAndClick(
-                CLEAR_CHAT_POP_UP_OK_BUTTON,
-                "Can't tap OK button",
-                20
-        );
-        Assert.assertFalse(isElementPresent(EMPTY_CHAT_SCREEN_POINT));
+                20);
+        if(isElementPresent(CLEAR_CHAT_POP_UP_WITH_STARRED_MESSAGE)){
+            this.waitForElementAndClick(CLEAR_CHAT_POP_UP_WITH_STARRED_MESSAGE,
+                    "Can't find and tap on Clear Starred messages pop-up",
+                    25);
+            this.waitForElementAndClick(CLEAR_CHAT_POP_UP_WITH_STARRED_MESSAGE_DELETE_BUTTON,
+                    "Can't tap on Delete button",
+                    25);
+            this.waitForElementNotPresent(
+                    MESSAGE_BUBBLE_ON_SCREEN,
+                    "Chat is not cleared",
+                    25);
+            Assert.assertFalse(isElementPresent(MESSAGE_BUBBLE_ON_SCREEN));
+            this.waitForElementPresent(
+                    ENCRYPTED_CHAT_INFO_MESSAGE,
+                    "Not e2e info message in chat",
+                    25);
+        } else {
+            this.waitForElementAndClick(
+                    CLEAR_CHAT_POP_UP_OK_BUTTON,
+                    "Can't tap OK button",
+                    20);
+            this.waitForElementNotPresent(
+                    MESSAGE_BUBBLE_ON_SCREEN,
+                    "Chat is not cleared",
+                    25);
+            Assert.assertFalse(isElementPresent(MESSAGE_BUBBLE_ON_SCREEN));
+            this.waitForElementPresent(
+                    ENCRYPTED_CHAT_INFO_MESSAGE,
+                    "Not e2e info message in chat",
+                    25);
+        }
+    }
+    public void setSecretMessageTimer() {
+        this.waitForElementAndClick(THREE_DOTS_BUTTON,
+                "Can't tap on 3-dots button",
+                25);
+        this.waitForElementAndClick(SECRET_MESSAGE_BUTTON,
+                "Can't find and tap Secret message button",
+                25);
+        this.waitForElementAndClick(SECRET_TIME_PICKER, "Can't set timer", 25);
+        this.waitForElementAndClick(SECRET_TIMER_APPLY_BUTTON,
+                "Can't apply secret message timer",
+                25);
     }
 
+    public void disableSecretMessage() {
+        this.waitForElementAndClick(THREE_DOTS_BUTTON,
+                "Can't tap on 3-dots button",
+                25);
+        this.waitForElementAndClick(SECRET_MESSAGE_BUTTON,
+                "Can't find and tap Secret message button",
+                25);
+        Assert.assertTrue(isElementPresent(SECRET_MESSAGE_DISABLED_INFO));
+    }
+
+    public void assertSecretMessageSent(){
+        Assert.assertTrue(isElementPresent(SECRET_MESSAGE_COUNTER));
+    }
 
         public void waitForChatName(String chat_name) {
             String chat_xpath = getChatNameByXpathName(chat_name);
@@ -149,18 +225,25 @@ public abstract class ChatScreenPageObject extends MainPageObject {
                 15
         );
     }
-    public void longPressAndDeleteSentMessage(String sent_message) {
+    public void longPressAndDeleteSentMessageFromMe(String sent_message) {
         this.waitForSentMessageWithName(sent_message);
         String sent_message_xpath = getSentMessageByXpathName(sent_message);
         this.longPressAction(sent_message_xpath);
-        this.deleteMessage();
+        this.deleteMessageFromMe();
     }
 
-    public void longPressAndDeleteReceivedMessage(String received_message) {
+    public void longPressAndDeleteSentMessageFromEveryone(String sent_message) {
+        this.waitForSentMessageWithName(sent_message);
+        String sent_message_xpath = getSentMessageByXpathName(sent_message);
+        this.longPressAction(sent_message_xpath);
+        this.deleteMessageFromEveryOne();
+    }
+
+    public void longPressAndDeleteReceivedMessageMe(String received_message) {
         this.waitForSentMessageWithName(received_message);
         String received_message_xpath = getReceivedMessageByXpathName(received_message);
         this.longPressAction(received_message_xpath);
-        this.deleteMessage();
+        this.deleteMessageFromMe();
     }
     public void longPressAndAddStarToSentMessage(String sent_message) {
         this.waitForSentMessageWithName(sent_message);
@@ -174,7 +257,7 @@ public abstract class ChatScreenPageObject extends MainPageObject {
 
     }
 
-    public void deleteMessage() {
+    public void deleteMessageFromMe() {
         this.waitForElementPresent(
                 ACTION_BAR_MENU,
                 "Action menu is not displayed",
@@ -192,6 +275,35 @@ public abstract class ChatScreenPageObject extends MainPageObject {
         );
         this.waitForElementAndClick(
                 DELETE_FROM_ME,
+                "Can't select Delete from me",
+                15
+        );
+        this.waitForElementAndClick(
+                OK_DELETE_FROM_ME,
+                "Can't tap on OK button",
+                15
+        );
+        Assert.assertFalse(isElementPresent(CONFIRM_DELETE_POP_UP));
+    }
+
+    public void deleteMessageFromEveryOne() {
+        this.waitForElementPresent(
+                ACTION_BAR_MENU,
+                "Action menu is not displayed",
+                15
+        );
+        this.waitForElementAndClick(
+                DELETE_BUTTON,
+                "Can't tap on Delete button",
+                15
+        );
+        this.waitForElementPresent(
+                CONFIRM_DELETE_POP_UP,
+                "Can't find confirmation pop-up",
+                15
+        );
+        this.waitForElementAndClick(
+                DELETE_FROM_EVERYONE,
                 "Can't select Delete from me",
                 15
         );
@@ -234,7 +346,7 @@ public abstract class ChatScreenPageObject extends MainPageObject {
         );
         screenshot(this.takeScreenshot("undo_is_hidden"));
     }
-    public void undoRestoreDeletedMessage(String sent_message) {
+    public void undoRestoreDeletedMessageFromMe(String sent_message) {
         String deleted_message = getSentMessageByXpathName(sent_message);
         screenshot(this.takeScreenshot("message_deleted"));
         this.waitForElementNotPresent(
@@ -254,7 +366,7 @@ public abstract class ChatScreenPageObject extends MainPageObject {
                 15
         );
     }
-    public void undoRestoreDeletedMessages(String sent_message, String received_message) {
+    public void undoRestoreDeletedMessagesFromMe(String sent_message, String received_message) {
         String deleted_message1 = getSentMessageByXpathName(sent_message);
         String deleted_message2 = getReceivedMessageByXpathName(received_message);
         screenshot(this.takeScreenshot("messages_deleted"));
@@ -286,7 +398,7 @@ public abstract class ChatScreenPageObject extends MainPageObject {
         );
     }
 
-    public void deleteSeveralMessages(String sent_message, String received_message) {
+    public void deleteSeveralMessagesFromMe(String sent_message, String received_message) {
         this.waitForSentMessageWithName(sent_message);
         String sent_message_xpath = getSentMessageByXpathName(sent_message);
         this.waitForSentMessageWithName(received_message);
@@ -297,7 +409,7 @@ public abstract class ChatScreenPageObject extends MainPageObject {
                 "Can't find and select received message",
                 15
         );
-        this.deleteMessage();
+        this.deleteMessageFromMe();
         Assert.assertFalse(isElementPresent(sent_message_xpath));
         Assert.assertFalse(isElementPresent(received_message_xpath));
     }
@@ -713,5 +825,153 @@ public abstract class ChatScreenPageObject extends MainPageObject {
             this.addStarToMessage();
             Assert.assertTrue(isElementPresent(STAR_ON_MESSAGE_BUBBLE));
         }
+    }
+
+    public void longPressAndPinSentMessage(String sent_message, String sent_text) {
+            String sent_message_xpath = getSentMessageByXpathName(sent_message);
+            this.longPressAction(sent_message_xpath);
+            this.selectPinButton();
+            String pinned_message_text_in_bar = this.waitForElementAndGetText(
+                    PINNED_MESSAGE_IN_PIN_BAR,
+                    "Can't find text in pin bar",
+                    20
+            );
+            Assert.assertEquals(pinned_message_text_in_bar, sent_text);
+            Assert.assertTrue(isElementPresent(YOU_PINNED_INFO_MESSAGE));
+    }
+    public void longPressAndPinSecretMessage(String sent_message) {
+        String sent_message_xpath = getSentMessageByXpathName(sent_message);
+        this.longPressAction(sent_message_xpath);
+        screenshot(this.takeScreenshot("no_pin_for_secret_message"));
+        Assert.assertFalse(isElementPresent(PIN_MESSAGE_BUTTON));
+        this.waitForElementAndClick(sent_message_xpath, "Can't find and tap on sent message", 25);
+    }
+
+    public void isPinAvailable(String sent_message) {
+        this.waitForSentMessageWithName(sent_message);
+        String sent_message_xpath = getSentMessageByXpathName(sent_message);
+        this.longPressAction(sent_message_xpath);
+        Assert.assertTrue(isElementPresent(PIN_MESSAGE_BUTTON));
+
+    }
+    public void isMessageUnpinned() {
+        this.waitForElementNotPresent(PINNED_MESSAGE_IN_PIN_BAR,
+                "Pinned message is still displayed",
+                25
+        );
+        Assert.assertFalse(isElementPresent(PINNED_MESSAGE_IN_PIN_BAR));
+
+    }
+
+    public void selectPinButton() {
+        this.waitForElementPresent(
+                ACTION_BAR_MENU,
+                "Action menu is not displayed",
+                15
+        );
+        this.waitForElementAndClick(
+                PIN_MESSAGE_BUTTON,
+                "Can't tap on Pin button",
+                15
+        );
+    }
+
+    public void longPressAndUnPinSentMessage(String sent_message, String sent_text) {
+            String sent_message_xpath = getSentMessageByXpathName(sent_message);
+            this.longPressAction(sent_message_xpath);
+            this.selectUnPinMessage();
+            this.waitForElementNotPresent(
+                PINNED_MESSAGE_IN_PIN_BAR,
+                "Can't find text in pin bar",
+                20
+        );
+        Assert.assertFalse(isElementPresent(PINNED_MESSAGE_IN_PIN_BAR));
+    }
+
+    public void selectUnPinMessage () {
+        this.waitForElementPresent(
+                ACTION_BAR_MENU,
+                "Action menu is not displayed",
+                15
+        );
+        this.waitForElementAndClick(
+                UNPIN_MESSAGE_BUTTON,
+                "Can't tap on Delete button",
+                15
+        );
+        this.waitForElementNotPresent(
+                PIN_ICON_ON_SENT_MESSAGE,
+                "Pin is displayed on message bubble",
+                15
+        );
+    }
+    public void longPressPinBarAndUnPinSentMessage() {
+        this.waitForElementPresent(
+                PINNED_MESSAGE_IN_PIN_BAR,
+                "Pinned message is displayed in pin bar",
+                25
+        );
+        this.longPressAction(PINNED_MESSAGE_IN_PIN_BAR);
+        this.waitForElementAndClick(
+                UNPIN_MESSAGE_PIN_BAR,
+                "Can't tap on Unpin button",
+                25
+                );
+        Assert.assertFalse(isElementPresent(PINNED_MESSAGE_IN_PIN_BAR));
+        Assert.assertFalse(isElementPresent(PIN_ICON_ON_SENT_MESSAGE));
+    }
+
+    public void tapOnPinnedMessageBarToShowPinnedMessage(String sent_text, String sent_text_new){
+        String pinned1 = this.waitForElementAndGetText(PINNED_MESSAGE_IN_PIN_BAR,
+                "Can't get text for the pinned message bar",
+                20
+        );
+        this.waitForElementAndClick(PINNED_MESSAGE_IN_PIN_BAR,
+                "Can't tap on the pinned message bar",
+                20
+        );
+        Assert.assertEquals(pinned1, sent_text_new);
+        String pinned = this.waitForElementAndGetText(PINNED_MESSAGE_IN_PIN_BAR,
+                "Can't get text for the pinned message bar",
+                20
+        );
+        this.waitForElementAndClick(PINNED_MESSAGE_IN_PIN_BAR,
+                "Can't tap on the pinned message bar",
+                20
+        );
+        Assert.assertEquals(pinned, sent_text);
+    }
+
+    public void editPinnedMessage(String sent_message, String edited_message, String edited_text) {
+        String sent_message_xpath = getSentMessageByXpathName(sent_message);
+        this.waitForElementPresent(sent_message_xpath,
+                "Can't find sent message",
+                25
+                );
+        this.longPressAction(sent_message_xpath);
+        this.waitForElementPresent(ACTION_BAR_MENU,
+                "Action bar is missing",
+                25);
+        this.waitForElementAndClick(EDIT_BUTTON,
+                "Can't tap on the Edit button",
+                25);
+        this.waitForElementPresent(EDIT_PREVIEW_ABOVE_INPUT_BAR,
+                "Can't find edit preview",
+                20);
+        String before_edit = this.waitForElementAndGetText(EDIT_MESSAGE_INPUT_BAR,
+                "Can't get text from input bar for edited message",
+                20);
+        this.waitForElementAndSendKeys(EDIT_MESSAGE_INPUT_BAR,
+                edited_text,
+                25);
+        this.waitForElementAndClick(SEND_MESSAGE_BUTTON,
+                "Can't tap on the Send button",
+                25);
+
+        this.waitForSentMessageWithName(edited_message);
+        String edited_message_in_pin_bar = this.waitForElementAndGetText(PINNED_MESSAGE_IN_PIN_BAR,
+                "Can't get text from pinned message bar",
+                25);
+        Assert.assertEquals(edited_text, edited_message_in_pin_bar);
     }
 }

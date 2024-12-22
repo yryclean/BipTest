@@ -11,12 +11,7 @@ public class EditPhotoInChatTests extends CoreTestCase {
             chat_name = "Yuriy Chistyakov",
             chat_name_channel_non_admin = "Not_admin_channel",
             caption_text = "Hello-hello!",
-            sent_photo_caption = "Sent message Photo Hello-hello!",
-            sent_message = "Sent message Test1",
-            sent_message_new = "Sent message Test2",
-            send_message = "Test1",
-            send_message_new = "Test2",
-            received_message = "Received message Test1";
+            sent_photo_caption = "Sent message Photo Hello-hello!";
 
     @Test
     @Description("Edit button available for photo on full screen preview")
