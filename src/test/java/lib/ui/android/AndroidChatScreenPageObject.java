@@ -5,7 +5,7 @@ import lib.ui.ChatScreenPageObject;
 public class AndroidChatScreenPageObject extends ChatScreenPageObject {
     static {
             CHAT_WITH_NAME_TPL = "xpath://android.widget.TextView[@content-desc='{CHAT_NAME}']";
-            CHAT_WITH_NAME = "xpath://android.widget.TextView[@content-desc='Yuriy Chistyakov']";
+            CHAT_WITH_NAME = "xpath://android.widget.TextView[@content-desc='Yury Chistyakov']";
             INPUT_BAR_FIELD = "id:com.turkcell.bip:id/chatEditText";
             SEND_MESSAGE_BUTTON = "id:com.turkcell.bip:id/iv_chat_send"; //android.widget.ImageButton[@content-desc="Send"]
             SENT_MESSAGE_BUBBLE_TPL = "xpath://android.widget.TextView[@content-desc='{SENT_MESSAGE}']";
@@ -24,13 +24,17 @@ public class AndroidChatScreenPageObject extends ChatScreenPageObject {
             SENT_MESSAGE_GIF_PLAY_ICON = "xpath://android.widget.ImageView[@resource-id=\"com.turkcell.bip:id/gifPlayButton\"]";
             SENT_MESSAGE_DELIVERY_INFO = "xpath://android.widget.LinearLayout[@resource-id=\"com.turkcell.bip:id/v_chat_item_delivery_info\"]";
             ACTION_BAR_MENU = "id:com.turkcell.bip:id/action_mode_bar";
+            // Pin, Info and Translate no longer have their own action bar buttons —
+            // they sit behind the action bar's own overflow, which is a different
+            // "More options" from the chat toolbar's, hence the action_mode_bar scope.
+            ACTION_BAR_MENU_MORE_OPTIONS = "xpath://android.view.ViewGroup[@resource-id=\"com.turkcell.bip:id/action_mode_bar\"]//android.widget.ImageView[@content-desc=\"More options\"]";
             EDIT_BUTTON = "xpath://android.widget.Button[@content-desc=\"Edit\"]";
             EDIT_PREVIEW_ABOVE_INPUT_BAR = "xpath://android.view.ViewGroup[@resource-id=\"com.turkcell.bip:id/edit_message_preview\"]";
             EDIT_MESSAGE_INPUT_BAR = "xpath://android.widget.EditText[@resource-id=\"com.turkcell.bip:id/chatEditText\"]";
             DELETE_BUTTON = "id:com.turkcell.bip:id/item_delete_action"; //android.widget.Button[@content-desc="Delete"]
             CONFIRM_DELETE_POP_UP = "id:com.turkcell.bip:id/popup_container"; //android.widget.LinearLayout[@resource-id="com.turkcell.bip:id/popup_container"]
-            DELETE_FROM_ME = "xpath://android.widget.RadioButton[@text=\"Delete from me\"]";
-            DELETE_FROM_EVERYONE = "xpath://android.widget.RadioButton[@text=\"Delete from everyone\"]";
+            DELETE_FROM_ME = "xpath://android.widget.RadioButton[@text=\"Delete for me\"]";
+            DELETE_FROM_EVERYONE = "xpath://android.widget.RadioButton[@text=\"Delete for everyone\"]";
             OK_DELETE_FROM_ME = "xpath://android.widget.Button[@resource-id=\"com.turkcell.bip:id/btnPrimary\"]";
             CANCEL_DELETE = "xpath://android.widget.Button[@resource-id=\"com.turkcell.bip:id/btnSecondary\"]";
             UNDO_DELETE_FROM_ME_BAR = "xpath://androidx.compose.ui.platform.ComposeView[@resource-id=\"com.turkcell.bip:id/bottomComposeView\"]/android.view.View/android.view.View";
@@ -38,20 +42,21 @@ public class AndroidChatScreenPageObject extends ChatScreenPageObject {
             UNDO_DELETE_1_MESSAGE_TEXT = "xpath://android.widget.TextView[@text='1 message deleted from me']";
             UNDO_DELETE_2_MESSAGES_TEXT = "xpath://android.widget.TextView[@text='2 messages deleted from me']";
             UNDO_DELETE_BUTTON = "xpath://android.widget.TextView[@text=\"Undo\"]";
-            UNDO_DELETE_BUTTON_TAP = "xpath://androidx.compose.ui.platform.ComposeView[@resource-id=\"com.turkcell.bip:id/bottomComposeView\"]/android.view.View/android.view.View/android.view.View/android.widget.Button";
+            UNDO_DELETE_BUTTON_TAP = "xpath://android.widget.TextView[@text=\"Undo\"]/parent::android.view.View";
             CONTACT_INFO_PLACE_HOLDER = "id:com.turkcell.bip:id/headerChatTextHolder";
             CONTACT_INFO_SCREEN_ACTIVITY = "id:com.turkcell.bip:id/cl_activity_contact_info_root"; //android.widget.ScrollView[@resource-id="com.turkcell.bip:id/cl_activity_contact_info_root"]
             CONTACT_INFO_SCREEN_BACK_BUTTON = "xpath://android.widget.ImageButton[@content-desc='Back Button']";
-            CHAT_SCREEN_BACK_TO_CHAT_LIST_BUTTON = "xpath://android.widget.ImageButton[@content-desc='Navigate up']";
+            CHAT_SCREEN_BACK_TO_CHAT_LIST_BUTTON = "xpath://android.widget.ImageButton[@content-desc='Back Button']";
             ATTACHMENT_MENU_BUTTON = "xpath://android.widget.ImageView[@content-desc=\"Share\"]";
-            ATTACHMENT_MENU_BAR = "xpath://android.widget.FrameLayout[@resource-id=\"com.turkcell.bip:id/design_bottom_sheet\"]/android.view.ViewGroup";
-            ATTACHMENT_MENU_BAR_TOUCH_OUTSIDE = "xpath://android.view.View[@resource-id=\"com.turkcell.bip:id/touch_outside\"]";
-            ATTACHMENT_MENU_GALLERY = "xpath://android.widget.GridView[@resource-id=\"com.turkcell.bip:id/rv_chat_menu\"]/android.view.ViewGroup[2]";
-            ATTACHMENT_MENU_GALLERY_VIDEOS = "xpath://android.widget.LinearLayout[contains(@content-desc, ideos)]";
-            ATTACHMENT_MENU_GALLERY_PHOTOS = "xpath://android.widget.LinearLayout[contains(@content-desc, hotos)]";//android.widget.LinearLayout[@content-desc="photos"]
-            ATTACHMENT_MENU_GALLERY_SELECT_VIDEO = "xpath://android.widget.ImageView[@content-desc=\"1000003969\"]";
-            ATTACHMENT_MENU_GALLERY_SELECT_PHOTO = "xpath://androidx.recyclerview.widget.RecyclerView[@resource-id='com.turkcell.bip:id/rv_gallery']/android.view.ViewGroup[13]";
-            ATTACHMENT_MENU_GALLERY_NEXT_BUTTON = "id:com.turkcell.bip:id/fab_send";
+            ATTACHMENT_MENU_BAR = "id:com.turkcell.bip:id/fragment_attach_menu";
+            // The attach sheet and the gallery picker are Compose: the tiles are bare
+            // android.view.View nodes labelled by the TextView they wrap, and it is the
+            // wrapper — not the label — that carries the click.
+            ATTACHMENT_MENU_GALLERY = "xpath://android.widget.TextView[@text=\"Gallery\"]/parent::android.view.View";
+            ATTACHMENT_MENU_GALLERY_VIDEOS = "xpath://android.widget.TextView[@text=\"Videos\"]";
+            ATTACHMENT_MENU_GALLERY_PHOTOS = "xpath://android.widget.TextView[@text=\"Photos\"]";
+            ATTACHMENT_MENU_GALLERY_SELECT_VIDEO = "xpath://android.view.View[@content-desc=\"gallery item 0\"]/parent::android.view.View";
+            ATTACHMENT_MENU_GALLERY_SELECT_PHOTO = "xpath://android.view.View[@content-desc=\"gallery item 0\"]/parent::android.view.View";
             WIFI_DISABLED_CONNECTION_POP_UP = "id:com.turkcell.bip:id/popup_container";//android.widget.LinearLayout[@resource-id="com.turkcell.bip:id/popup_container"]
             WIFI_POP_UP_OK_BUTTON = "xpath://android.widget.Button[@resource-id=\"com.turkcell.bip:id/btnPrimary\"]";
             ADD_STAR_TO_MESSAGE = "xpath://android.widget.Button[@content-desc=\"Add to favorite messages\"]";
@@ -72,12 +77,13 @@ public class AndroidChatScreenPageObject extends ChatScreenPageObject {
             CLEAR_CHAT_POP_UP_CANCEL_BUTTON = "id:com.turkcell.bip:id/btnSecondary";
             EMPTY_CHAT_SCREEN_POINT = "xpath://android.widget.LinearLayout[@resource-id=\"com.turkcell.bip:id/messageRow\"]";
             MESSAGE_BUBBLE_ON_SCREEN = "xpath://android.view.ViewGroup[contains(@resource-id, 'com.turkcell.bip:id/chatItemContentBox')]";
-            PIN_MESSAGE_BUTTON = "xpath://android.widget.Button[@content-desc=\"Pin\"]";
-            UNPIN_MESSAGE_BUTTON = "xpath://android.widget.Button[@content-desc=\"Unpin\"]";
+            PIN_MESSAGE_BUTTON = "xpath://android.widget.TextView[@resource-id=\"com.turkcell.bip:id/title\" and @text=\"Pin\"]";
+            UNPIN_MESSAGE_BUTTON = "xpath://android.widget.TextView[@resource-id=\"com.turkcell.bip:id/title\" and @text=\"Unpin\"]";
             UNPIN_MESSAGE_PIN_BAR = "xpath://android.widget.TextView[@resource-id=\"com.turkcell.bip:id/title\" and @text=\"Unpin\"]";
             UNPIN_ALL_MESSAGES_PIN_BAR = "xpath://android.widget.TextView[@resource-id=\"com.turkcell.bip:id/title\" and @text=\"Unpin All\"]";
             PIN_ICON_ON_SENT_MESSAGE = "xpath://android.widget.ImageView[@content-desc='Pin']";
             PINNED_MESSAGE_IN_PIN_BAR = "xpath://android.widget.TextView[@resource-id=\"com.turkcell.bip:id/tv_pinned_message_preview_content\"]";
+            PINNED_MESSAGE_IN_PIN_BAR_TPL = "xpath://android.widget.TextView[@resource-id=\"com.turkcell.bip:id/tv_pinned_message_preview_content\" and @text=\"{TEXT}\"]";
             PINNED_MESSAGE_BAR = "xpath://android.widget.FrameLayout[@resource-id=\"com.turkcell.bip:id/pinnedMessagesContainerView\"]";
             YOU_PINNED_INFO_MESSAGE = "xpath://android.widget.TextView[@resource-id=\"com.turkcell.bip:id/chatItemTitleTextForGroup\" and @text=\"You pinned a message\"]";
             PIN_LIMIT_WARNING = "xpath://android.widget.TextView[@resource-id=\"com.turkcell.bip:id/tvDialogTitle\" and @text='Replace oldest pin?']";

@@ -20,6 +20,7 @@ public abstract class ChatScreenNavigationPageObject extends MainPageObject {
             // Shared chrome: the long-press action bar and the overflow menu are
             // entry points for the delete, secret and pin layers alike.
             ACTION_BAR_MENU,
+            ACTION_BAR_MENU_MORE_OPTIONS,
             THREE_DOTS_BUTTON,
             CHAT_SCREEN_BACK_TO_CHAT_LIST_BUTTON,
             CONTACT_INFO_PLACE_HOLDER,

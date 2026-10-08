@@ -1,6 +1,5 @@
 package lib.ui;
 
-import io.appium.java_client.AppiumBy;
 import io.appium.java_client.AppiumDriver;
 import lib.ui.factories.MediaEditScreenPageObjectFactory;
 import org.junit.Assert;
@@ -21,13 +20,11 @@ public abstract class ChatScreenMediaPageObject extends ChatScreenDeletePageObje
     protected static String
             ATTACHMENT_MENU_BUTTON,
             ATTACHMENT_MENU_BAR,
-            ATTACHMENT_MENU_BAR_TOUCH_OUTSIDE,
             ATTACHMENT_MENU_GALLERY,
             ATTACHMENT_MENU_GALLERY_VIDEOS,
             ATTACHMENT_MENU_GALLERY_PHOTOS,
             ATTACHMENT_MENU_GALLERY_SELECT_VIDEO,
             ATTACHMENT_MENU_GALLERY_SELECT_PHOTO,
-            ATTACHMENT_MENU_GALLERY_NEXT_BUTTON,
             RECORD_AUDIO_BUTTON,
             SENT_MESSAGE_PHOTO,
             SENT_MESSAGE_CLOCK_ICON,
@@ -65,88 +62,59 @@ public abstract class ChatScreenMediaPageObject extends ChatScreenDeletePageObje
         );
     }
 
+    /**
+     * Leaves the picker with one photo selected. The picker no longer hands off
+     * to a separate edit screen — its own caption field and Send button are the
+     * edit screen, so {@link MediaEditScreenPageObject} drives it from here.
+     */
     public void openAttachMenuAndSelectPhoto() {
+        this.openAttachMenuAndOpenGallery();
         this.waitForElementAndClick(
-                INPUT_BAR_FIELD,
-                "Can't tap on input bar",
-                15
-        );
-        this.waitForElementAndClick(
-                ATTACHMENT_MENU_BUTTON,
-                "Can't tap on attach button",
-                15
-        );
-        this.waitForElementPresent(
-                ATTACHMENT_MENU_BAR,
-                "Attach menu bar is not displayed",
-                15
-        );
-        this.waitForElementAndClick(
-                ATTACHMENT_MENU_GALLERY,
-                "Can't tap and open Gallery",
-                15
-        );
-        this.waitForElementPresent(
                 ATTACHMENT_MENU_GALLERY_PHOTOS,
                 "Can't find Photos tab in Gallery",
                 15
         );
-        driver.findElement(AppiumBy.androidUIAutomator("new UiScrollable(new UiSelector().scrollable(true).index(0)).scrollIntoView(new UiSelector().description(\"Photo\").instance(12))"));
         this.waitForElementAndClick(
                 ATTACHMENT_MENU_GALLERY_SELECT_PHOTO,
                 "Can't find photo to select",
                 15
         );
-        this.waitForElementAndClick(
-                ATTACHMENT_MENU_GALLERY_NEXT_BUTTON,
-                "Can't find and tap Next button",
-                15
-        );
     }
 
     public void openAttachMenuAndSelectVideo() {
-        this.waitForElementAndClick(
-                INPUT_BAR_FIELD,
-                "Can't tap on input bar",
-                15
-        );
-        this.waitForElementAndClick(
-                ATTACHMENT_MENU_BUTTON,
-                "Can't tap on attach button",
-                15
-        );
-        this.waitForElementPresent(
-                ATTACHMENT_MENU_BAR,
-                "Attach menu bar is not displayed",
-                15
-        );
-        this.waitForElementAndClick(
-                ATTACHMENT_MENU_GALLERY,
-                "Can't tap and open Gallery",
-                15
-        );
+        this.openAttachMenuAndOpenGallery();
         this.waitForElementAndClick(
                 ATTACHMENT_MENU_GALLERY_VIDEOS,
-                "Can't find Photos tab in Gallery",
+                "Can't find Videos tab in Gallery",
                 15
         );
-        driver.findElement(AppiumBy.androidUIAutomator("new UiScrollable(new UiSelector().scrollable(true).index(0)).scrollIntoView(new UiSelector().description(\"1000003969\"))"));
         this.waitForElementAndClick(
                 ATTACHMENT_MENU_GALLERY_SELECT_VIDEO,
                 "Can't find video to select",
                 15
         );
+    }
+
+    private void openAttachMenuAndOpenGallery() {
+        this.tapOnInputBarAndOpenAttachMenu();
         this.waitForElementAndClick(
-                ATTACHMENT_MENU_GALLERY_NEXT_BUTTON,
-                "Can't find and tap Next button",
+                ATTACHMENT_MENU_GALLERY,
+                "Can't tap and open Gallery",
                 15
         );
     }
 
+    /** The sheet has no touch-outside layer any more; hardware back dismisses it. */
     public void closeAttachMenuBar() {
-        this.waitForElementAndClick(
-                ATTACHMENT_MENU_BAR_TOUCH_OUTSIDE,
+        this.waitForElementPresent(
+                ATTACHMENT_MENU_BAR,
                 "Attach menu is not displayed",
+                15
+        );
+        driver.navigate().back();
+        this.waitForElementNotPresent(
+                ATTACHMENT_MENU_BAR,
+                "Attach menu is still displayed",
                 15
         );
     }

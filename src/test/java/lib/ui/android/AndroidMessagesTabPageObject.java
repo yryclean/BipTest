@@ -5,7 +5,7 @@ import lib.ui.MessagesTabPageObject;
 
 public class AndroidMessagesTabPageObject extends MessagesTabPageObject {
     static {
-                MESSAGES_TAB_SCREEN = "xpath://android.view.ViewGroup[@content-desc='Messages ']";
+                MESSAGES_TAB_SCREEN = "id:com.turkcell.bip:id/rvConversationsList";
                 MORE_TAB = "xpath://android.view.ViewGroup[@content-desc=\"More \"]";
                 BIP_CONTACTS_ACCESS_PERMISSION_POP_UP = "id:com.android.permissioncontroller:id/grant_dialog";
                 ALLOW_CONTACTS_ACCESS_PERMISSION = "id:com.android.permissioncontroller:id/permission_allow_button";
