@@ -2,6 +2,7 @@ package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 import org.junit.Assert;
+import org.openqa.selenium.StaleElementReferenceException;
 
 /**
  * Removing messages: delete from me / from everyone, the undo bar that follows,
@@ -175,8 +176,14 @@ public abstract class ChatScreenDeletePageObject extends ChatScreenMessagePageOb
         Assert.assertFalse(isElementPresent(received_message_xpath));
     }
 
+    /**
+     * Nothing here takes a screenshot on purpose. The undo bar lives about five
+     * seconds and a screenshot costs one to two of them, so capturing the happy
+     * path used to leave no time for the caller to reach the Undo button. The
+     * failure case is still covered — CoreTestCase's rule shoots the screen and
+     * the page source whenever a test fails.
+     */
     public void isUndoPopUpDisplayed() {
-        screenshot(this.takeScreenshot("undo_bar"));
         this.waitForElementPresent(
                 UNDO_DELETE_FROM_ME_BAR,
                 "Undo pop-up is missing",
@@ -200,7 +207,6 @@ public abstract class ChatScreenDeletePageObject extends ChatScreenMessagePageOb
     }
 
     public void isUndoPopUpDisplayedForSeveralMassages() {
-        screenshot(this.takeScreenshot("undo_bar"));
         this.waitForElementPresent(
                 UNDO_DELETE_FROM_ME_BAR,
                 "Undo pop-up is missing",
@@ -227,56 +233,50 @@ public abstract class ChatScreenDeletePageObject extends ChatScreenMessagePageOb
         screenshot(this.takeScreenshot("undo_is_hidden"));
     }
 
+    /**
+     * Undo comes first and the checks follow. The deletion itself is already
+     * asserted by {@link #deleteMessageFromMe()}, so re-confirming it here only
+     * burned a second of the bar's five, and the click is the one step that
+     * cannot be retried once the bar is gone.
+     */
     public void undoRestoreDeletedMessageFromMe(String sent_message) {
         String deleted_message = getSentMessageByXpathName(sent_message);
-        screenshot(this.takeScreenshot("message_deleted"));
-        this.waitForElementNotPresent(
-                deleted_message,
-                "Message is not deleted",
-                15
-        );
-        this.waitForElementAndClick(
-                UNDO_DELETE_BUTTON,
-                "Can't tap on the Undo button",
-                15
-        );
-        screenshot(this.takeScreenshot("message_restored"));
+        this.clickUndo();
         this.waitForElementPresent(
                 deleted_message,
                 "Message is not restored",
                 15
         );
+        screenshot(this.takeScreenshot("message_restored"));
+    }
+
+    /**
+     * The bar is both short lived and recycled while it counts down, so a
+     * located Undo button can go stale between the find and the click. One
+     * re-find covers that; a second miss means the bar really has expired.
+     */
+    private void clickUndo() {
+        try {
+            this.waitForElementAndClick(UNDO_DELETE_BUTTON, "Can't tap on the Undo button", 15);
+        } catch (StaleElementReferenceException e) {
+            this.waitForElementAndClick(UNDO_DELETE_BUTTON, "Can't tap on the Undo button", 5);
+        }
     }
 
     public void undoRestoreDeletedMessagesFromMe(String sent_message, String received_message) {
         String deleted_message1 = getSentMessageByXpathName(sent_message);
         String deleted_message2 = getReceivedMessageByXpathName(received_message);
-        screenshot(this.takeScreenshot("messages_deleted"));
-        this.waitForElementNotPresent(
+        this.clickUndo();
+        this.waitForElementPresent(
                 deleted_message1,
-                "Message is not deleted",
+                "Message is not restored",
                 15
         );
-        this.waitForElementNotPresent(
+        this.waitForElementPresent(
                 deleted_message2,
-                "Message is not deleted",
-                15
-        );
-        this.waitForElementAndClick(
-                UNDO_DELETE_BUTTON,
-                "Can't tap on the Undo button",
+                "Message is not restored",
                 15
         );
         screenshot(this.takeScreenshot("messages_restored"));
-        this.waitForElementPresent(
-                deleted_message1,
-                "Message is not restored",
-                15
-        );
-        this.waitForElementPresent(
-                deleted_message2,
-                "Message is not restored",
-                15
-        );
     }
 }

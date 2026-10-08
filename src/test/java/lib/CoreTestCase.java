@@ -4,6 +4,7 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.InteractsWithApps;
 import io.appium.java_client.LocksDevice;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.appmanagement.AndroidTerminateApplicationOptions;
 import io.appium.java_client.android.connection.ConnectionStateBuilder;
 import io.appium.java_client.android.nativekey.AndroidKey;
 import io.appium.java_client.android.nativekey.KeyEvent;
@@ -34,9 +35,11 @@ public class CoreTestCase {
     protected AppiumDriver driver;
 
     /**
-     * Collects failure diagnostics and owns the driver teardown. Quitting here
-     * rather than in an @After matters: rules wrap @After, so a driver closed
-     * there would already be gone by the time failed() runs.
+     * Collects failure diagnostics and owns the teardown. Both happen here
+     * rather than in an @After because rules wrap @After: a driver closed there
+     * would already be gone by the time failed() runs, and — more importantly —
+     * an @After is skipped when the body throws, which is exactly when the app
+     * is left in a state that would poison the next test.
      */
     @Rule
     public TestWatcher diagnostics = new TestWatcher() {
@@ -47,10 +50,15 @@ public class CoreTestCase {
 
         @Override
         protected void finished(Description description) {
-            if (driver != null) {
-                driver.quit();
-                driver = null;
+            if (driver == null) {
+                return;
             }
+            // No closeApp() here on purpose: BiP outlives terminateApp whatever
+            // timeout it is given, so it would cost ten seconds a test and
+            // reset nothing. Getting back to a known screen is the @Before's
+            // job instead — see ChatTestCase.
+            driver.quit();
+            driver = null;
         }
     };
 
@@ -65,6 +73,7 @@ public class CoreTestCase {
         } else {
             this.rotateScreenPortrait();
         }
+        this.openApp();
     }
 
     /** Best effort: a failing test must not be masked by a failing screenshot. */
@@ -98,9 +107,22 @@ public class CoreTestCase {
             ((InteractsWithApps) driver).runAppInBackground(Duration.ofSeconds(seconds));
     }
 
+    /**
+     * BiP regularly needs longer than the 500 ms terminateApp defaults to, and
+     * this now runs in teardown where a throw would mask the real failure — so
+     * the timeout is raised and the result only reported, never thrown.
+     */
     public void closeApp() {
-            ((InteractsWithApps) driver).terminateApp(Platform.getInstance().getAppId());
+        try {
+            ((InteractsWithApps) driver).terminateApp(
+                    Platform.getInstance().getAppId(),
+                    new AndroidTerminateApplicationOptions().withTimeout(Duration.ofSeconds(10))
+            );
+        } catch (Exception e) {
+            System.err.println("Could not terminate the app: " + e.getMessage());
+        }
     }
+
     public void openApp() {
             ((InteractsWithApps) driver).activateApp(Platform.getInstance().getAppId());
     }

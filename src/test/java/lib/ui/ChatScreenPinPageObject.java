@@ -17,6 +17,7 @@ public abstract class ChatScreenPinPageObject extends ChatScreenSecretPageObject
             UNPIN_MESSAGE_PIN_BAR,
             PIN_ICON_ON_SENT_MESSAGE,
             PINNED_MESSAGE_IN_PIN_BAR,
+            PINNED_MESSAGE_IN_PIN_BAR_TPL,
             YOU_PINNED_INFO_MESSAGE,
             PIN_LIMIT_WARNING,
             PIN_LIMIT_WARNING_OK,
@@ -60,6 +61,7 @@ public abstract class ChatScreenPinPageObject extends ChatScreenSecretPageObject
     public void longPressAndPinSecretMessage(String sent_message) {
         String sent_message_xpath = getSentMessageByXpathName(sent_message);
         this.longPressAction(sent_message_xpath);
+        this.openActionBarOverflow();
         screenshot(this.takeScreenshot("no_pin_for_secret_message"));
         Assert.assertFalse(isElementPresent(PIN_MESSAGE_BUTTON));
         this.waitForElementAndClick(sent_message_xpath, "Can't find and tap on sent message", 25);
@@ -69,26 +71,47 @@ public abstract class ChatScreenPinPageObject extends ChatScreenSecretPageObject
         this.waitForSentMessageWithName(sent_message);
         String sent_message_xpath = getSentMessageByXpathName(sent_message);
         this.longPressAction(sent_message_xpath);
+        this.openActionBarOverflow();
         Assert.assertTrue(isElementPresent(PIN_MESSAGE_BUTTON));
     }
 
-    public void isMessageUnpinned() {
-        this.waitForElementNotPresent(PINNED_MESSAGE_IN_PIN_BAR,
-                "Pinned message is still displayed",
+    /**
+     * Asserts that this one message left the pin bar, not that the bar is empty.
+     * The bar belongs to the whole conversation, so "nothing is pinned" made the
+     * test depend on every pin any other test — or any earlier run — left behind.
+     */
+    public void isMessageUnpinned(String sent_text) {
+        String pinned_text = getPinnedMessageInBarByText(sent_text);
+        this.waitForElementNotPresent(pinned_text,
+                "Message is still pinned in the pin bar",
                 25
         );
-        Assert.assertFalse(isElementPresent(PINNED_MESSAGE_IN_PIN_BAR));
+        Assert.assertFalse(isElementPresent(pinned_text));
+    }
+
+    protected static String getPinnedMessageInBarByText(String sent_text) {
+        return PINNED_MESSAGE_IN_PIN_BAR_TPL.replace("{TEXT}", sent_text);
     }
 
     public void selectPinButton() {
+        this.openActionBarOverflow();
+        this.waitForElementAndClick(
+                PIN_MESSAGE_BUTTON,
+                "Can't tap on Pin button",
+                15
+        );
+    }
+
+    /** Pin and Unpin moved out of the action bar itself and into its overflow. */
+    protected void openActionBarOverflow() {
         this.waitForElementPresent(
                 ACTION_BAR_MENU,
                 "Action menu is not displayed",
                 15
         );
         this.waitForElementAndClick(
-                PIN_MESSAGE_BUTTON,
-                "Can't tap on Pin button",
+                ACTION_BAR_MENU_MORE_OPTIONS,
+                "Can't open the action bar overflow",
                 15
         );
     }
@@ -97,20 +120,11 @@ public abstract class ChatScreenPinPageObject extends ChatScreenSecretPageObject
         String sent_message_xpath = getSentMessageByXpathName(sent_message);
         this.longPressAction(sent_message_xpath);
         this.selectUnPinMessage();
-        this.waitForElementNotPresent(
-                PINNED_MESSAGE_IN_PIN_BAR,
-                "Can't find text in pin bar",
-                20
-        );
-        Assert.assertFalse(isElementPresent(PINNED_MESSAGE_IN_PIN_BAR));
+        this.isMessageUnpinned(sent_text);
     }
 
     public void selectUnPinMessage() {
-        this.waitForElementPresent(
-                ACTION_BAR_MENU,
-                "Action menu is not displayed",
-                15
-        );
+        this.openActionBarOverflow();
         this.waitForElementAndClick(
                 UNPIN_MESSAGE_BUTTON,
                 "Can't tap on Delete button",

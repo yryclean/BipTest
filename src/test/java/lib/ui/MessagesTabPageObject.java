@@ -5,6 +5,11 @@ import io.appium.java_client.AppiumBy;
 import org.junit.Assert;
 
 public class MessagesTabPageObject extends MainPageObject {
+
+    /** Deep enough for the longest screen stack the suite reaches, short enough
+     *  that a broken locator fails fast instead of backing out of the app. */
+    private static final int MAX_BACK_PRESSES = 6;
+
     protected static String
     MESSAGES_TAB_SCREEN,
     MORE_TAB,
@@ -31,6 +36,30 @@ public class MessagesTabPageObject extends MainPageObject {
 
     private static String getChatNameByXpathName(String chat_name) {
         return CHAT_WITH_NAME_TPL.replace("{CHAT_NAME}", chat_name);
+    }
+
+    public boolean isChatListOpen() {
+        return isElementPresent(MESSAGES_TAB_SCREEN);
+    }
+
+    /**
+     * Best effort walk back towards the chat list. Deliberately silent about
+     * failure: enough back presses will leave BiP altogether, and only the
+     * caller can bring it back, so it reports nothing and lets the caller
+     * re-check with {@link #isChatListOpen()}.
+     */
+    public void pressBackTowardsChatList() {
+        for (int i = 0; i < MAX_BACK_PRESSES && !isChatListOpen(); i++) {
+            driver.navigate().back();
+        }
+    }
+
+    public void waitForChatList() {
+        this.waitForElementPresent(
+                MESSAGES_TAB_SCREEN,
+                "Could not get back to the chat list",
+                20
+        );
     }
 
     public void isMessagesTabScreenOpened() {
