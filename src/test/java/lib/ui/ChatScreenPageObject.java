@@ -94,6 +94,9 @@ public abstract class ChatScreenPageObject extends MainPageObject {
             PINNED_MESSAGE_IN_PIN_BAR,
             PINNED_MESSAGE_BAR,
             YOU_PINNED_INFO_MESSAGE,
+            PIN_LIMIT_WARNING,
+            PIN_LIMIT_WARNING_OK,
+            PIN_LIMIT_WARNING_CANCEL,
             ENCRYPTED_CHAT_INFO_MESSAGE;
 
     public ChatScreenPageObject (AppiumDriver driver)
@@ -839,6 +842,19 @@ public abstract class ChatScreenPageObject extends MainPageObject {
             Assert.assertEquals(pinned_message_text_in_bar, sent_text);
             Assert.assertTrue(isElementPresent(YOU_PINNED_INFO_MESSAGE));
     }
+    public void longPressAndPinSentMessageWhenLimitReached(String sent_message, String sent_text) {
+        String sent_message_xpath = getSentMessageByXpathName(sent_message);
+        this.longPressAction(sent_message_xpath);
+        this.selectPinButton();
+        this.removePreviousPinnedMessage();
+        String pinned_message_text_in_bar = this.waitForElementAndGetText(
+                PINNED_MESSAGE_IN_PIN_BAR,
+                "Can't find text in pin bar",
+                20
+        );
+        Assert.assertEquals(pinned_message_text_in_bar, sent_text);
+        Assert.assertTrue(isElementPresent(YOU_PINNED_INFO_MESSAGE));
+    }
     public void longPressAndPinSecretMessage(String sent_message) {
         String sent_message_xpath = getSentMessageByXpathName(sent_message);
         this.longPressAction(sent_message_xpath);
@@ -973,5 +989,19 @@ public abstract class ChatScreenPageObject extends MainPageObject {
                 "Can't get text from pinned message bar",
                 25);
         Assert.assertEquals(edited_text, edited_message_in_pin_bar);
+    }
+
+    public void removePreviousPinnedMessage() {
+        this.waitForElementPresent(PIN_LIMIT_WARNING,
+                "Pin limit warning is missing",
+                20);
+        screenshot(this.takeScreenshot("pin_limit_warning"));
+        this.waitForElementAndClick(PIN_LIMIT_WARNING_OK,
+                "Can't tap on Continue button",
+                25);
+        this.waitForElementNotPresent(PIN_LIMIT_WARNING,
+                "Pin warning is not closed",
+                20);
+        screenshot(this.takeScreenshot("removed_previous_pin"));
     }
 }

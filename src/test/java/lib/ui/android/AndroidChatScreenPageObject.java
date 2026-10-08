@@ -80,7 +80,11 @@ public class AndroidChatScreenPageObject extends ChatScreenPageObject {
             PINNED_MESSAGE_IN_PIN_BAR = "xpath://android.widget.TextView[@resource-id=\"com.turkcell.bip:id/tv_pinned_message_preview_content\"]";
             PINNED_MESSAGE_BAR = "xpath://android.widget.FrameLayout[@resource-id=\"com.turkcell.bip:id/pinnedMessagesContainerView\"]";
             YOU_PINNED_INFO_MESSAGE = "xpath://android.widget.TextView[@resource-id=\"com.turkcell.bip:id/chatItemTitleTextForGroup\" and @text=\"You pinned a message\"]";
+            PIN_LIMIT_WARNING = "xpath://android.widget.TextView[@resource-id=\"com.turkcell.bip:id/tvDialogTitle\" and @text='Replace oldest pin?']";
+            PIN_LIMIT_WARNING_OK = "xpath://android.widget.Button[@resource-id=\"com.turkcell.bip:id/btnPrimary\" and @text='Continue']";
+            PIN_LIMIT_WARNING_CANCEL = "xpath://android.widget.Button[@resource-id=\"com.turkcell.bip:id/btnSecondary\" and @text='Cancel']";
             ENCRYPTED_CHAT_INFO_MESSAGE = "xpath://android.widget.TextView[@resource-id=\"com.turkcell.bip:id/chatItemTitleTextForGroup\" and contains(@text, 'Messages and calls are end-to-end encrypted.')]";
+
 
 
 

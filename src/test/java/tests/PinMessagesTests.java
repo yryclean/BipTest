@@ -20,7 +20,18 @@ public class PinMessagesTests extends CoreTestCase {
             sent_new_message = "Sent message Test2",
             sent_text_new = "Test2",
             sent_edited_message = "Sent message Edited message :)",
-            edited_text = "Edited message :)";
+            edited_text = "Edited message :)",
+            chat_name1 = "Turkey53",
+            sent_message1 = "Sent message Test1",
+            sent_text1 = "Test1",
+            sent_message2 = "Sent message Test2",
+            sent_text2 = "Test2",
+            sent_message3 = "Sent message Test3",
+            sent_text3 = "Test3",
+            sent_message4 = "Sent message Test4",
+            sent_text4 = "Test4",
+            sent_message5 = "Sent message Test5",
+            sent_text5 = "Test5";
 
 
     @Test
@@ -200,6 +211,59 @@ public class PinMessagesTests extends CoreTestCase {
         ChatScreenPageObject.tapOnInputBarAndSendMessage(sent_text);
         ChatScreenPageObject.assertSecretMessageSent();
         ChatScreenPageObject.longPressAndPinSecretMessage(sent_message);
+        this.closeApp();
+    }
+
+    @Test
+    @Description("Undo deleted pinned message")//undo timer must be set to 10-15 seconds at least
+    public void testUndoDeletedPinnedMessage() {
+        this.openApp();
+        ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
+        MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
+        MessagesTabPageObject.openChatWithName(chat_name);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text, sent_message);
+        ChatScreenPageObject.longPressAndPinSentMessage(sent_message, sent_text);
+        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_message);
+        ChatScreenPageObject.isUndoPopUpDisplayed();
+        ChatScreenPageObject.undoRestoreDeletedMessageFromMe(sent_message);
+        ChatScreenPageObject.isMessageUnpinned();
+        this.closeApp();
+    }
+
+    @Test
+    @Description("Pin message with no Internet connection")
+    public void testPinMessageNoInternet() {
+        this.openApp();
+        ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
+        MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
+        MessagesTabPageObject.openChatWithName(chat_name);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text, sent_message);
+        this.enableAirplaneMode();//android only
+        ChatScreenPageObject.confirmWifiPopUp();
+        ChatScreenPageObject.longPressAndPinSentMessage(sent_message, sent_text);
+        this.enableAllInternetConnection();
+        this.closeApp();
+    }
+
+    @Test
+    @Description("Pin message limit warning")
+    public void testPinMessageLimitWarning(){
+        this.openApp();
+        ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
+        MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
+        MessagesTabPageObject.openChatWithName(chat_name);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text, sent_message);
+        ChatScreenPageObject.longPressAndPinSentMessage(sent_message, sent_text);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text1, sent_message1);
+        ChatScreenPageObject.longPressAndPinSentMessage(sent_message1, sent_text1);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text2, sent_message2);
+        ChatScreenPageObject.longPressAndPinSentMessage(sent_message2, sent_text2);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text3, sent_message3);
+        ChatScreenPageObject.longPressAndPinSentMessage(sent_message3, sent_text3);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text4, sent_message4);
+        ChatScreenPageObject.longPressAndPinSentMessage(sent_message4, sent_text4);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text5, sent_message5);
+        ChatScreenPageObject.longPressAndPinSentMessageWhenLimitReached(sent_message5, sent_text5);
         this.closeApp();
     }
 }
