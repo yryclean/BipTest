@@ -54,24 +54,22 @@ public class MainPageObject {
 
 
     public void tryClickElementWithAttempts(String locator, String error_message, int amount_of_attempts) {
-        int current_attempts = 0;
-        boolean need_more_attempts = true;
-        while (need_more_attempts) {
+        RuntimeException last_error = null;
+        for (int attempt = 0; attempt <= amount_of_attempts; attempt++) {
             try {
                 this.waitForElementAndClick(locator, error_message, 1);
-                need_more_attempts = false;
-            } catch (Exception e) {
-                if (current_attempts > amount_of_attempts) {
-                    this.waitForElementAndClick(locator, error_message, 1);
-
-                }
+                return;
+            } catch (RuntimeException e) {
+                last_error = e;
             }
-            ++current_attempts;
         }
+        throw last_error;
     }
 
     public WebElement waitForElementAndSendKeys(String locator, String value, long timeoutInSeconds) {
-        WebElement element = waitForElementPresent(locator, value, timeoutInSeconds);
+        // The message must not echo `value`: callers pass phone numbers and OTP codes.
+        WebElement element = waitForElementPresent(
+                locator, "Cannot find the input field to type into", timeoutInSeconds);
         element.sendKeys(value);
         return element;
     }
@@ -94,14 +92,15 @@ public class MainPageObject {
     public void swipeUpToFindElement(String locator, String error_message, int max_swipes) {
         By by = this.getLocatorByString(locator);
         int already_swiped = 0;
-        while (driver.findElements(by).size() == 0) {
-            if (already_swiped > max_swipes)
+        while (driver.findElements(by).isEmpty()) {
+            if (already_swiped > max_swipes) {
+                // Fails with a descriptive TimeoutException instead of a bare assertion.
                 waitForElementPresent(locator, "Cannot find element by swipe. \n" + error_message, 0);
-            return;
+                return;
+            }
+            scrollPageDown();
+            ++already_swiped;
         }
-        scrollPageDown();
-        ++already_swiped;
-
     }
 
     public void scrollTillElementAppears(String locator, String error_message, int max_swipes) {
@@ -117,10 +116,8 @@ public class MainPageObject {
     }
 
     public boolean isElementLocatedOnTheScreen(String locator) {
+        // Native coordinates are already viewport-relative, no scroll offset to add.
         int element_location_by_y = this.waitForElementPresent(locator, "Can't find element by locator", 15).getLocation().getY();
-            JavascriptExecutor js = driver;
-            Object js_result = js.executeScript("return window.pageYOffset");
-            element_location_by_y = Integer.parseInt(js_result.toString());
         int screen_size_by_y = driver.manage().window().getSize().getHeight();
         return element_location_by_y < screen_size_by_y;
     }
@@ -208,8 +205,13 @@ public class MainPageObject {
     }
 
     public void assertElementNotFound(String locator, String error_message, long timeoutInSeconds) {
+        try {
+            waitForElementNotPresent(locator, error_message, timeoutInSeconds);
+        } catch (TimeoutException e) {
+            // Still there after the timeout — report it as an assertion, not as a wait failure.
+        }
         int amount_of_elements = getAmountOfElements(locator);
-        if (amount_of_elements > 1) {
+        if (amount_of_elements > 0) {
             String default_message = "An element '" + locator + "' not supposed to be present";
             throw new AssertionError(default_message + " " + error_message);
         }
