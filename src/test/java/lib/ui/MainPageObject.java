@@ -1,9 +1,7 @@
 package lib.ui;
-import com.google.common.collect.ImmutableMap;
 import io.appium.java_client.AppiumDriver;
 import io.qameta.allure.Attachment;
 import lib.Platform;
-import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Pause;
@@ -15,7 +13,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.HashMap;
@@ -35,7 +35,7 @@ public class MainPageObject {
 
     public WebElement waitForElementPresent(String locator, String error_message, long timeoutInSeconds) {
         By by = this.getLocatorByString(locator);
-        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds));
         wait.withMessage(error_message + "\n");
         return wait.until(
                 presenceOfElementLocated(by)
@@ -78,7 +78,7 @@ public class MainPageObject {
 
     public boolean waitForElementNotPresent(String locator, String error_message, long timeoutSeconds) {
         By by = this.getLocatorByString(locator);
-        WebDriverWait wait = new WebDriverWait(driver, timeoutSeconds);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutSeconds));
         wait.withMessage(error_message + "\n");
         return wait.until(
                 ExpectedConditions.invisibilityOfElementLocated(by)
@@ -254,7 +254,7 @@ public class MainPageObject {
         File source = ts.getScreenshotAs(OutputType.FILE);
         String path = System.getProperty("user.dir") + "/" + name +"_screenshot.png";
         try {
-            FileUtils.copyFile(source, new File(path));
+            Files.copy(source.toPath(), Path.of(path), StandardCopyOption.REPLACE_EXISTING);
             System.out.println("The screenshot was taken: " + path);
         }catch (Exception e) {
             System.out.println("Can't take screenshot. Error: " + e.getMessage());
@@ -265,7 +265,7 @@ public class MainPageObject {
     public void longPressAction(String locator) {
         WebElement message_element = this.waitForElementPresent(locator, "Can't find message", 15);
         ((JavascriptExecutor)driver).executeScript("mobile: longClickGesture",
-                ImmutableMap.of("elementId",((RemoteWebElement)message_element).getId(),
+                Map.of("elementId",((RemoteWebElement)message_element).getId(),
                         "duration",2000));
     }
 

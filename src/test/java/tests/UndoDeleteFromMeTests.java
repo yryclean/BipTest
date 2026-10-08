@@ -6,7 +6,7 @@ import lib.ui.MessagesTabPageObject;
 import lib.ui.factories.ChatScreenPageObjectFactory;
 import lib.ui.factories.MessagesTabPageObjectFactory;
 import org.junit.Test;
-import org.springframework.context.annotation.Description;
+import io.qameta.allure.Description;
 
 public class UndoDeleteFromMeTests extends CoreTestCase {
     private static final String

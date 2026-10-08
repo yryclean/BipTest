@@ -2,11 +2,7 @@ package lib.ui;
 
 import com.google.common.collect.ImmutableMap;
 import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileBy;
-import io.appium.java_client.MobileElement;
-import io.appium.java_client.TouchAction;
-import io.appium.java_client.touch.WaitOptions;
-import io.appium.java_client.touch.offset.PointOption;
+import io.appium.java_client.AppiumBy;
 import lib.ui.factories.MediaEditScreenPageObjectFactory;
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -495,7 +491,7 @@ public abstract class ChatScreenPageObject extends MainPageObject {
                 "Can't find Photos tab in Gallery",
                 15
         );
-        driver.findElement(MobileBy.AndroidUIAutomator("new UiScrollable(new UiSelector().scrollable(true).index(0)).scrollIntoView(new UiSelector().description(\"Photo\").instance(12))"));
+        driver.findElement(AppiumBy.androidUIAutomator("new UiScrollable(new UiSelector().scrollable(true).index(0)).scrollIntoView(new UiSelector().description(\"Photo\").instance(12))"));
         this.waitForElementAndClick(
                 ATTACHMENT_MENU_GALLERY_SELECT_PHOTO,
                 "Can't find photo to select",
@@ -533,7 +529,7 @@ public abstract class ChatScreenPageObject extends MainPageObject {
                 "Can't find Photos tab in Gallery",
                 15
         );
-        driver.findElement(MobileBy.AndroidUIAutomator("new UiScrollable(new UiSelector().scrollable(true).index(0)).scrollIntoView(new UiSelector().description(\"1000003969\"))"));
+        driver.findElement(AppiumBy.androidUIAutomator("new UiScrollable(new UiSelector().scrollable(true).index(0)).scrollIntoView(new UiSelector().description(\"1000003969\"))"));
         this.waitForElementAndClick(
                 ATTACHMENT_MENU_GALLERY_SELECT_VIDEO,
                 "Can't find video to select",

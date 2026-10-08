@@ -1,9 +1,14 @@
 package lib;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.options.UiAutomator2Options;
 import io.appium.java_client.ios.IOSDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
+import io.appium.java_client.ios.options.XCUITestOptions;
+import io.appium.java_client.ios.options.wda.XcodeCertificate;
+
+import java.net.URI;
 import java.net.URL;
+import java.time.Duration;
 
 public class Platform
 {
@@ -20,13 +25,20 @@ public class Platform
     private static final String PLATFORM_IOS = "ios";
     private static final String PLATFORM_ANDROID = "android";
     private static final String APPIUM_URL = "http://127.0.0.1:4723";
+    private static final String ANDROID_APP_PACKAGE = "com.turkcell.bip";
+    private static final String IOS_BUNDLE_ID = "com.turkcell.bipent";
+
+    /** Android appPackage or iOS bundleId — what activateApp/terminateApp expect. */
+    public String getAppId() {
+        return this.isAndroid() ? ANDROID_APP_PACKAGE : IOS_BUNDLE_ID;
+    }
 
     public AppiumDriver getDriver() throws Exception {
-        URL URL = new URL(APPIUM_URL);
+        URL url = URI.create(APPIUM_URL).toURL();
         if (this.isAndroid()) {
-            return new AndroidDriver(URL, this.getAndroidDesiredCapabilities());
+            return new AndroidDriver(url, this.getAndroidOptions());
         } else if (this.isIOS()) {
-            return new IOSDriver(URL, this.getIOSDesiredCapabilities());
+            return new IOSDriver(url, this.getIOSOptions());
         } else {
             throw new Exception("Can't detect platform driver. Platform value " + this.getPlatformVar());
         }
@@ -42,33 +54,30 @@ public class Platform
         return isPlatform(PLATFORM_IOS);
     }
 
-    private DesiredCapabilities getAndroidDesiredCapabilities()
+    private UiAutomator2Options getAndroidOptions()
     {
-        DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("platformName", "Android");
-        capabilities.setCapability("appium:platformVersion", "14.0");
-        capabilities.setCapability("appium:udid", "R5CWA0Q2GGB");
-        capabilities.setCapability("appium:appPackage", "com.turkcell.bip");
-        capabilities.setCapability("appium:deviceName", "SamsungA54");
-        capabilities.setCapability("appium:appActivity", "com.turkcell.bip.ui.main.BipActivity");
-        capabilities.setCapability("appium:automationName", "UiAutomator2");
-//        capabilities.setCapability("app", "/Users/lifetech/Downloads/apks/bip-3.100.15.dev.prp.apk");
-        capabilities.setCapability("appium:noReset", "true");
-        capabilities.setCapability("autoGrantPermissions", "true");
-        return capabilities;
+        return new UiAutomator2Options()
+                .setPlatformVersion("14.0")
+                .setUdid("R5CWA0Q2GGB")
+                .setAppPackage(ANDROID_APP_PACKAGE)
+                .setDeviceName("SamsungA54")
+                .setAppActivity("com.turkcell.bip.ui.main.BipActivity")
+                .setNoReset(true)
+                .setAutoGrantPermissions(true);
     }
 
-    private DesiredCapabilities getIOSDesiredCapabilities()
+    private XCUITestOptions getIOSOptions()
     {
-        DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("platformName", "iOS");
-        capabilities.setCapability("appium:platformVersion", "17.4");
-        capabilities.setCapability("appium:deviceName", "iPhone 14 Pro");
-//        capabilities.setCapability("appium:udid", "auto");
-//        capabilities.setCapability("appium:bundleId", "");
-        capabilities.setCapability("appium:automationName", "XCUITest");
-        capabilities.setCapability("app", "/Users/lifetech/Desktop/JavaAppiumAutomation/JavaAppiumAutomation/apks/Wikipedia.app");
-        return capabilities;
+        return new XCUITestOptions()
+                .setPlatformVersion("26.7.1")
+                .setDeviceName("iPhone 14 Pro")
+                .setUdid("00008120-001C28E41A78C01E")
+                .setBundleId(IOS_BUNDLE_ID)
+                // Real-device signing: Team ID, not the certificate's organisation name.
+                .setXcodeCertificate(new XcodeCertificate("4YZRCKX375", "Apple Development"))
+                // Avoids the unregistered com.facebook.WebDriverAgentRunner.xctrunner bundle ID.
+                .setUpdatedWdaBundleId("WebDriverTesting")
+                .setWdaLaunchTimeout(Duration.ofMinutes(4));
     }
 
     private boolean isPlatform(String my_platform)

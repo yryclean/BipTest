@@ -4,7 +4,7 @@ import lib.Platform;
 import lib.ui.*;
 import lib.ui.factories.*;
 import org.junit.Test;
-import org.springframework.context.annotation.Description;
+import io.qameta.allure.Description;
 
 //we need to start tests from app installation, though changes needed in capabilities!!!
 //also need to disable auto-accepting alerts in capabilities!!!

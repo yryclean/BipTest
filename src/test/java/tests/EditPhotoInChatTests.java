@@ -4,7 +4,7 @@ import lib.CoreTestCase;
 import lib.ui.*;
 import lib.ui.factories.*;
 import org.junit.Test;
-import org.springframework.context.annotation.Description;
+import io.qameta.allure.Description;
 
 public class EditPhotoInChatTests extends CoreTestCase {
     private static final String

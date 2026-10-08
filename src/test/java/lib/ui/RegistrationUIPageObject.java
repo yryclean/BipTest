@@ -1,7 +1,7 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileBy;
+import io.appium.java_client.AppiumBy;
 import lib.Platform;
 
 abstract public class RegistrationUIPageObject extends MainPageObject {
@@ -110,7 +110,7 @@ abstract public class RegistrationUIPageObject extends MainPageObject {
     }
 
     public void scrollTermsOfUse() {
-        driver.findElement(MobileBy.AndroidUIAutomator("new UiScrollable(new UiSelector().scrollable(true).index(0)).scrollIntoView(new UiSelector().text(\"Contact us If you would like to send us your feedback on BiP, You can contact us through the “More > Settings > Help > BiP Support“ option.\"))"));
+        driver.findElement(AppiumBy.androidUIAutomator("new UiScrollable(new UiSelector().scrollable(true).index(0)).scrollIntoView(new UiSelector().text(\"Contact us If you would like to send us your feedback on BiP, You can contact us through the “More > Settings > Help > BiP Support“ option.\"))"));
         //What's On This Page?
     }
     public void tapCountryCode() {

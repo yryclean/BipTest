@@ -1,13 +1,15 @@
 package lib;
 
 import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileElement;
+import io.appium.java_client.InteractsWithApps;
+import io.appium.java_client.LocksDevice;
 import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.android.AndroidKeyCode;
 import io.appium.java_client.android.connection.ConnectionStateBuilder;
+import io.appium.java_client.android.nativekey.AndroidKey;
+import io.appium.java_client.android.nativekey.KeyEvent;
+import io.appium.java_client.remote.SupportsRotation;
 import junit.framework.TestCase;
 import org.openqa.selenium.ScreenOrientation;
-import org.openqa.selenium.WebDriver;
 
 import java.io.FileOutputStream;
 import java.time.Duration;
@@ -25,7 +27,7 @@ public class CoreTestCase extends TestCase {
         this.createAllurePropertyFile();
         this.rotateScreenPortrait();
         if (Platform.getInstance().isAndroid()) {
-            ((AndroidDriver<MobileElement>)driver).unlockDevice();
+            ((LocksDevice) driver).unlockDevice();
             this.rotateScreenPortrait();
         } else {
             this.rotateScreenPortrait();
@@ -39,27 +41,22 @@ public class CoreTestCase extends TestCase {
     }
 
     protected void rotateScreenPortrait() {
-            AppiumDriver driver = this.driver;
-            driver.rotate(ScreenOrientation.PORTRAIT);
+            ((SupportsRotation) driver).rotate(ScreenOrientation.PORTRAIT);
     }
 
     protected void rotateScreenLandscape() {
-            AppiumDriver driver = this.driver;
-            driver.rotate(ScreenOrientation.LANDSCAPE);
+            ((SupportsRotation) driver).rotate(ScreenOrientation.LANDSCAPE);
     }
 
     protected void backgroundApp(int seconds) {
-            AppiumDriver driver = this.driver;
-            driver.runAppInBackground(Duration.ofSeconds(seconds));
+            ((InteractsWithApps) driver).runAppInBackground(Duration.ofSeconds(seconds));
     }
 
     public void closeApp() {
-            AppiumDriver driver = this.driver;
-            driver.terminateApp("com.turkcell.bip");
+            ((InteractsWithApps) driver).terminateApp(Platform.getInstance().getAppId());
     }
     public void openApp() {
-            AppiumDriver driver = this.driver;
-            driver.activateApp("com.turkcell.bip/com.turkcell.bip.ui.main.BipActivity");
+            ((InteractsWithApps) driver).activateApp(Platform.getInstance().getAppId());
     }
 
     public void createAllurePropertyFile() {
@@ -76,13 +73,13 @@ public class CoreTestCase extends TestCase {
         }
     }
     public void enableAirplaneMode() {
-        ((AndroidDriver)driver).toggleAirplaneMode();
+        ((AndroidDriver) driver).toggleAirplaneMode();
 
     }
     public void enableAllInternetConnection() {
             try {
-                ((AndroidDriver)driver).setConnection(new ConnectionStateBuilder().withWiFiEnabled().build());
-                System.out.println("Switching On the connection: " + ((AndroidDriver)driver).getConnection());
+                ((AndroidDriver) driver).setConnection(new ConnectionStateBuilder().withWiFiEnabled().build());
+                System.out.println("Switching On the connection: " + ((AndroidDriver) driver).getConnection());
             } catch (Exception e) {
                 System.out.println("Connection could not be switch ON");
             }
@@ -90,13 +87,13 @@ public class CoreTestCase extends TestCase {
     //one more solution to turn off internet connection
     public void setAllConnectionToOFF() {
         try {
-            ((AndroidDriver)driver).setConnection(new ConnectionStateBuilder().withWiFiDisabled().build());
-            System.out.println("Switching OFF the connection : " + ((AndroidDriver)driver).getConnection());
+            ((AndroidDriver) driver).setConnection(new ConnectionStateBuilder().withWiFiDisabled().build());
+            System.out.println("Switching OFF the connection : " + ((AndroidDriver) driver).getConnection());
         } catch (Exception e) {
             System.out.println("Connection could not be switch OFF");
         }
     }
     public void clickBackButton(){
-        ((AndroidDriver)driver).pressKeyCode(AndroidKeyCode.BACK);
+        ((AndroidDriver) driver).pressKey(new KeyEvent(AndroidKey.BACK));
     }
 }
