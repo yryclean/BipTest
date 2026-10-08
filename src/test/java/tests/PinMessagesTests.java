@@ -52,7 +52,7 @@ public class PinMessagesTests extends ChatTestCase {
         MessagesTabPageObject.openChatWithName(chat_name);
         ChatScreenPageObject.sendMessageIfNeeded(sent_text, sent_message);
         ChatScreenPageObject.waitForSentMessageWithName(sent_message);
-        ChatScreenPageObject.isPinAvailable(sent_message);
+        ChatScreenPageObject.assertPinAvailable(sent_message);
     }
 
     @Test
@@ -63,7 +63,7 @@ public class PinMessagesTests extends ChatTestCase {
         MessagesTabPageObject.openChatWithName(group_chat_name);
         ChatScreenPageObject.sendMessageIfNeeded(sent_text, sent_message);
         ChatScreenPageObject.waitForSentMessageWithName(sent_message);
-        ChatScreenPageObject.isPinAvailable(sent_message);
+        ChatScreenPageObject.assertPinAvailable(sent_message);
     }
 
     @Test
@@ -119,7 +119,7 @@ public class PinMessagesTests extends ChatTestCase {
         ChatScreenPageObject.sendMessageIfNeeded(sent_text, sent_message);
         ChatScreenPageObject.longPressAndPinSentMessage(sent_message, sent_text);
         ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_message);
-        ChatScreenPageObject.isMessageUnpinned(sent_text);
+        ChatScreenPageObject.assertMessageUnpinned(sent_text);
     }
 
     @Test
@@ -208,9 +208,9 @@ public class PinMessagesTests extends ChatTestCase {
         ChatScreenPageObject.sendMessageIfNeeded(sent_text, sent_message);
         ChatScreenPageObject.longPressAndPinSentMessage(sent_message, sent_text);
         ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_message);
-        ChatScreenPageObject.isUndoPopUpDisplayed();
+        ChatScreenPageObject.assertUndoPopUpDisplayed();
         ChatScreenPageObject.undoRestoreDeletedMessageFromMe(sent_message);
-        ChatScreenPageObject.isMessageUnpinned(sent_text);
+        ChatScreenPageObject.assertMessageUnpinned(sent_text);
     }
 
     @Test

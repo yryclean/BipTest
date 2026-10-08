@@ -26,7 +26,7 @@ public abstract class SharedMediaScreenPageObject extends MainPageObject {
         super(driver);
     }
 
-    public void isTopPanelDisplayed() {
+    public void assertTopPanelDisplayed() {
         this.waitForElementPresent(
                 SHARED_MEDIA_SCREEN_TOP_PANEL,
                 "To panel not found on the screen",
@@ -34,7 +34,7 @@ public abstract class SharedMediaScreenPageObject extends MainPageObject {
         );
     }
 
-    public void isEditButtonDisplayed() {
+    public void assertEditButtonDisplayed() {
         this.waitForElementPresent(
                 EDIT_PHOTO_BUTTON,
                 "Can't find Edit button",
@@ -44,7 +44,7 @@ public abstract class SharedMediaScreenPageObject extends MainPageObject {
         System.out.println("Edit button is displayed as expected");
     }
 
-    public void isEditButtonNotDisplayed() {
+    public void assertEditButtonNotDisplayed() {
         this.waitForElementNotPresent(
                 EDIT_PHOTO_BUTTON,
                 "Edit button is displayed",
@@ -56,7 +56,7 @@ public abstract class SharedMediaScreenPageObject extends MainPageObject {
     }
 
     public void tapOnEditPhotoButton() {
-        this.isTopPanelDisplayed();
+        this.assertTopPanelDisplayed();
         if (isElementPresent(EDIT_PHOTO_BUTTON)) {
             this.waitForElementAndClick(
                     EDIT_PHOTO_BUTTON,

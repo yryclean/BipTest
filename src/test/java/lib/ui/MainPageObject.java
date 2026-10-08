@@ -26,6 +26,28 @@ import java.util.regex.Pattern;
 import static java.time.Duration.ofMillis;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
+/**
+ * Base for every page object. The naming convention below holds throughout the
+ * hierarchy, because a reader of a test has no other way to tell which calls
+ * can fail it:
+ *
+ * <ul>
+ *   <li>{@code is*} / {@code get*} answer a question and return the answer.
+ *       They never assert, so a test is free to branch on them.</li>
+ *   <li>{@code assert*} fails the test when the expectation does not hold, and
+ *       returns nothing.</li>
+ *   <li>{@code wait*} blocks until the condition holds and throws on timeout.
+ *       Used as a precondition, not as the point of a test.</li>
+ *   <li>everything else drives the app. Such a method may verify its own
+ *       postcondition — {@code longPressAndPinSentMessage} checks the message
+ *       really got pinned — but that is the step confirming it worked, not the
+ *       assertion the test was written for.</li>
+ * </ul>
+ *
+ * The methods that used to read {@code isEditButtonDisplayed()} and then fail
+ * the test are the reason this is written down: a question-shaped name on a
+ * {@code void} method hides the assertion from whoever reads the test.
+ */
 public class MainPageObject {
     protected AppiumDriver driver;
 

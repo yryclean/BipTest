@@ -21,6 +21,7 @@ public abstract class ChatScreenNavigationPageObject extends MainPageObject {
             // entry points for the delete, secret and pin layers alike.
             ACTION_BAR_MENU,
             ACTION_BAR_MENU_MORE_OPTIONS,
+            ACTION_BAR_MENU_ITEM,
             THREE_DOTS_BUTTON,
             CHAT_SCREEN_BACK_TO_CHAT_LIST_BUTTON,
             CONTACT_INFO_PLACE_HOLDER,

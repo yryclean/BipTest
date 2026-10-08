@@ -16,14 +16,14 @@ public class NotificationsScreenPageObject extends MainPageObject {
                 10
         );
     }
-    public void isNotificationsWarningDisplayed() {
+    public void assertNotificationsWarningDisplayed() {
         this.waitForElementPresent(
                 NOTIFICATIONS_PUSH_NOTIFICATIONS_ENABLE_WARNING,
                 "Warning for disabled notifications is not displayed",
                 10
         );
     }
-    public void isNotificationsWarningNotDisplayed() {
+    public void assertNotificationsWarningNotDisplayed() {
         this.waitForElementNotPresent(
                 NOTIFICATIONS_PUSH_NOTIFICATIONS_ENABLE_WARNING,
                 "Warning for disabled notifications is not displayed",

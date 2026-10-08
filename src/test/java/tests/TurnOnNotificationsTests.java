@@ -65,10 +65,10 @@ public class TurnOnNotificationsTests extends CoreTestCase {
 //        MessagesTabPageObject.batteryOptimizationAllow();
         MessagesTabPageObject.waitForNotificationsPopUp();
         MessagesTabPageObject.openSettingsFromNotificationPopUp();
-        MessagesTabPageObject.isNotificationsSettingsOpened();
+        MessagesTabPageObject.assertNotificationsSettingsOpened();
         MessagesTabPageObject.tapNotificationsSettingsButton();
         MessagesTabPageObject.closeNotificationsSettings();
-        MessagesTabPageObject.isMessagesTabScreenOpened();
+        MessagesTabPageObject.assertMessagesTabScreenOpened();
     }
 
     @Test
@@ -101,7 +101,7 @@ public class TurnOnNotificationsTests extends CoreTestCase {
         SettingsScreenPageObject SettingsScreenPageObject = SettingsScreenPageObjectFactory.get(driver);
         SettingsScreenPageObject.openNotificationsScreen();
         NotificationsScreenPageObject NotificationsScreenPageObject = NotificationsScreenPageObjectFactory.get(driver);
-        NotificationsScreenPageObject.isNotificationsWarningDisplayed();
+        NotificationsScreenPageObject.assertNotificationsWarningDisplayed();
     }
 
     @Test
@@ -134,10 +134,10 @@ public class TurnOnNotificationsTests extends CoreTestCase {
         SettingsScreenPageObject.openNotificationsScreen();
         NotificationsScreenPageObject NotificationsScreenPageObject = NotificationsScreenPageObjectFactory.get(driver);
         NotificationsScreenPageObject.openNotificationsSettingsFromWarning();
-        MessagesTabPageObject.isNotificationsSettingsOpened();
+        MessagesTabPageObject.assertNotificationsSettingsOpened();
         MessagesTabPageObject.tapNotificationsSettingsButton();
         MessagesTabPageObject.closeNotificationsSettings();
-        NotificationsScreenPageObject.isNotificationsWarningNotDisplayed();
+        NotificationsScreenPageObject.assertNotificationsWarningNotDisplayed();
     }
     @Test
     @Description("Notifications action sheet is not shown when app was killed and launched")
@@ -162,7 +162,7 @@ public class TurnOnNotificationsTests extends CoreTestCase {
         MessagesTabPageObject.waitForNotificationsPopUp();
         this.closeApp();
         this.openApp();
-        MessagesTabPageObject.isNotificationsPopUpNotDisplayed();
+        MessagesTabPageObject.assertNotificationsPopUpNotDisplayed();
     }
     @Test
     @Description("Notifications action sheet in landscape mode")

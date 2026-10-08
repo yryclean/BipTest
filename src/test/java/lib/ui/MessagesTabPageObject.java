@@ -62,7 +62,7 @@ public class MessagesTabPageObject extends MainPageObject {
         );
     }
 
-    public void isMessagesTabScreenOpened() {
+    public void assertMessagesTabScreenOpened() {
         this.waitForElementPresent(
                 MESSAGES_TAB_SCREEN,
                 "Messages tab screen is not opened",
@@ -130,7 +130,7 @@ public class MessagesTabPageObject extends MainPageObject {
                 10
         );
     }
-    public void isNotificationsSettingsOpened() {
+    public void assertNotificationsSettingsOpened() {
         this.waitForElementPresent(
                 ALLOW_SETTINGS_NOTIFICATIONS,
                 "Notification settings is not opened",
@@ -169,7 +169,7 @@ public class MessagesTabPageObject extends MainPageObject {
                 10
         );
     }
-    public void isNotificationsPopUpNotDisplayed() {
+    public void assertNotificationsPopUpNotDisplayed() {
         this.waitForElementNotPresent(
                 TURN_ON_NOTIFICATION_POP_UP,
                 "Notification pop up is displayed",

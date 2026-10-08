@@ -24,7 +24,7 @@ public class EditPhotoInChatTests extends ChatTestCase {
         ChatScreenPageObject.selectPhotoMessageIfNeeded();
         ChatScreenPageObject.openSentPhotoInFullScreen();
         SharedMediaScreenPageObject SharedMediaScreenPageObject = SharedMediaPageObjectFactory.get(driver);
-        SharedMediaScreenPageObject.isEditButtonDisplayed();
+        SharedMediaScreenPageObject.assertEditButtonDisplayed();
     }
 
     @Test
@@ -52,7 +52,7 @@ public class EditPhotoInChatTests extends ChatTestCase {
         ChatScreenPageObject.openSentVideoInFullScreen();
         SharedMediaScreenPageObject SharedMediaScreenPageObject = SharedMediaPageObjectFactory.get(driver);
         SharedMediaScreenPageObject.tapOnVideo();
-        SharedMediaScreenPageObject.isEditButtonNotDisplayed();
+        SharedMediaScreenPageObject.assertEditButtonNotDisplayed();
         SharedMediaScreenPageObject.tapOnEditPhotoButton();
 //        this.backgroundApp(2);
     }
@@ -72,9 +72,9 @@ public class EditPhotoInChatTests extends ChatTestCase {
         MediaEditScreenPageObject.tapSendButtonOnMediaEditScreen();
         ChatScreenPageObject.openSentPhotoInFullScreen();
         SharedMediaScreenPageObject.switchRightOrLeftBetweenMedia();
-        SharedMediaScreenPageObject.isEditButtonDisplayed();
+        SharedMediaScreenPageObject.assertEditButtonDisplayed();
         SharedMediaScreenPageObject.switchRightOrLeftBetweenMedia();
-        SharedMediaScreenPageObject.isEditButtonDisplayed();
+        SharedMediaScreenPageObject.assertEditButtonDisplayed();
 
     }
 
@@ -90,11 +90,11 @@ public class EditPhotoInChatTests extends ChatTestCase {
         ChatScreenPageObject.openSentGifInFullScreen();
         SharedMediaScreenPageObject SharedMediaScreenPageObject = SharedMediaPageObjectFactory.get(driver);
         SharedMediaScreenPageObject.switchRightOrLeftBetweenMedia();
-        SharedMediaScreenPageObject.isEditButtonNotDisplayed();
+        SharedMediaScreenPageObject.assertEditButtonNotDisplayed();
         SharedMediaScreenPageObject.switchRightOrLeftBetweenMedia();
-        SharedMediaScreenPageObject.isEditButtonNotDisplayed();
+        SharedMediaScreenPageObject.assertEditButtonNotDisplayed();
         SharedMediaScreenPageObject.switchRightOrLeftBetweenMedia();
-        SharedMediaScreenPageObject.isEditButtonNotDisplayed();
+        SharedMediaScreenPageObject.assertEditButtonNotDisplayed();
     }
 
     @Test
@@ -113,7 +113,7 @@ public class EditPhotoInChatTests extends ChatTestCase {
         StarredMessagesScreenPageObject StarredMessagesScreenPageObject = StarredMessagesScreenPageObjectFactory.get(driver);
         StarredMessagesScreenPageObject.tapOpenStarredPhotoInFullScreen();
         SharedMediaScreenPageObject SharedMediaScreenPageObject = SharedMediaPageObjectFactory.get(driver);
-        SharedMediaScreenPageObject.isEditButtonNotDisplayed();
+        SharedMediaScreenPageObject.assertEditButtonNotDisplayed();
         SharedMediaScreenPageObject.closeSharedMediaOpenChat();
     }
 
@@ -129,7 +129,7 @@ public class EditPhotoInChatTests extends ChatTestCase {
         SharedMediaScreenPageObject.openAllSharedMediaScreen();
         AllSharedMediaScreePageObject AllSharedMediaScreePageObject = AllSharedMediaScreePageObjectFactory.get(driver);
         AllSharedMediaScreePageObject.openSharedPhoto();
-        SharedMediaScreenPageObject.isEditButtonNotDisplayed();
+        SharedMediaScreenPageObject.assertEditButtonNotDisplayed();
     }
 
     @Test
@@ -145,7 +145,7 @@ public class EditPhotoInChatTests extends ChatTestCase {
         AllSharedMediaScreePageObject AllSharedMediaScreePageObject = AllSharedMediaScreePageObjectFactory.get(driver);
         AllSharedMediaScreePageObject.openSharedPhoto();
         SharedMediaScreenPageObject SharedMediaScreenPageObject = SharedMediaPageObjectFactory.get(driver);
-        SharedMediaScreenPageObject.isEditButtonNotDisplayed();
+        SharedMediaScreenPageObject.assertEditButtonNotDisplayed();
     }
 
     @Test
@@ -166,7 +166,7 @@ public class EditPhotoInChatTests extends ChatTestCase {
         StorageManagementScreenPageObject.openChatWithName(chat_name);
         StorageManagementScreenPageObject.openPhotoItemInFullScreen();
         SharedMediaScreenPageObject SharedMediaScreenPageObject = SharedMediaPageObjectFactory.get(driver);
-        SharedMediaScreenPageObject.isEditButtonNotDisplayed();
+        SharedMediaScreenPageObject.assertEditButtonNotDisplayed();
     }
 
     @Test
@@ -182,7 +182,7 @@ public class EditPhotoInChatTests extends ChatTestCase {
         SharedMediaScreenPageObject.openAllSharedMediaScreen();
         AllSharedMediaScreePageObject AllSharedMediaScreePageObject = AllSharedMediaScreePageObjectFactory.get(driver);
         AllSharedMediaScreePageObject.openSharedPhoto();
-        SharedMediaScreenPageObject.isEditButtonNotDisplayed();
+        SharedMediaScreenPageObject.assertEditButtonNotDisplayed();
     }
 
     @Test
@@ -194,7 +194,7 @@ public class EditPhotoInChatTests extends ChatTestCase {
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
         ChatScreenPageObject.openReceivedPhotoInFullScreen();
         SharedMediaScreenPageObject SharedMediaScreenPageObject = SharedMediaPageObjectFactory.get(driver);
-        SharedMediaScreenPageObject.isEditButtonNotDisplayed();
+        SharedMediaScreenPageObject.assertEditButtonNotDisplayed();
     }
 
     @Test
@@ -206,7 +206,7 @@ public class EditPhotoInChatTests extends ChatTestCase {
         SharedMediaScreenPageObject SharedMediaScreenPageObject = SharedMediaPageObjectFactory.get(driver);
         ChatScreenPageObject.openSentGroupOfMedia(chat_name);
         SharedMediaScreenPageObject.openMediaFromGroup();
-        SharedMediaScreenPageObject.isEditButtonNotDisplayed();
+        SharedMediaScreenPageObject.assertEditButtonNotDisplayed();
     }
 
     @Test
@@ -220,7 +220,7 @@ public class EditPhotoInChatTests extends ChatTestCase {
         ChatScreenPageObject.openSentPhotoInFullScreen();
         SharedMediaScreenPageObject SharedMediaScreenPageObject = SharedMediaPageObjectFactory.get(driver);
         this.rotateScreenLandscape();
-        SharedMediaScreenPageObject.isEditButtonDisplayed();
+        SharedMediaScreenPageObject.assertEditButtonDisplayed();
         SharedMediaScreenPageObject.tapOnEditPhotoButton();
         MediaEditScreenPageObject MediaEditScreenPageObject = MediaEditScreenPageObjectFactory.get(driver);
         MediaEditScreenPageObject.tapSendButtonOnMediaEditScreen();
@@ -237,7 +237,7 @@ public class EditPhotoInChatTests extends ChatTestCase {
         ChatScreenPageObject.waitForSentPhotoWitCaption(sent_photo_caption);
         ChatScreenPageObject.openSentPhotoWithCaptionInFullScreen(sent_photo_caption);
         SharedMediaScreenPageObject SharedMediaScreenPageObject = SharedMediaPageObjectFactory.get(driver);
-        SharedMediaScreenPageObject.isEditButtonDisplayed();
+        SharedMediaScreenPageObject.assertEditButtonDisplayed();
         SharedMediaScreenPageObject.tapOnEditPhotoButton();
         MediaEditScreenPageObject MediaEditScreenPageObject = MediaEditScreenPageObjectFactory.get(driver);
         MediaEditScreenPageObject.tapSendButtonOnMediaEditScreen();

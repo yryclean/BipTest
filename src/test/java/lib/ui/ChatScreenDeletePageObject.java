@@ -183,7 +183,7 @@ public abstract class ChatScreenDeletePageObject extends ChatScreenMessagePageOb
      * failure case is still covered — CoreTestCase's rule shoots the screen and
      * the page source whenever a test fails.
      */
-    public void isUndoPopUpDisplayed() {
+    public void assertUndoPopUpDisplayed() {
         this.waitForElementPresent(
                 UNDO_DELETE_FROM_ME_BAR,
                 "Undo pop-up is missing",
@@ -206,7 +206,7 @@ public abstract class ChatScreenDeletePageObject extends ChatScreenMessagePageOb
         );
     }
 
-    public void isUndoPopUpDisplayedForSeveralMassages() {
+    public void assertUndoPopUpDisplayedForSeveralMessages() {
         this.waitForElementPresent(
                 UNDO_DELETE_FROM_ME_BAR,
                 "Undo pop-up is missing",
@@ -224,7 +224,7 @@ public abstract class ChatScreenDeletePageObject extends ChatScreenMessagePageOb
         );
     }
 
-    public void assertUndoPopUpIsNotDisplayed() {
+    public void assertUndoPopUpNotDisplayed() {
         this.waitForElementNotPresent(
                 UNDO_DELETE_FROM_ME_BAR,
                 "Undo pop-up is still displayed",

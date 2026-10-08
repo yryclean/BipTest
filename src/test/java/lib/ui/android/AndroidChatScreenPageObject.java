@@ -28,6 +28,9 @@ public class AndroidChatScreenPageObject extends ChatScreenPageObject {
             // they sit behind the action bar's own overflow, which is a different
             // "More options" from the chat toolbar's, hence the action_mode_bar scope.
             ACTION_BAR_MENU_MORE_OPTIONS = "xpath://android.view.ViewGroup[@resource-id=\"com.turkcell.bip:id/action_mode_bar\"]//android.widget.ImageView[@content-desc=\"More options\"]";
+            // Every row of that overflow carries id/title; waiting for one is how
+            // we know the popup has finished animating in.
+            ACTION_BAR_MENU_ITEM = "id:com.turkcell.bip:id/title";
             EDIT_BUTTON = "xpath://android.widget.Button[@content-desc=\"Edit\"]";
             EDIT_PREVIEW_ABOVE_INPUT_BAR = "xpath://android.view.ViewGroup[@resource-id=\"com.turkcell.bip:id/edit_message_preview\"]";
             EDIT_MESSAGE_INPUT_BAR = "xpath://android.widget.EditText[@resource-id=\"com.turkcell.bip:id/chatEditText\"]";

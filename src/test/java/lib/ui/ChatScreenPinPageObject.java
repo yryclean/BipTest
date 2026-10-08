@@ -64,15 +64,37 @@ public abstract class ChatScreenPinPageObject extends ChatScreenSecretPageObject
         this.openActionBarOverflow();
         screenshot(this.takeScreenshot("no_pin_for_secret_message"));
         Assert.assertFalse(isElementPresent(PIN_MESSAGE_BUTTON));
-        this.waitForElementAndClick(sent_message_xpath, "Can't find and tap on sent message", 25);
+        this.closeActionBarOverflowAndDeselect(sent_message_xpath);
     }
 
-    public void isPinAvailable(String sent_message) {
+    public void assertPinAvailable(String sent_message) {
         this.waitForSentMessageWithName(sent_message);
         String sent_message_xpath = getSentMessageByXpathName(sent_message);
         this.longPressAction(sent_message_xpath);
         this.openActionBarOverflow();
         Assert.assertTrue(isElementPresent(PIN_MESSAGE_BUTTON));
+        this.closeActionBarOverflowAndDeselect(sent_message_xpath);
+    }
+
+    /**
+     * A check that only looks is still a check that selected a message and
+     * opened a menu. Left behind, the next long press extends that selection
+     * instead of starting a new one — and BiP does not offer the overflow for
+     * more than one selected message, so the following test fails nowhere near
+     * the method that caused it.
+     */
+    protected void closeActionBarOverflowAndDeselect(String sent_message_xpath) {
+        driver.navigate().back();
+        this.waitForElementAndClick(
+                sent_message_xpath,
+                "Can't tap the message to deselect it",
+                15
+        );
+        this.waitForElementNotPresent(
+                ACTION_BAR_MENU,
+                "The message is still selected",
+                15
+        );
     }
 
     /**
@@ -80,7 +102,7 @@ public abstract class ChatScreenPinPageObject extends ChatScreenSecretPageObject
      * The bar belongs to the whole conversation, so "nothing is pinned" made the
      * test depend on every pin any other test — or any earlier run — left behind.
      */
-    public void isMessageUnpinned(String sent_text) {
+    public void assertMessageUnpinned(String sent_text) {
         String pinned_text = getPinnedMessageInBarByText(sent_text);
         this.waitForElementNotPresent(pinned_text,
                 "Message is still pinned in the pin bar",
@@ -102,7 +124,13 @@ public abstract class ChatScreenPinPageObject extends ChatScreenSecretPageObject
         );
     }
 
-    /** Pin and Unpin moved out of the action bar itself and into its overflow. */
+    /**
+     * Pin and Unpin moved out of the action bar itself and into its overflow.
+     * Returns only once the popup has something in it: the callers go straight
+     * from here to a presence check, and an unsettled menu makes those checks
+     * lie in both directions — a missing Pin, or an absent-looking one that is
+     * merely still animating in.
+     */
     protected void openActionBarOverflow() {
         this.waitForElementPresent(
                 ACTION_BAR_MENU,
@@ -114,13 +142,18 @@ public abstract class ChatScreenPinPageObject extends ChatScreenSecretPageObject
                 "Can't open the action bar overflow",
                 15
         );
+        this.waitForElementPresent(
+                ACTION_BAR_MENU_ITEM,
+                "The action bar overflow did not open",
+                15
+        );
     }
 
     public void longPressAndUnPinSentMessage(String sent_message, String sent_text) {
         String sent_message_xpath = getSentMessageByXpathName(sent_message);
         this.longPressAction(sent_message_xpath);
         this.selectUnPinMessage();
-        this.isMessageUnpinned(sent_text);
+        this.assertMessageUnpinned(sent_text);
     }
 
     public void selectUnPinMessage() {
