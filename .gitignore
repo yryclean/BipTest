@@ -1,0 +1,52 @@
+# --- Maven ---
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+release.properties
+dependency-reduced-pom.xml
+
+# --- Allure ---
+allure-results/
+allure-report/
+.allure/
+
+# --- Test artifacts ---
+*_screenshot.png
+screenshots/
+
+# --- IntelliJ IDEA ---
+# .idea/ itself is tracked (IntelliJ curates it via .idea/.gitignore),
+# but per-developer files must never be.
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/usage.statistics.xml
+.idea/shelf/
+.idea/dictionaries/
+.idea/httpRequests/
+.idea/dataSources/
+.idea/dataSources.local.xml
+*.iml
+*.ipr
+*.iws
+out/
+
+# --- Eclipse / VS Code ---
+.classpath
+.project
+.settings/
+.vscode/
+
+# --- macOS ---
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# --- Logs ---
+*.log
+logs/
+
+# --- Local secrets / env overrides ---
+.env
+local.properties
