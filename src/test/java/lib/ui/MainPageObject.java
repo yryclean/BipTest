@@ -250,6 +250,16 @@ public class MainPageObject {
     }
 
     public By getLocatorByString(String locator_with_type) {
+        if (locator_with_type == null) {
+            // Page object fields are plain statics, so one the current platform
+            // never filled in is simply null, and the split below would blame a
+            // NullPointerException on this line instead of on the screen that
+            // has no such control. Say what actually happened.
+            throw new IllegalStateException(
+                    "This locator is not set for platform " + Platform.getInstance().getPlatformVar()
+                            + " — the control it names has not been found on this platform's screen. "
+                            + "See the page object for which fields were left unset and why.");
+        }
         String[] explode_locator = locator_with_type.split(Pattern.quote(":"), 2);
         String by_type = explode_locator[0];
         String locator = explode_locator[1];
@@ -298,16 +308,25 @@ public class MainPageObject {
      * the page objects, which differ only in their locators.
      */
     public void longPressAction(String locator) {
+        this.longPressAction(locator, LONG_PRESS_MS);
+    }
+
+    /**
+     * The same press held for a caller-chosen time. Audio recording needs a
+     * longer hold than a context menu does, and that is the only reason the
+     * duration is a parameter — the platform branching stays here either way.
+     */
+    public void longPressAction(String locator, int duration_ms) {
         WebElement message_element = this.waitForElementPresent(locator, "Can't find message", 15);
         String element_id = ((RemoteWebElement) message_element).getId();
         if (Platform.getInstance().isAndroid()) {
             ((JavascriptExecutor) driver).executeScript("mobile: longClickGesture",
                     Map.of("elementId", element_id,
-                            "duration", LONG_PRESS_MS));
+                            "duration", duration_ms));
         } else {
             ((JavascriptExecutor) driver).executeScript("mobile: touchAndHold",
                     Map.of("elementId", element_id,
-                            "duration", LONG_PRESS_MS / 1000.0));
+                            "duration", duration_ms / 1000.0));
         }
     }
 

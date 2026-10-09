@@ -30,6 +30,7 @@ public class MediaEditScreenPageObject extends MainPageObject {
         );
     }
     public void tapGifButton() {
+        this.openMediaEditor();
         this.waitForElementAndClick(
                 GIF_BUTTON,
                 "Can't find and tap Gif button",
@@ -45,6 +46,15 @@ public class MediaEditScreenPageObject extends MainPageObject {
             System.out.println("Gif pop-up not displayed");
         }
     }
+    /**
+     * iOS keeps two screens where Android now keeps one: the picker's send bar
+     * carries the caption and Send, but trimming, HD and GIF live a level
+     * deeper, behind the send bar's preview. Captioning does not need that
+     * level, so only the steps that do go through here.
+     */
+    protected void openMediaEditor() {
+    }
+
     public void addCaption(String caption_text) {
         this.waitForElementAndClick(
                 INPUT_BAR,

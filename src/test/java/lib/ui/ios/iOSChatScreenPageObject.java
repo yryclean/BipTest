@@ -47,12 +47,27 @@ public class iOSChatScreenPageObject extends ChatScreenPageObject {
      */
     private static final int BACKDROP_TAP_Y = 70;
 
+    /**
+     * Takes the place of the plus on the input bar while an input panel — the
+     * attach sheet, the sticker tray — is open, and puts the keyboard back.
+     * Its absence the rest of the time is what makes it a reliable handle.
+     */
+    private static final String INPUT_PANEL_KEYBOARD_BUTTON = "id:stickersTabKeyboardButton";
+
     static {
             // ---- chat list -> chat -------------------------------------------------
             // Scoped to the visible cell: the list keeps recycled rows for the same
             // chat off-screen, and without this the tap goes to one of those.
             CHAT_WITH_NAME_TPL = "xpath://XCUIElementTypeCell[@name=\"chat_id\" and @visible=\"true\"]//XCUIElementTypeStaticText[@name=\"{CHAT_NAME}\"]";
             CHAT_SCREEN_BACK_TO_CHAT_LIST_BUTTON = "id:BackButton";
+
+            // ---- chat -> contact info ---------------------------------------------
+            // The title is a StaticText, not a button — the whole header area is one
+            // tap target and the label is simply the piece of it that has a name.
+            // The avatar beside it ("avatar_view_button") opens the same page.
+            CONTACT_INFO_PLACE_HOLDER = "id:ChatPagePageTitleLabel";
+            CONTACT_INFO_SCREEN_ACTIVITY = "xpath://XCUIElementTypeNavigationBar[@name=\"Contact info\"]";
+            CONTACT_INFO_SCREEN_BACK_BUTTON = "id:BackButton";
 
             // ---- message bubbles ---------------------------------------------------
             SENT_MESSAGE_BUBBLE_TPL = "xpath://XCUIElementTypeOther[@name=\"MessageTextLabel\" and starts-with(@label,\"Outgoing Messages,{SENT_MESSAGE},\")]";
@@ -109,11 +124,47 @@ public class iOSChatScreenPageObject extends ChatScreenPageObject {
             PINNED_MESSAGE_IN_PIN_BAR_TPL = "xpath://XCUIElementTypeButton[@name=\"Pinned message\"]//XCUIElementTypeStaticText[@name=\"{TEXT}\"]";
             YOU_PINNED_INFO_MESSAGE = "xpath://XCUIElementTypeOther[@name=\"ChatPageMessageCellInfo\" and @label=\"You pinned a message\"]";
 
+            // ---- attach menu -------------------------------------------------------
+            // Not a "Share" icon as on Android: the plus on the input bar.
+            ATTACHMENT_MENU_BUTTON = "id:inputMenuButton";
+            // The sheet has no container of its own either; Gallery is its first row
+            // and is present for as long as the sheet is.
+            ATTACHMENT_MENU_BAR = "xpath://XCUIElementTypeCell[@name=\"GalleryCell\"]";
+            ATTACHMENT_MENU_GALLERY = "xpath://XCUIElementTypeCell[@name=\"GalleryCell\"]";
+            // Photos and videos live in one roll here, and each cell is named after
+            // what it holds — so the kind is in the item locator, and the Photos and
+            // Videos tabs Android needs have no counterpart. See the tab hooks below.
+            ATTACHMENT_MENU_GALLERY_SELECT_PHOTO = "xpath://XCUIElementTypeCell[@name=\"Photo\"]";
+            ATTACHMENT_MENU_GALLERY_SELECT_VIDEO = "xpath://XCUIElementTypeCell[@name=\"Video\"]";
+            // On iOS this is in the attach sheet, not behind the three dots.
+            SECRET_MESSAGE_BUTTON = "xpath://XCUIElementTypeCell[@name=\"Secret messageCell\"]";
+
+            // ---- media bubbles -----------------------------------------------------
+            // Same folded-label shape as the text bubbles, carried in @name here.
+            // No @visible on these: unlike the menu rows there is only ever one node
+            // per bubble, so the flag means "currently scrolled into view" rather
+            // than "real" — and the callers are asking whether the chat holds a
+            // photo at all, not whether it happens to be on screen.
+            SENT_MESSAGE_PHOTO = "xpath://XCUIElementTypeOther[starts-with(@name,\"Outgoing Messages,Photo,\")]";
+            SENT_MESSAGE_VIDEO = "xpath://XCUIElementTypeOther[starts-with(@name,\"Outgoing Messages,Video,\")]";
+            RECEIVED_MESSAGE_PHOTO = "xpath://XCUIElementTypeOther[starts-with(@name,\"Received Messages,Photo,\")]";
+            // A caption is spliced in ahead of the kind, not after it:
+            // "Outgoing Messages,<caption>, Photo,,,at 6:30 PM,…". Which also means
+            // SENT_MESSAGE_PHOTO above only ever matches an uncaptioned photo.
+            SENT_MESSAGE_PHOTO_CAPTION_TPL = "xpath://XCUIElementTypeOther[starts-with(@name,\"Outgoing Messages,{CAPTION}, Photo,\")]";
+            SENT_MESSAGE_VIDEO_PLAY_ICON = "id:ChatMediaDownloadViewPlayButton";
+            RECEIVED_MESSAGE_DOWNLOAD_BUTTON = "id:ChatMediaDownloadViewDownloadIcon";
+            // Android has a literal clock icon; iOS shows a progress ring instead,
+            // one for compressing and one for uploading, and the names differ by
+            // media kind. The union covers all four — which is what the caller is
+            // really asking: is this bubble still on its way out.
+            SENT_MESSAGE_CLOCK_ICON = "xpath://*[contains(@name,\"MediaDownloadView\") and contains(@name,\"ProgressView\")]";
+
             // Not captured yet, and deliberately left null rather than guessed:
-            // the attach menu and gallery, secret messages, clear chat, the contact
-            // info screen, the Wi-Fi pop-up, the pin limit warning, unpinning from
-            // the pin bar, and the star icon on a bubble. Everything above was read
-            // off the device; these screens have not been walked there.
+            // audio, gif and grouped-media bubbles, the gif play icon, clear chat,
+            // the contact info screen, the Wi-Fi pop-up, the pin limit warning,
+            // unpinning from the pin bar, and the star icon on a bubble. Everything
+            // above was read off the device; these have not been reached there.
     }
 
     public iOSChatScreenPageObject (AppiumDriver driver)
@@ -156,6 +207,32 @@ public class iOSChatScreenPageObject extends ChatScreenPageObject {
         this.waitForElementNotPresent(
                 ACTION_BAR_MENU,
                 "The context menu is still open",
+                15
+        );
+    }
+
+    /** One roll, no tabs — the kind is already in the item locator. */
+    @Override
+    protected void openGalleryPhotosTab() {
+    }
+
+    /** @see #openGalleryPhotosTab() */
+    @Override
+    protected void openGalleryVideosTab() {
+    }
+
+    /**
+     * No hardware back on iOS, and the sheet has no Cancel of its own — it is
+     * an input-bar panel, and the way back from a panel is the keyboard toggle
+     * that replaces the plus while one is open. Which is also why this is a
+     * safe marker: the button exists only while a panel is up. The keyboard
+     * comes up with it; nothing downstream of closeAttachMenuBar() minds.
+     */
+    @Override
+    protected void dismissAttachMenuBar() {
+        this.waitForElementAndClick(
+                INPUT_PANEL_KEYBOARD_BUTTON,
+                "Can't tap the keyboard button to close the attach menu",
                 15
         );
     }

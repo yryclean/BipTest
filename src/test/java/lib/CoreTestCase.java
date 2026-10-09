@@ -140,20 +140,45 @@ public class CoreTestCase {
             e.printStackTrace();
         }
     }
-    public void enableAirplaneMode() {
-        ((AndroidDriver) driver).toggleAirplaneMode();
+    /**
+     * These four are Android's alone. Toggling radios and pressing a hardware
+     * back key are things UiAutomator2 can do to the device and XCUITest
+     * cannot — not a locator we have yet to find, but an API that does not
+     * exist for a real iPhone.
+     *
+     * <p>The guard matters most for the two connection methods. They used to
+     * swallow every exception, so on iOS the cast failed, the catch printed
+     * "Connection could not be switch OFF", and the test carried on asserting
+     * offline behaviour over a live network — green for the wrong reason. A
+     * test that cannot establish its own precondition has to stop.
+     */
+    private void requireAndroid(String what) {
+        if (!Platform.getInstance().isAndroid()) {
+            throw new UnsupportedOperationException(
+                    what + " is only possible on Android: XCUITest cannot change "
+                            + "this on a real iOS device. The test needs a different "
+                            + "precondition here, not a different locator.");
+        }
+    }
 
+    public void enableAirplaneMode() {
+        requireAndroid("Toggling airplane mode");
+        ((AndroidDriver) driver).toggleAirplaneMode();
     }
+
     public void enableAllInternetConnection() {
-            try {
-                ((AndroidDriver) driver).setConnection(new ConnectionStateBuilder().withWiFiEnabled().build());
-                System.out.println("Switching On the connection: " + ((AndroidDriver) driver).getConnection());
-            } catch (Exception e) {
-                System.out.println("Connection could not be switch ON");
-            }
+        requireAndroid("Switching the connection on");
+        try {
+            ((AndroidDriver) driver).setConnection(new ConnectionStateBuilder().withWiFiEnabled().build());
+            System.out.println("Switching On the connection: " + ((AndroidDriver) driver).getConnection());
+        } catch (Exception e) {
+            System.out.println("Connection could not be switch ON");
+        }
     }
+
     //one more solution to turn off internet connection
     public void setAllConnectionToOFF() {
+        requireAndroid("Switching the connection off");
         try {
             ((AndroidDriver) driver).setConnection(new ConnectionStateBuilder().withWiFiDisabled().build());
             System.out.println("Switching OFF the connection : " + ((AndroidDriver) driver).getConnection());
@@ -161,7 +186,9 @@ public class CoreTestCase {
             System.out.println("Connection could not be switch OFF");
         }
     }
+
     public void clickBackButton(){
+        requireAndroid("Pressing the hardware Back key");
         ((AndroidDriver) driver).pressKey(new KeyEvent(AndroidKey.BACK));
     }
 }

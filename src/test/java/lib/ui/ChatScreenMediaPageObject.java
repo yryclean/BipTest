@@ -3,11 +3,6 @@ package lib.ui;
 import io.appium.java_client.AppiumDriver;
 import lib.ui.factories.MediaEditScreenPageObjectFactory;
 import org.junit.Assert;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.RemoteWebElement;
-
-import java.util.Map;
 
 /**
  * Attachments and media bubbles: picking a photo/video/gif from the gallery,
@@ -16,6 +11,9 @@ import java.util.Map;
  * @see ChatScreenPageObject for the full layering.
  */
 public abstract class ChatScreenMediaPageObject extends ChatScreenDeletePageObject {
+
+    /** How long to hold the mic button for a recording worth sending. */
+    private static final int RECORD_AUDIO_MS = 3000;
 
     protected static String
             ATTACHMENT_MENU_BUTTON,
@@ -69,11 +67,7 @@ public abstract class ChatScreenMediaPageObject extends ChatScreenDeletePageObje
      */
     public void openAttachMenuAndSelectPhoto() {
         this.openAttachMenuAndOpenGallery();
-        this.waitForElementAndClick(
-                ATTACHMENT_MENU_GALLERY_PHOTOS,
-                "Can't find Photos tab in Gallery",
-                15
-        );
+        this.openGalleryPhotosTab();
         this.waitForElementAndClick(
                 ATTACHMENT_MENU_GALLERY_SELECT_PHOTO,
                 "Can't find photo to select",
@@ -83,14 +77,33 @@ public abstract class ChatScreenMediaPageObject extends ChatScreenDeletePageObje
 
     public void openAttachMenuAndSelectVideo() {
         this.openAttachMenuAndOpenGallery();
-        this.waitForElementAndClick(
-                ATTACHMENT_MENU_GALLERY_VIDEOS,
-                "Can't find Videos tab in Gallery",
-                15
-        );
+        this.openGalleryVideosTab();
         this.waitForElementAndClick(
                 ATTACHMENT_MENU_GALLERY_SELECT_VIDEO,
                 "Can't find video to select",
+                15
+        );
+    }
+
+    /**
+     * Android's gallery splits its contents across Photos and Videos tabs, so
+     * picking a photo means switching to the right one first. iOS has no tabs —
+     * one roll holds both, and the item locator carries the kind — so there the
+     * step is nothing at all rather than a tap on something that isn't there.
+     */
+    protected void openGalleryPhotosTab() {
+        this.waitForElementAndClick(
+                ATTACHMENT_MENU_GALLERY_PHOTOS,
+                "Can't find Photos tab in Gallery",
+                15
+        );
+    }
+
+    /** @see #openGalleryPhotosTab() */
+    protected void openGalleryVideosTab() {
+        this.waitForElementAndClick(
+                ATTACHMENT_MENU_GALLERY_VIDEOS,
+                "Can't find Videos tab in Gallery",
                 15
         );
     }
@@ -104,19 +117,27 @@ public abstract class ChatScreenMediaPageObject extends ChatScreenDeletePageObje
         );
     }
 
-    /** The sheet has no touch-outside layer any more; hardware back dismisses it. */
     public void closeAttachMenuBar() {
         this.waitForElementPresent(
                 ATTACHMENT_MENU_BAR,
                 "Attach menu is not displayed",
                 15
         );
-        driver.navigate().back();
+        this.dismissAttachMenuBar();
         this.waitForElementNotPresent(
                 ATTACHMENT_MENU_BAR,
                 "Attach menu is still displayed",
                 15
         );
+    }
+
+    /**
+     * The sheet has no touch-outside layer on Android any more, so hardware
+     * back dismisses it. iOS has no hardware back at all, and
+     * {@code navigate().back()} there is a no-op at best.
+     */
+    protected void dismissAttachMenuBar() {
+        driver.navigate().back();
     }
 
     public void selectPhotoMessageIfNeeded() {
@@ -129,8 +150,8 @@ public abstract class ChatScreenMediaPageObject extends ChatScreenDeletePageObje
         }
     }
 
-    public void selectPhotoWithCaption(String sent_photo_caption, String caption_text) {
-        String sent_photo_xpath = getSentPhotoCaptionMessageByXpathName(sent_photo_caption);
+    public void selectPhotoWithCaption(String caption_text) {
+        String sent_photo_xpath = getSentPhotoCaptionMessageByXpathName(caption_text);
         if (isElementPresent(sent_photo_xpath)) {
             System.out.println("Photo with caption already displayed in chat");
         } else {
@@ -170,15 +191,9 @@ public abstract class ChatScreenMediaPageObject extends ChatScreenDeletePageObje
         }
     }
 
-    /** Not longPressAction(): the mic needs a 3 s hold, that helper holds for 2 s. */
+    /** The mic needs a longer hold than a context menu, hence the explicit duration. */
     public void recordAudioMessage() {
-        WebElement element = this.waitForElementPresent(
-                RECORD_AUDIO_BUTTON,
-                "Can't find the record audio button",
-                15
-        );
-        ((JavascriptExecutor) driver).executeScript("mobile: longClickGesture",
-                Map.of("elementId", ((RemoteWebElement) element).getId(), "duration", 3000));
+        this.longPressAction(RECORD_AUDIO_BUTTON, RECORD_AUDIO_MS);
     }
 
     public void waitForSentPhoto() {
@@ -218,8 +233,8 @@ public abstract class ChatScreenMediaPageObject extends ChatScreenDeletePageObje
         }
     }
 
-    public void openSentPhotoWithCaptionInFullScreen(String sent_photo_caption) {
-        String sent_photo_xpath = getSentPhotoCaptionMessageByXpathName(sent_photo_caption);
+    public void openSentPhotoWithCaptionInFullScreen(String caption_text) {
+        String sent_photo_xpath = getSentPhotoCaptionMessageByXpathName(caption_text);
         if (isElementPresent(SENT_MESSAGE_CLOCK_ICON)) {
             this.waitForElementNotPresent(
                     SENT_MESSAGE_CLOCK_ICON,

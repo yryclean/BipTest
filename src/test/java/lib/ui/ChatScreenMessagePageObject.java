@@ -38,11 +38,11 @@ public abstract class ChatScreenMessagePageObject extends ChatScreenNavigationPa
         );
     }
 
-    public void waitForSentPhotoWitCaption(String sent_photo_caption) {
-        String sent_photo_xpath = getSentPhotoCaptionMessageByXpathName(sent_photo_caption);
+    public void waitForSentPhotoWitCaption(String caption_text) {
+        String sent_photo_xpath = getSentPhotoCaptionMessageByXpathName(caption_text);
         this.waitForElementPresent(
                 (sent_photo_xpath),
-                "Cannot find message " + sent_photo_caption,
+                "Cannot find message " + caption_text,
                 15
         );
     }

@@ -14,7 +14,9 @@ public class AndroidChatScreenPageObject extends ChatScreenPageObject {
             RECEIVED_MESSAGE_PHOTO = "xpath://android.widget.LinearLayout[@content-desc=\"Received message Photo\"]";
             RECEIVED_MESSAGE_DOWNLOAD_BUTTON = "xpath://android.widget.ImageView[@content-desc=\"Download\"]";
             SENT_MESSAGE_PHOTO = "xpath://android.widget.LinearLayout[@content-desc=\"Sent message Photo\"]";
-            SENT_MESSAGE_PHOTO_CAPTION_TPL = "xpath://android.widget.LinearLayout[@content-desc='{CAPTION}']";
+            // Same contract as the text bubbles: the template owns the platform's
+            // accessibility wording, the test passes only the caption it typed.
+            SENT_MESSAGE_PHOTO_CAPTION_TPL = "xpath://android.widget.LinearLayout[@content-desc='Sent message Photo {CAPTION}']";
             SENT_MESSAGE_CLOCK_ICON = "xpath://android.widget.ImageView[@content-desc=\"Waiting\"]";
             SENT_MESSAGE_VIDEO = "xpath://android.widget.LinearLayout[@content-desc=\"Sent message Video\"]";
             SENT_MESSAGE_VIDEO_PLAY_ICON = "id:com.turkcell.bip:id/chatItemImagePlay";

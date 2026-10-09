@@ -46,8 +46,8 @@ public abstract class ChatScreenNavigationPageObject extends MainPageObject {
         return RECEIVED_MESSAGE_TPL.replace("{RECEIVED_MESSAGE}", received_message_name);
     }
 
-    protected static String getSentPhotoCaptionMessageByXpathName(String sent_photo_caption) {
-        return SENT_MESSAGE_PHOTO_CAPTION_TPL.replace("{CAPTION}", sent_photo_caption);
+    protected static String getSentPhotoCaptionMessageByXpathName(String caption_text) {
+        return SENT_MESSAGE_PHOTO_CAPTION_TPL.replace("{CAPTION}", caption_text);
     }
 
     public void waitForChatName(String chat_name) {

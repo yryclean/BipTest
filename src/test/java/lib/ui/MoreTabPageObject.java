@@ -1,7 +1,6 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.AppiumBy;
 
 abstract public class MoreTabPageObject extends MainPageObject {
     protected static String
@@ -20,9 +19,18 @@ abstract public class MoreTabPageObject extends MainPageObject {
             15
     );
 }
+    /**
+     * Was a UiAutomator scrollIntoView, which only exists on Android and spelled
+     * the row's label a second time — so the one place the label is supposed to
+     * live, {@code SETTINGS_OPTION_MORE}, was not the place that found it. The
+     * generic swipe works on both platforms and takes the locator it already has.
+     */
     public void scrollToSettings() {
-//        driver.findElement(AppiumBy.androidUIAutomator("new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().textContains('Settings').instance(0))"));
-        driver.findElement(AppiumBy.androidUIAutomator("new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(text(\"Settings \"))"));
+        this.swipeUpToFindElement(
+                SETTINGS_OPTION_MORE,
+                "Can't find Settings in the More tab",
+                5
+        );
     }
     public void openSettingsScreen() {
         this.waitForElementAndClick(

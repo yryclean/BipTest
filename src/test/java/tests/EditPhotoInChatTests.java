@@ -11,9 +11,7 @@ public class EditPhotoInChatTests extends ChatTestCase {
             chat_name = "Yury Chistyakov",
             chat_name_channel_non_admin = "Not_admin_channel";
 
-    private final String
-            caption_text = messageText("Hello-hello!"),
-            sent_photo_caption = "Sent message Photo " + caption_text;
+    private final String caption_text = messageText("Hello-hello!");
 
     @Test
     @Description("Edit button available for photo on full screen preview")
@@ -233,9 +231,9 @@ public class EditPhotoInChatTests extends ChatTestCase {
         MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
         MessagesTabPageObject.openChatWithName(chat_name);
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
-        ChatScreenPageObject.selectPhotoWithCaption(sent_photo_caption, caption_text);
-        ChatScreenPageObject.waitForSentPhotoWitCaption(sent_photo_caption);
-        ChatScreenPageObject.openSentPhotoWithCaptionInFullScreen(sent_photo_caption);
+        ChatScreenPageObject.selectPhotoWithCaption(caption_text);
+        ChatScreenPageObject.waitForSentPhotoWitCaption(caption_text);
+        ChatScreenPageObject.openSentPhotoWithCaptionInFullScreen(caption_text);
         SharedMediaScreenPageObject SharedMediaScreenPageObject = SharedMediaPageObjectFactory.get(driver);
         SharedMediaScreenPageObject.assertEditButtonDisplayed();
         SharedMediaScreenPageObject.tapOnEditPhotoButton();
