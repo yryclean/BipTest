@@ -31,24 +31,23 @@ public abstract class ChatScreenPinPageObject extends ChatScreenSecretPageObject
         super(driver);
     }
 
-    public void longPressAndPinSentMessage(String sent_message, String sent_text) {
-        String sent_message_xpath = getSentMessageByXpathName(sent_message);
+    public void longPressAndPinSentMessage(String sent_text) {
+        String sent_message_xpath = getSentMessageByXpathName(sent_text);
         this.longPressAction(sent_message_xpath);
         this.selectPinButton();
-        String pinned_message_text_in_bar = this.waitForElementAndGetText(
-                PINNED_MESSAGE_IN_PIN_BAR,
-                "Can't find text in pin bar",
-                20
-        );
-        Assert.assertEquals(pinned_message_text_in_bar, sent_text);
-        Assert.assertTrue(isElementPresent(YOU_PINNED_INFO_MESSAGE));
+        this.assertMessagePinned(sent_text);
     }
 
-    public void longPressAndPinSentMessageWhenLimitReached(String sent_message, String sent_text) {
-        String sent_message_xpath = getSentMessageByXpathName(sent_message);
+    public void longPressAndPinSentMessageWhenLimitReached(String sent_text) {
+        String sent_message_xpath = getSentMessageByXpathName(sent_text);
         this.longPressAction(sent_message_xpath);
         this.selectPinButton();
         this.removePreviousPinnedMessage();
+        this.assertMessagePinned(sent_text);
+    }
+
+    /** The pin bar shows this message, and the chat says we are the one who pinned it. */
+    private void assertMessagePinned(String sent_text) {
         String pinned_message_text_in_bar = this.waitForElementAndGetText(
                 PINNED_MESSAGE_IN_PIN_BAR,
                 "Can't find text in pin bar",
@@ -149,8 +148,8 @@ public abstract class ChatScreenPinPageObject extends ChatScreenSecretPageObject
         );
     }
 
-    public void longPressAndUnPinSentMessage(String sent_message, String sent_text) {
-        String sent_message_xpath = getSentMessageByXpathName(sent_message);
+    public void longPressAndUnPinSentMessage(String sent_text) {
+        String sent_message_xpath = getSentMessageByXpathName(sent_text);
         this.longPressAction(sent_message_xpath);
         this.selectUnPinMessage();
         this.assertMessageUnpinned(sent_text);
@@ -207,8 +206,8 @@ public abstract class ChatScreenPinPageObject extends ChatScreenSecretPageObject
         Assert.assertEquals(pinned, sent_text);
     }
 
-    public void editPinnedMessage(String sent_message, String edited_message, String edited_text) {
-        String sent_message_xpath = getSentMessageByXpathName(sent_message);
+    public void editPinnedMessage(String sent_text, String edited_text) {
+        String sent_message_xpath = getSentMessageByXpathName(sent_text);
         this.waitForElementPresent(sent_message_xpath,
                 "Can't find sent message",
                 25
@@ -233,7 +232,7 @@ public abstract class ChatScreenPinPageObject extends ChatScreenSecretPageObject
                 "Can't tap on the Send button",
                 25);
 
-        this.waitForSentMessageWithName(edited_message);
+        this.waitForSentMessageWithName(edited_text);
         String edited_message_in_pin_bar = this.waitForElementAndGetText(PINNED_MESSAGE_IN_PIN_BAR,
                 "Can't get text from pinned message bar",
                 25);

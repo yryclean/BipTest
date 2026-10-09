@@ -49,6 +49,10 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElemen
  * {@code void} method hides the assertion from whoever reads the test.
  */
 public class MainPageObject {
+
+    /** How long a long press holds. BiP's action bar needs well over a second. */
+    private static final int LONG_PRESS_MS = 2000;
+
     protected AppiumDriver driver;
 
     public MainPageObject(AppiumDriver driver) {
@@ -286,11 +290,25 @@ public class MainPageObject {
         return path;
     }
 
+    /**
+     * Long press, which the two drivers spell differently: UiAutomator2 has
+     * {@code mobile: longClickGesture} and takes milliseconds, XCUITest has
+     * {@code mobile: touchAndHold} and takes seconds. Neither script exists on
+     * the other platform, so this has to branch — it cannot be pushed down into
+     * the page objects, which differ only in their locators.
+     */
     public void longPressAction(String locator) {
         WebElement message_element = this.waitForElementPresent(locator, "Can't find message", 15);
-        ((JavascriptExecutor)driver).executeScript("mobile: longClickGesture",
-                Map.of("elementId",((RemoteWebElement)message_element).getId(),
-                        "duration",2000));
+        String element_id = ((RemoteWebElement) message_element).getId();
+        if (Platform.getInstance().isAndroid()) {
+            ((JavascriptExecutor) driver).executeScript("mobile: longClickGesture",
+                    Map.of("elementId", element_id,
+                            "duration", LONG_PRESS_MS));
+        } else {
+            ((JavascriptExecutor) driver).executeScript("mobile: touchAndHold",
+                    Map.of("elementId", element_id,
+                            "duration", LONG_PRESS_MS / 1000.0));
+        }
     }
 
     @Attachment

@@ -5,13 +5,12 @@ import lib.ui.ChatScreenPageObject;
 public class AndroidChatScreenPageObject extends ChatScreenPageObject {
     static {
             CHAT_WITH_NAME_TPL = "xpath://android.widget.TextView[@content-desc='{CHAT_NAME}']";
-            CHAT_WITH_NAME = "xpath://android.widget.TextView[@content-desc='Yury Chistyakov']";
             INPUT_BAR_FIELD = "id:com.turkcell.bip:id/chatEditText";
             SEND_MESSAGE_BUTTON = "id:com.turkcell.bip:id/iv_chat_send"; //android.widget.ImageButton[@content-desc="Send"]
-            SENT_MESSAGE_BUBBLE_TPL = "xpath://android.widget.TextView[@content-desc='{SENT_MESSAGE}']";
+            SENT_MESSAGE_BUBBLE_TPL = "xpath://android.widget.TextView[@content-desc='Sent message {SENT_MESSAGE}']";
             SENT_MESSAGE_MEDIA_GROUPED = "xpath://android.widget.LinearLayout[@content-desc=\"Sent message Grouped Media\"]";
             RECEIVED_MESSAGE_MEDIA_GROUPED = "xpath://android.widget.LinearLayout[@content-desc=\"Received message Grouped Media\"]";
-            RECEIVED_MESSAGE_TPL = "xpath://android.widget.TextView[@content-desc='{RECEIVED_MESSAGE}']";
+            RECEIVED_MESSAGE_TPL = "xpath://android.widget.TextView[@content-desc='Received message {RECEIVED_MESSAGE}']";
             RECEIVED_MESSAGE_PHOTO = "xpath://android.widget.LinearLayout[@content-desc=\"Received message Photo\"]";
             RECEIVED_MESSAGE_DOWNLOAD_BUTTON = "xpath://android.widget.ImageView[@content-desc=\"Download\"]";
             SENT_MESSAGE_PHOTO = "xpath://android.widget.LinearLayout[@content-desc=\"Sent message Photo\"]";
@@ -99,14 +98,19 @@ public class AndroidChatScreenPageObject extends ChatScreenPageObject {
 
 
 
-
-
-
-
     }
     public AndroidChatScreenPageObject (AppiumDriver driver)
     {
         super(driver);
     }
 
+    /** The radio button only picks a scope; the dialog commits on its OK. */
+    @Override
+    protected void applyDeleteChoice() {
+        this.waitForElementAndClick(
+                OK_DELETE_FROM_ME,
+                "Can't tap on OK button",
+                15
+        );
+    }
 }

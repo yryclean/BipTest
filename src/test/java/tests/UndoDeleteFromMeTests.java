@@ -13,13 +13,11 @@ public class UndoDeleteFromMeTests extends ChatTestCase {
     // cannot be tagged; everything this suite types itself is.
     private static final String
             chat_name = "Yury Chistyakov",
-            received_message = "Received message Test1";
+            received_message = "Test1";
 
     private final String
-            send_message = messageText("Test1"),
-            sent_message = sentBubble("Test1"),
-            send_message_new = messageText("Test2"),
-            sent_message_new = sentBubble("Test2");
+            message = messageText("Test1"),
+            message_new = messageText("Test2");
 
     @Test
     @Description("Undo pop-up appears on chat screen for sent messages")
@@ -27,8 +25,8 @@ public class UndoDeleteFromMeTests extends ChatTestCase {
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
         MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
         MessagesTabPageObject.openChatWithName(chat_name);
-        ChatScreenPageObject.sendMessageIfNeeded(send_message,sent_message);
-        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_message);
+        ChatScreenPageObject.sendMessageIfNeeded(message);
+        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(message);
         ChatScreenPageObject.assertUndoPopUpDisplayed();
         ChatScreenPageObject.assertUndoPopUpNotDisplayed();
     }
@@ -51,10 +49,10 @@ public class UndoDeleteFromMeTests extends ChatTestCase {
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
         MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
         MessagesTabPageObject.openChatWithName(chat_name);
-        ChatScreenPageObject.sendMessageIfNeeded(send_message,sent_message);
-        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_message);
+        ChatScreenPageObject.sendMessageIfNeeded(message);
+        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(message);
         ChatScreenPageObject.assertUndoPopUpDisplayed();
-        ChatScreenPageObject.undoRestoreDeletedMessageFromMe(sent_message);
+        ChatScreenPageObject.undoRestoreDeletedMessageFromMe(message);
     }
     @Test
     @Description("Undo pop-up appears for multiple messages")
@@ -63,8 +61,8 @@ public class UndoDeleteFromMeTests extends ChatTestCase {
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
         MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
         MessagesTabPageObject.openChatWithName(chat_name);
-        ChatScreenPageObject.sendMessageIfNeeded(send_message,sent_message);
-        ChatScreenPageObject.deleteSeveralMessagesFromMe(sent_message, received_message);
+        ChatScreenPageObject.sendMessageIfNeeded(message);
+        ChatScreenPageObject.deleteSeveralMessagesFromMe(message, received_message);
         ChatScreenPageObject.assertUndoPopUpDisplayedForSeveralMessages();
     }
     @Test
@@ -74,10 +72,10 @@ public class UndoDeleteFromMeTests extends ChatTestCase {
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
         MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
         MessagesTabPageObject.openChatWithName(chat_name);
-        ChatScreenPageObject.sendMessageIfNeeded(send_message,sent_message);
-        ChatScreenPageObject.deleteSeveralMessagesFromMe(sent_message, received_message);
+        ChatScreenPageObject.sendMessageIfNeeded(message);
+        ChatScreenPageObject.deleteSeveralMessagesFromMe(message, received_message);
         ChatScreenPageObject.assertUndoPopUpDisplayedForSeveralMessages();
-        ChatScreenPageObject.undoRestoreDeletedMessagesFromMe(sent_message, received_message);
+        ChatScreenPageObject.undoRestoreDeletedMessagesFromMe(message, received_message);
     }
     @Test
     @Description("Undo pop-up disappears when timer is finished")
@@ -86,8 +84,8 @@ public class UndoDeleteFromMeTests extends ChatTestCase {
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
         MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
         MessagesTabPageObject.openChatWithName(chat_name);
-        ChatScreenPageObject.sendMessageIfNeeded(send_message,sent_message);
-        ChatScreenPageObject.deleteSeveralMessagesFromMe(sent_message, received_message);
+        ChatScreenPageObject.sendMessageIfNeeded(message);
+        ChatScreenPageObject.deleteSeveralMessagesFromMe(message, received_message);
         ChatScreenPageObject.assertUndoPopUpDisplayedForSeveralMessages();
         ChatScreenPageObject.assertUndoPopUpNotDisplayed();
     }
@@ -97,10 +95,10 @@ public class UndoDeleteFromMeTests extends ChatTestCase {
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
         MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
         MessagesTabPageObject.openChatWithName(chat_name);
-        ChatScreenPageObject.sendMessageIfNeeded(send_message,sent_message);
-        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_message);
+        ChatScreenPageObject.sendMessageIfNeeded(message);
+        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(message);
         ChatScreenPageObject.assertUndoPopUpDisplayed();
-        ChatScreenPageObject.tapOnInputBarAndSendMessage(sent_message);
+        ChatScreenPageObject.tapOnInputBarAndSendMessage(message);
         ChatScreenPageObject.assertUndoPopUpDisplayed();
     }
     @Test
@@ -109,8 +107,8 @@ public class UndoDeleteFromMeTests extends ChatTestCase {
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
         MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
         MessagesTabPageObject.openChatWithName(chat_name);
-        ChatScreenPageObject.sendMessageIfNeeded(send_message,sent_message);
-        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_message);
+        ChatScreenPageObject.sendMessageIfNeeded(message);
+        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(message);
         ChatScreenPageObject.assertUndoPopUpDisplayed();
         ChatScreenPageObject.tapOnInputBarAndOpenAttachMenu();
         ChatScreenPageObject.closeAttachMenuBar();
@@ -122,8 +120,8 @@ public class UndoDeleteFromMeTests extends ChatTestCase {
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
         MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
         MessagesTabPageObject.openChatWithName(chat_name);
-        ChatScreenPageObject.sendMessageIfNeeded(send_message,sent_message);
-        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_message);
+        ChatScreenPageObject.sendMessageIfNeeded(message);
+        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(message);
         ChatScreenPageObject.openInfoScreen();
         ChatScreenPageObject.closeInfoScreen();
         ChatScreenPageObject.assertUndoPopUpNotDisplayed();
@@ -137,10 +135,10 @@ public class UndoDeleteFromMeTests extends ChatTestCase {
         MessagesTabPageObject.openChatWithName(chat_name);
         this.enableAirplaneMode();//android only
         ChatScreenPageObject.confirmWifiPopUp();
-        ChatScreenPageObject.sendMessageIfNeeded(send_message,sent_message);
-        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_message);
+        ChatScreenPageObject.sendMessageIfNeeded(message);
+        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(message);
         ChatScreenPageObject.assertUndoPopUpDisplayed();
-        ChatScreenPageObject.undoRestoreDeletedMessageFromMe(sent_message);
+        ChatScreenPageObject.undoRestoreDeletedMessageFromMe(message);
         this.enableAllInternetConnection();
     }
 
@@ -150,11 +148,11 @@ public class UndoDeleteFromMeTests extends ChatTestCase {
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
         MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
         MessagesTabPageObject.openChatWithName(chat_name);
-        ChatScreenPageObject.sendMessageIfNeeded(send_message,sent_message);
-        ChatScreenPageObject.longPressAndAddStarToSentMessage(sent_message);
-        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_message);
+        ChatScreenPageObject.sendMessageIfNeeded(message);
+        ChatScreenPageObject.longPressAndAddStarToSentMessage(message);
+        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(message);
         ChatScreenPageObject.assertUndoPopUpDisplayed();
-        ChatScreenPageObject.undoRestoreDeletedMessageFromMe(sent_message);
+        ChatScreenPageObject.undoRestoreDeletedMessageFromMe(message);
         ChatScreenPageObject.assertStarIconIsDisplayedOnMessage();
     }
 
@@ -164,11 +162,11 @@ public class UndoDeleteFromMeTests extends ChatTestCase {
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
         MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
         MessagesTabPageObject.openChatWithName(chat_name);
-        ChatScreenPageObject.sendMessageIfNeeded(send_message,sent_message);
-        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_message);
+        ChatScreenPageObject.sendMessageIfNeeded(message);
+        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(message);
         ChatScreenPageObject.assertUndoPopUpDisplayed();
         this.backgroundApp(2);
-        ChatScreenPageObject.undoRestoreDeletedMessageFromMe(sent_message);
+        ChatScreenPageObject.undoRestoreDeletedMessageFromMe(message);
     }
     @Test
     @Description("Android_Undo pop-up after background")
@@ -176,8 +174,8 @@ public class UndoDeleteFromMeTests extends ChatTestCase {
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
         MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
         MessagesTabPageObject.openChatWithName(chat_name);
-        ChatScreenPageObject.sendMessageIfNeeded(send_message,sent_message);
-        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_message);
+        ChatScreenPageObject.sendMessageIfNeeded(message);
+        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(message);
         ChatScreenPageObject.assertUndoPopUpDisplayed();
         this.backgroundApp(2);
         ChatScreenPageObject.assertUndoPopUpNotDisplayed();
@@ -188,11 +186,11 @@ public class UndoDeleteFromMeTests extends ChatTestCase {
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
         MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
         MessagesTabPageObject.openChatWithName(chat_name);
-        ChatScreenPageObject.sendMessageIfNeeded(send_message,sent_message);
-        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_message);
+        ChatScreenPageObject.sendMessageIfNeeded(message);
+        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(message);
         ChatScreenPageObject.assertUndoPopUpDisplayed();
-        ChatScreenPageObject.sendMessageIfNeeded(send_message_new, sent_message_new);
-        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_message_new);
-        ChatScreenPageObject.undoRestoreDeletedMessageFromMe(sent_message_new);
+        ChatScreenPageObject.sendMessageIfNeeded(message_new);
+        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(message_new);
+        ChatScreenPageObject.undoRestoreDeletedMessageFromMe(message_new);
     }
 }

@@ -54,13 +54,15 @@ public class ChatTestCase extends CoreTestCase {
      * Text to type into the input bar, tagged for this test. Instance methods,
      * so the subclasses have to hold their data in instance fields too — that
      * is the point: a {@code static final} literal is shared state.
+     *
+     * <p>This is the only identity a test needs for a message. There used to be
+     * a second helper returning {@code "Sent message " + text}, the accessibility
+     * string Android puts on the bubble — which made every test carry both the
+     * text and the markup, and was simply wrong on iOS, where the same bubble
+     * reads {@code "Outgoing Messages,<text>,,,…"}. Composing that string is the
+     * platform locator template's job now; tests pass the text they typed.
      */
     public String messageText(String base) {
         return base + " " + tag;
-    }
-
-    /** The content-desc BiP puts on the bubble for {@link #messageText}. */
-    public String sentBubble(String base) {
-        return "Sent message " + messageText(base);
     }
 }

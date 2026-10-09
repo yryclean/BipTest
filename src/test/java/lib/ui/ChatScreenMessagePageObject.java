@@ -74,12 +74,12 @@ public abstract class ChatScreenMessagePageObject extends ChatScreenNavigationPa
         );
     }
 
-    public void sendMessageIfNeeded(String send_message, String sent_message) {
-        String sent_message_xpath = getSentMessageByXpathName(sent_message);
+    public void sendMessageIfNeeded(String message_text) {
+        String sent_message_xpath = getSentMessageByXpathName(message_text);
         if (isElementPresent(sent_message_xpath)) {
             System.out.println("Message already sent and present in chat");
         } else {
-            this.tapOnInputBarAndSendMessage(send_message);
+            this.tapOnInputBarAndSendMessage(message_text);
         }
     }
 

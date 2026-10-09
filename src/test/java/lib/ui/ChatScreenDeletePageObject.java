@@ -103,35 +103,20 @@ public abstract class ChatScreenDeletePageObject extends ChatScreenMessagePageOb
     }
 
     public void deleteMessageFromMe() {
-        this.waitForElementPresent(
-                ACTION_BAR_MENU,
-                "Action menu is not displayed",
-                15
-        );
-        this.waitForElementAndClick(
-                DELETE_BUTTON,
-                "Can't tap on Delete button",
-                15
-        );
-        this.waitForElementPresent(
-                CONFIRM_DELETE_POP_UP,
-                "Can't find confirmation pop-up",
-                15
-        );
-        this.waitForElementAndClick(
-                DELETE_FROM_ME,
-                "Can't select Delete from me",
-                15
-        );
-        this.waitForElementAndClick(
-                OK_DELETE_FROM_ME,
-                "Can't tap on OK button",
-                15
-        );
-        Assert.assertFalse(isElementPresent(CONFIRM_DELETE_POP_UP));
+        this.deleteSelectedMessage(DELETE_FROM_ME);
     }
 
     public void deleteMessageFromEveryOne() {
+        this.deleteSelectedMessage(DELETE_FROM_EVERYONE);
+    }
+
+    /**
+     * One flow for both scopes — they only ever differed in which row of the
+     * confirmation they tap. The two hooks are where the platforms genuinely
+     * part ways, so the shape of the flow stays in one place instead of being
+     * copied into each page object.
+     */
+    private void deleteSelectedMessage(String delete_scope) {
         this.waitForElementPresent(
                 ACTION_BAR_MENU,
                 "Action menu is not displayed",
@@ -142,22 +127,34 @@ public abstract class ChatScreenDeletePageObject extends ChatScreenMessagePageOb
                 "Can't tap on Delete button",
                 15
         );
+        this.openDeleteConfirmation();
         this.waitForElementPresent(
                 CONFIRM_DELETE_POP_UP,
                 "Can't find confirmation pop-up",
                 15
         );
         this.waitForElementAndClick(
-                DELETE_FROM_EVERYONE,
-                "Can't select Delete from me",
+                delete_scope,
+                "Can't select the delete scope",
                 15
         );
-        this.waitForElementAndClick(
-                OK_DELETE_FROM_ME,
-                "Can't tap on OK button",
-                15
-        );
+        this.applyDeleteChoice();
         Assert.assertFalse(isElementPresent(CONFIRM_DELETE_POP_UP));
+    }
+
+    /**
+     * Android's Delete opens the confirmation straight away. iOS turns Delete
+     * into a selection mode instead, and only the toolbar's trash brings up the
+     * sheet — so there the step is a second tap, not nothing.
+     */
+    protected void openDeleteConfirmation() {
+    }
+
+    /**
+     * Android's dialog needs a separate OK to commit; the iOS action sheet acts
+     * on the tap that picked the scope, and there is no second button to press.
+     */
+    protected void applyDeleteChoice() {
     }
 
     public void deleteSeveralMessagesFromMe(String sent_message, String received_message) {

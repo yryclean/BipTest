@@ -2,6 +2,7 @@ package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.AppiumBy;
+import lib.Platform;
 import org.junit.Assert;
 
 public class MessagesTabPageObject extends MainPageObject {
@@ -9,6 +10,10 @@ public class MessagesTabPageObject extends MainPageObject {
     /** Deep enough for the longest screen stack the suite reaches, short enough
      *  that a broken locator fails fast instead of backing out of the app. */
     private static final int MAX_BACK_PRESSES = 6;
+
+    /** Only used where the platform has no scroll-into-view-by-text — see
+     *  {@link #openChatWithName}. Covers a chat well down a busy list. */
+    private static final int MAX_CHAT_LIST_SWIPES = 10;
 
     protected static String
     MESSAGES_TAB_SCREEN,
@@ -77,11 +82,26 @@ public class MessagesTabPageObject extends MainPageObject {
                 10
         );
     }
+    /**
+     * Scrolling the chat list is the one part of this class that is not just a
+     * locator: UiAutomator2 can be asked to scroll a row into view by text in a
+     * single call, XCUITest has no equivalent, so there we swipe until the row
+     * shows up. {@code androidUIAutomator} throws outright on iOS, which is why
+     * this cannot stay unconditional.
+     */
     public void openChatWithName(String chat_name) {
-        String chat_xpath = getChatNameByXpathName(chat_name);
-        driver.findElement(AppiumBy.androidUIAutomator("new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().text(\"" + chat_name + "\").instance(0))"));
+        String chat_locator = getChatNameByXpathName(chat_name);
+        if (Platform.getInstance().isAndroid()) {
+            driver.findElement(AppiumBy.androidUIAutomator("new UiScrollable(new UiSelector().scrollable(true).instance(0)).scrollIntoView(new UiSelector().text(\"" + chat_name + "\").instance(0))"));
+        } else {
+            this.swipeUpToFindElement(
+                    chat_locator,
+                    "Cannot find chat " + chat_name + " in the list",
+                    MAX_CHAT_LIST_SWIPES
+            );
+        }
         this.waitForElementAndClick(
-                (chat_xpath),
+                (chat_locator),
                 "Cannot open chat " + chat_name,
                 15
         );

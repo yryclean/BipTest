@@ -16,7 +16,6 @@ public abstract class ChatScreenNavigationPageObject extends MainPageObject {
             SENT_MESSAGE_BUBBLE_TPL,
             RECEIVED_MESSAGE_TPL,
             SENT_MESSAGE_PHOTO_CAPTION_TPL,
-            CHAT_WITH_NAME,
             // Shared chrome: the long-press action bar and the overflow menu are
             // entry points for the delete, secret and pin layers alike.
             ACTION_BAR_MENU,

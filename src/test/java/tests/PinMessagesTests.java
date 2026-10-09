@@ -27,21 +27,13 @@ public class PinMessagesTests extends ChatTestCase {
 
     private final String
             sent_text = messageText("Test"),
-            sent_message = sentBubble("Test"),
             sent_text_new = messageText("Test2"),
-            sent_new_message = sentBubble("Test2"),
             edited_text = messageText("Edited message :)"),
-            sent_edited_message = sentBubble("Edited message :)"),
             sent_text1 = messageText("Test1"),
-            sent_message1 = sentBubble("Test1"),
             sent_text2 = messageText("Test2"),
-            sent_message2 = sentBubble("Test2"),
             sent_text3 = messageText("Test3"),
-            sent_message3 = sentBubble("Test3"),
             sent_text4 = messageText("Test4"),
-            sent_message4 = sentBubble("Test4"),
-            sent_text5 = messageText("Test5"),
-            sent_message5 = sentBubble("Test5");
+            sent_text5 = messageText("Test5");
 
 
     @Test
@@ -50,9 +42,9 @@ public class PinMessagesTests extends ChatTestCase {
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
         MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
         MessagesTabPageObject.openChatWithName(chat_name);
-        ChatScreenPageObject.sendMessageIfNeeded(sent_text, sent_message);
-        ChatScreenPageObject.waitForSentMessageWithName(sent_message);
-        ChatScreenPageObject.assertPinAvailable(sent_message);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text);
+        ChatScreenPageObject.waitForSentMessageWithName(sent_text);
+        ChatScreenPageObject.assertPinAvailable(sent_text);
     }
 
     @Test
@@ -61,9 +53,9 @@ public class PinMessagesTests extends ChatTestCase {
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
         MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
         MessagesTabPageObject.openChatWithName(group_chat_name);
-        ChatScreenPageObject.sendMessageIfNeeded(sent_text, sent_message);
-        ChatScreenPageObject.waitForSentMessageWithName(sent_message);
-        ChatScreenPageObject.assertPinAvailable(sent_message);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text);
+        ChatScreenPageObject.waitForSentMessageWithName(sent_text);
+        ChatScreenPageObject.assertPinAvailable(sent_text);
     }
 
     @Test
@@ -72,9 +64,9 @@ public class PinMessagesTests extends ChatTestCase {
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
         MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
         MessagesTabPageObject.openChatWithName(chat_name);
-        ChatScreenPageObject.sendMessageIfNeeded(sent_text, sent_message);
-        ChatScreenPageObject.longPressAndPinSentMessage(sent_message, sent_text);
-        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_message);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text);
+        ChatScreenPageObject.longPressAndPinSentMessage(sent_text);
+        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_text);
     }
 
     @Test
@@ -83,9 +75,9 @@ public class PinMessagesTests extends ChatTestCase {
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
         MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
         MessagesTabPageObject.openChatWithName(group_chat_name);
-        ChatScreenPageObject.sendMessageIfNeeded(sent_text, sent_message);
-        ChatScreenPageObject.longPressAndPinSentMessage(sent_message, sent_text);
-        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_message);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text);
+        ChatScreenPageObject.longPressAndPinSentMessage(sent_text);
+        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_text);
     }
 
     @Test
@@ -94,9 +86,9 @@ public class PinMessagesTests extends ChatTestCase {
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
         MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
         MessagesTabPageObject.openChatWithName(chat_name);
-        ChatScreenPageObject.sendMessageIfNeeded(sent_text, sent_message);
-        ChatScreenPageObject.longPressAndPinSentMessage(sent_message, sent_text);
-        ChatScreenPageObject.longPressAndUnPinSentMessage(sent_message, sent_text);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text);
+        ChatScreenPageObject.longPressAndPinSentMessage(sent_text);
+        ChatScreenPageObject.longPressAndUnPinSentMessage(sent_text);
     }
 
     @Test
@@ -105,8 +97,8 @@ public class PinMessagesTests extends ChatTestCase {
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
         MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
         MessagesTabPageObject.openChatWithName(chat_name);
-        ChatScreenPageObject.sendMessageIfNeeded(sent_text, sent_message);
-        ChatScreenPageObject.longPressAndPinSentMessage(sent_message, sent_text);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text);
+        ChatScreenPageObject.longPressAndPinSentMessage(sent_text);
         ChatScreenPageObject.longPressPinBarAndUnPinSentMessage();
     }
 
@@ -116,9 +108,9 @@ public class PinMessagesTests extends ChatTestCase {
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
         MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
         MessagesTabPageObject.openChatWithName(chat_name);
-        ChatScreenPageObject.sendMessageIfNeeded(sent_text, sent_message);
-        ChatScreenPageObject.longPressAndPinSentMessage(sent_message, sent_text);
-        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_message);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text);
+        ChatScreenPageObject.longPressAndPinSentMessage(sent_text);
+        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_text);
         ChatScreenPageObject.assertMessageUnpinned(sent_text);
     }
 
@@ -128,9 +120,9 @@ public class PinMessagesTests extends ChatTestCase {
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
         MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
         MessagesTabPageObject.openChatWithName(chat_name);
-        ChatScreenPageObject.sendMessageIfNeeded(sent_text, sent_message);
-        ChatScreenPageObject.longPressAndPinSentMessage(sent_message, sent_text);
-        ChatScreenPageObject.longPressAndDeleteSentMessageFromEveryone(sent_message);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text);
+        ChatScreenPageObject.longPressAndPinSentMessage(sent_text);
+        ChatScreenPageObject.longPressAndDeleteSentMessageFromEveryone(sent_text);
     }
 
     @Test
@@ -139,12 +131,12 @@ public class PinMessagesTests extends ChatTestCase {
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
         MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
         MessagesTabPageObject.openChatWithName(chat_name);
-        ChatScreenPageObject.sendMessageIfNeeded(sent_text, sent_message);
-        ChatScreenPageObject.longPressAndPinSentMessage(sent_message, sent_text);
-        ChatScreenPageObject.sendMessageIfNeeded(sent_text_new, sent_new_message);
-        ChatScreenPageObject.longPressAndPinSentMessage(sent_new_message, sent_text_new);
-        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_new_message);
-        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_message);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text);
+        ChatScreenPageObject.longPressAndPinSentMessage(sent_text);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text_new);
+        ChatScreenPageObject.longPressAndPinSentMessage(sent_text_new);
+        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_text_new);
+        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_text);
     }
 
     @Test
@@ -153,13 +145,13 @@ public class PinMessagesTests extends ChatTestCase {
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
         MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
         MessagesTabPageObject.openChatWithName(chat_name);
-        ChatScreenPageObject.sendMessageIfNeeded(sent_text, sent_message);
-        ChatScreenPageObject.longPressAndPinSentMessage(sent_message, sent_text);
-        ChatScreenPageObject.sendMessageIfNeeded(sent_text_new, sent_new_message);
-        ChatScreenPageObject.longPressAndPinSentMessage(sent_new_message, sent_text_new);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text);
+        ChatScreenPageObject.longPressAndPinSentMessage(sent_text);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text_new);
+        ChatScreenPageObject.longPressAndPinSentMessage(sent_text_new);
         ChatScreenPageObject.tapOnPinnedMessageBarToShowPinnedMessage(sent_text, sent_text_new);
-        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_new_message);
-        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_message);
+        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_text_new);
+        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_text);
     }
 
     @Test
@@ -168,10 +160,10 @@ public class PinMessagesTests extends ChatTestCase {
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
         MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
         MessagesTabPageObject.openChatWithName(chat_name);
-        ChatScreenPageObject.sendMessageIfNeeded(sent_text, sent_message);
-        ChatScreenPageObject.longPressAndPinSentMessage(sent_message, sent_text);
-        ChatScreenPageObject.editPinnedMessage(sent_message, sent_edited_message, edited_text);
-        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_edited_message);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text);
+        ChatScreenPageObject.longPressAndPinSentMessage(sent_text);
+        ChatScreenPageObject.editPinnedMessage(sent_text, edited_text);
+        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(edited_text);
     }
 
     @Test
@@ -180,10 +172,10 @@ public class PinMessagesTests extends ChatTestCase {
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
         MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
         MessagesTabPageObject.openChatWithName(chat_name);
-        ChatScreenPageObject.sendMessageIfNeeded(sent_text, sent_message);
-        ChatScreenPageObject.longPressAndPinSentMessage(sent_message, sent_text);
-        ChatScreenPageObject.longPressAndAddStarToSentMessage(sent_message);
-        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_message);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text);
+        ChatScreenPageObject.longPressAndPinSentMessage(sent_text);
+        ChatScreenPageObject.longPressAndAddStarToSentMessage(sent_text);
+        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_text);
     }
 
     @Test
@@ -196,7 +188,7 @@ public class PinMessagesTests extends ChatTestCase {
         ChatScreenPageObject.setSecretMessageTimer();
         ChatScreenPageObject.tapOnInputBarAndSendMessage(sent_text);
         ChatScreenPageObject.assertSecretMessageSent();
-        ChatScreenPageObject.longPressAndPinSecretMessage(sent_message);
+        ChatScreenPageObject.longPressAndPinSecretMessage(sent_text);
     }
 
     @Test
@@ -205,11 +197,11 @@ public class PinMessagesTests extends ChatTestCase {
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
         MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
         MessagesTabPageObject.openChatWithName(chat_name);
-        ChatScreenPageObject.sendMessageIfNeeded(sent_text, sent_message);
-        ChatScreenPageObject.longPressAndPinSentMessage(sent_message, sent_text);
-        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_message);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text);
+        ChatScreenPageObject.longPressAndPinSentMessage(sent_text);
+        ChatScreenPageObject.longPressAndDeleteSentMessageFromMe(sent_text);
         ChatScreenPageObject.assertUndoPopUpDisplayed();
-        ChatScreenPageObject.undoRestoreDeletedMessageFromMe(sent_message);
+        ChatScreenPageObject.undoRestoreDeletedMessageFromMe(sent_text);
         ChatScreenPageObject.assertMessageUnpinned(sent_text);
     }
 
@@ -219,10 +211,10 @@ public class PinMessagesTests extends ChatTestCase {
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
         MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
         MessagesTabPageObject.openChatWithName(chat_name);
-        ChatScreenPageObject.sendMessageIfNeeded(sent_text, sent_message);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text);
         this.enableAirplaneMode();//android only
         ChatScreenPageObject.confirmWifiPopUp();
-        ChatScreenPageObject.longPressAndPinSentMessage(sent_message, sent_text);
+        ChatScreenPageObject.longPressAndPinSentMessage(sent_text);
         this.enableAllInternetConnection();
     }
 
@@ -232,17 +224,17 @@ public class PinMessagesTests extends ChatTestCase {
         ChatScreenPageObject ChatScreenPageObject = ChatScreenPageObjectFactory.get(driver);
         MessagesTabPageObject MessagesTabPageObject = MessagesTabPageObjectFactory.get(driver);
         MessagesTabPageObject.openChatWithName(chat_name);
-        ChatScreenPageObject.sendMessageIfNeeded(sent_text, sent_message);
-        ChatScreenPageObject.longPressAndPinSentMessage(sent_message, sent_text);
-        ChatScreenPageObject.sendMessageIfNeeded(sent_text1, sent_message1);
-        ChatScreenPageObject.longPressAndPinSentMessage(sent_message1, sent_text1);
-        ChatScreenPageObject.sendMessageIfNeeded(sent_text2, sent_message2);
-        ChatScreenPageObject.longPressAndPinSentMessage(sent_message2, sent_text2);
-        ChatScreenPageObject.sendMessageIfNeeded(sent_text3, sent_message3);
-        ChatScreenPageObject.longPressAndPinSentMessage(sent_message3, sent_text3);
-        ChatScreenPageObject.sendMessageIfNeeded(sent_text4, sent_message4);
-        ChatScreenPageObject.longPressAndPinSentMessage(sent_message4, sent_text4);
-        ChatScreenPageObject.sendMessageIfNeeded(sent_text5, sent_message5);
-        ChatScreenPageObject.longPressAndPinSentMessageWhenLimitReached(sent_message5, sent_text5);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text);
+        ChatScreenPageObject.longPressAndPinSentMessage(sent_text);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text1);
+        ChatScreenPageObject.longPressAndPinSentMessage(sent_text1);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text2);
+        ChatScreenPageObject.longPressAndPinSentMessage(sent_text2);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text3);
+        ChatScreenPageObject.longPressAndPinSentMessage(sent_text3);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text4);
+        ChatScreenPageObject.longPressAndPinSentMessage(sent_text4);
+        ChatScreenPageObject.sendMessageIfNeeded(sent_text5);
+        ChatScreenPageObject.longPressAndPinSentMessageWhenLimitReached(sent_text5);
     }
 }
